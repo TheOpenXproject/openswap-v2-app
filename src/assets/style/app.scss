@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Line Awesome Icons
+$la-font-path: "~line-awesome/dist/line-awesome/fonts" !default;
+@import '~line-awesome/dist/line-awesome/scss/line-awesome.scss';
+
+@import './toast.scss';
+@import './animations.scss';
+
+.text-el {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.center-component {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-y-component {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.oswap-layout {
+  /* viewport height - header - footer */
+  min-height: calc(100vh - 72px - 96px);
+}
+
+.bg-wave {
+  background-image: url('../wave.svg');
+}
+
+.bg-wave-dark {
+  background-image: url('../wave-dark.svg');
+}
+
+/* ScrollBar */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(24, 213, 187, 1);
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #cccccc;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #18d5bb #cccccc;
+}
+
+.swap-border {
+  box-sizing: border-box;
+  border-left: solid 1px rgba(24, 213, 187, 1);
+}
+
+// .swap-border:hover {
+//   box-shadow: inset 0px 0px 1px 1px rgba(24, 213, 187, .3);
+// }
+
+.grab-attention {
+  @apply flex w-28 h-full justify-between items-center border;
+  @apply border-oswapGreen-dark dark:border-oswapGreen dark:hover:bg-oswapGreen;
+  @apply hover:bg-oswapGreen space-x-1 p-2 pl-3 rounded-full;
+  @apply dark:bg-slightDark bg-slightGray relative;
+  z-index: 2;
+}
+
+.grab-attention-glowing {
+  background: linear-gradient(45deg, #1bf2ba, #18d5bb, #13b4ba, rgba(116, 134, 133, 0.5), #13b4ba, #18d5bb);
+  position: absolute;
+  top: 0px;
+  left: -2px;
+  background-size: 400%;
+  z-index: 1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 2px);
+  animation: glowing linear 20s infinite;
+  opacity: 1;
+  transition: all .3s ease-in-out;
+  border-radius: 9999px;
+}
+
+.glow-link {
+  background: linear-gradient(45deg, #1bf2ba, #18d5bb, #13b4ba, rgba(116, 134, 133, 0.5), #13b4ba, #18d5bb);
+  position: absolute;
+  background-size: 400%;
+  z-index: 20;
+  filter: blur(5px);
+  width: 32px;
+  height: 32px;
+  animation: glowing linear 20s infinite;
+  opacity: 1;
+  transition: all .3s ease-in-out;
+  border-radius: 8px;
+}
+
+.glow-link-line {
+  background: linear-gradient(45deg, #1bf2ba, #18d5bb, #13b4ba, rgba(116, 134, 133, 0.5), #13b4ba, #18d5bb);
+  position: absolute;
+  top: 0px;
+  left: -2px;
+  background-size: 400%;
+  z-index: 1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 2px);
+  animation: glowing linear 20s infinite;
+  opacity: 1;
+  transition: all .3s ease-in-out;
+  border-radius: 8px;
+}
+
+.glow-collect {
+  background: linear-gradient(45deg, #1bf2ba, #18d5bb, #13b4ba, rgba(116, 134, 133, 0.5), #13b4ba, #18d5bb);
+  position: absolute;
+  background-size: 400%;
+  filter: blur(5px);
+  width: 132px;
+  height: 60px;
+  animation: glowing linear 20s infinite;
+  opacity: 1;
+  transition: all .3s ease-in-out;
+  border-radius: 8px;
+}
+
+.glow-collect-all {
+  background: linear-gradient(45deg, #1bf2ba, #18d5bb, #13b4ba, rgba(116, 134, 133, 0.5), #13b4ba, #18d5bb);
+  background-size: 400%;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: 32px;
+  animation: glowing linear 20s infinite;
+  opacity: 1;
+  transition: all .3s ease-in-out;
+  border-radius: 8px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.apexcharts-tooltip {
+  border-radius: 9999px !important;
+  box-shadow: 0px 0px 0px 0px #000 !important;
+  cursor: default;
+  font-size: 12px !important;
+  left: 62px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 12;
+  transition: 0.15s ease all;
+}
+
+.ps__rail-y {
+  display: none;
+  opacity: 0;
+  transition: background-color .2s linear, opacity .2s linear;
+  -webkit-transition: background-color .2s linear, opacity .2s linear;
+  width: 0px !important;
+  /* there must be 'right' or 'left' for ps__rail-y */
+  right: 0;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  background-color: rgba(0, 0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+/*
+* Scrollbar thumb styles
+*/
+
+.ps__thumb-y {
+  background-color: rgba(42, 33, 56, 0.5) !important;
+  border-radius: 6px;
+  transition: background-color .2s linear, width .2s ease-in-out;
+  -webkit-transition: background-color .2s linear, width .2s ease-in-out;
+  width: 6px;
+  /* there must be 'right' for ps__thumb-y */
+  right: 2px;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: rgba(24, 213, 187, 1) !important;
+  width: 6px !important;
+}

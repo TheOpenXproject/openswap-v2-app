@@ -1,0 +1,353 @@
+.st3 {
+  @apply transition duration-300 ease-in-out
+}
+
+.st3-all * {
+  @apply transition duration-300 ease-in-out
+}
+
+.st5 {
+  @apply transition duration-500 ease-in-out
+}
+
+.st5-all * {
+  @apply transition duration-500 ease-in-out
+}
+
+// Left and Right Transitions
+.horizontal-enter-active {
+  @apply transform transition-all duration-200 ease-out z-60 absolute
+}
+.horizontal-enter-from {
+  @apply translate-x-4 opacity-0
+}
+.horizontal-enter-to {
+  @apply translate-x-0 opacity-100
+}
+.horizontal-leave-active {
+  @apply transform transition-all duration-150 ease-out z-60
+}
+.horizontal-leave-from {
+  @apply translate-x-0 opacity-100
+}
+.horizontal-leave-to {
+  @apply -translate-x-4 opacity-0
+}
+
+// Left and Right Transitions Overflow
+.horizontal-o-enter-active {
+  @apply transform transition-all duration-200 ease-out z-60
+}
+.horizontal-o-enter-from {
+  @apply translate-x-4 opacity-0
+}
+.horizontal-o-enter-to {
+  @apply translate-x-0 opacity-100
+}
+.horizontal-o-leave-active {
+  @apply transform transition-all duration-150 ease-out z-60
+}
+.horizontal-o-leave-from {
+  @apply translate-x-0 opacity-100
+}
+.horizontal-o-leave-to {
+  @apply -translate-x-4 opacity-0
+}
+
+// Vertical Transitions
+.vertical-enter-active {
+  @apply transform transition-all duration-200 ease-out z-60
+}
+.vertical-enter-from {
+  @apply translate-y-4 opacity-0
+}
+.vertical-enter-to {
+  @apply translate-y-0 opacity-100
+}
+.vertical-leave-active {
+  @apply transform transition-all duration-150 ease-out z-60
+}
+.vertical-leave-from {
+  @apply translate-y-0 opacity-100
+}
+.vertical-leave-to {
+  @apply -translate-y-4 opacity-0
+}
+
+// Fall Transition
+.fall-enter-active {
+  @apply transform transition-all duration-200 ease-out
+}
+.fall-enter-from {
+  @apply -translate-y-4 opacity-0
+}
+.fall-enter-to {
+  @apply translate-y-0 opacity-100
+}
+.fall-leave-active {
+  @apply transform transition-all duration-150 ease-out
+}
+.fall-leave-from {
+  @apply translate-y-0 opacity-100
+}
+.fall-leave-to {
+  @apply -translate-y-4 opacity-0
+}
+
+// Modal Fall Transition
+.modal-fall-enter-active {
+  @apply transform transition-all duration-200 ease-out z-60 absolute
+}
+.modal-fall-enter-from {
+  @apply -translate-y-4 opacity-0
+}
+.modal-fall-enter-to {
+  @apply translate-y-0 opacity-100
+}
+.modal-fall-leave-active {
+  @apply transform transition-all duration-150 ease-out z-60
+}
+.modal-fall-leave-from {
+  @apply translate-y-0 opacity-100
+}
+.modal-fall-leave-to {
+  @apply -translate-y-4 opacity-0
+}
+
+// Invalid Input animations
+.invalid-input-body-enter-active {
+  @apply transform transition-all duration-200 ease-in-out
+}
+.invalid-input-body-enter-from {
+  @apply -translate-y-2 opacity-0
+}
+.invalid-input-body-enter-to {
+  @apply translate-y-0 opacity-100
+}
+.invalid-input-body-leave-active {
+  @apply transform transition-all duration-150 ease-in-out
+}
+.invalid-input-body-leave-from {
+  @apply translate-y-0 opacity-100
+}
+.invalid-input-body-leave-to {
+  @apply -translate-y-2 opacity-0
+}
+
+.invalid-input-list-enter-active {
+  @apply transform transition-all duration-300 ease-in
+}
+.invalid-input-list-enter-from {
+  @apply max-h-0 opacity-0
+}
+.invalid-input-list-enter-to {
+  @apply max-h-96 opacity-100
+}
+.invalid-input-list-leave-active {
+  @apply transform transition-all duration-300 ease-out
+}
+.invalid-input-list-leave-from {
+  @apply max-h-96 opacity-100
+}
+.invalid-input-list-leave-to {
+  @apply max-h-0 opacity-0
+}
+
+/* Warning Body */
+.warning-body-enter-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.warning-body-enter-from {
+  @apply opacity-0 max-h-0
+}
+.warning-body-enter-to {
+  @apply opacity-100 max-h-96
+}
+.warning-body-leave-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.warning-body-leave-from {
+  @apply opacity-100 max-h-96
+}
+.warning-body-leave-to {
+  @apply opacity-0 max-h-0
+}
+
+/* liquidity squeeze */
+.squeeze-liq-enter-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.squeeze-liq-enter-from {
+  @apply opacity-0 max-h-0
+}
+.squeeze-liq-enter-to {
+  @apply opacity-100 max-h-96
+}
+.squeeze-liq-leave-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.squeeze-liq-leave-from {
+  @apply opacity-100 max-h-96
+}
+.squeeze-liq-leave-to {
+  @apply opacity-0 max-h-0
+}
+
+.warning-body-item-enter-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.warning-body-item-enter-from {
+  @apply max-h-0 opacity-0
+}
+.warning-body-item-enter-to {
+  @apply max-h-96 opacity-100
+}
+.warning-body-item-leave-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.warning-body-item-leave-from {
+  @apply max-h-96 opacity-100
+}
+.warning-body-item-leave-to {
+  @apply max-h-0 opacity-0
+}
+
+/* Approve button */
+.approve-btn-enter-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.approve-btn-enter-from {
+  @apply opacity-0
+}
+.approve-btn-enter-to {
+  @apply opacity-100
+}
+.approve-btn-leave-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.approve-btn-leave-from {
+  @apply opacity-100
+}
+.approve-btn-leave-to {
+  @apply opacity-0
+}
+
+/* Swap button */
+.swap-btn-enter-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.swap-btn-enter-from {
+  @apply opacity-0
+}
+.swap-btn-enter-to {
+  @apply opacity-100
+}
+.swap-btn-leave-active {
+  @apply transition-all duration-1000 ease-in-out
+}
+.swap-btn-leave-from {
+  @apply opacity-100
+}
+.swap-btn-leave-to {
+  @apply opacity-0
+}
+
+// Farm Transitions
+.farm-enter-active {
+  @apply transform transition-all duration-200 ease-out
+}
+.farm-enter-from {
+  @apply translate-x-4 opacity-0
+}
+.farm-enter-to {
+  @apply translate-x-0 opacity-100
+}
+.farm-leave-active {
+  @apply transform transition-all duration-150 ease-out
+}
+.farm-leave-from {
+  @apply translate-x-0 opacity-100
+}
+.farm-leave-to {
+  @apply -translate-x-4 opacity-0
+}
+
+// Fade-In Transition
+.fade-in-enter-active {
+  @apply transform transition-all duration-300 ease-out
+}
+.fade-in-enter-from {
+  @apply opacity-0
+}
+.fade-in-enter-to {
+  @apply opacity-100
+}
+.fade-in-leave-active {
+  @apply transform transition-all duration-300 ease-out
+}
+.fade-in-leave-from {
+  @apply opacity-100
+}
+.fade-in-leave-to {
+  @apply opacity-0
+}
+
+// Pool Transitions
+.hzpool-enter-active {
+  @apply transform transition-all duration-200 ease-out
+}
+.hzpool-enter-from {
+  @apply translate-x-4 opacity-0
+}
+.hzpool-enter-to {
+  @apply translate-x-0 opacity-100
+}
+.hzpool-leave-active {
+  @apply transform transition-all duration-150 ease-out
+}
+.hzpool-leave-from {
+  @apply translate-x-0 opacity-100
+}
+.hzpool-leave-to {
+  @apply -translate-x-4 opacity-0
+}
+
+// Fade-In and rotate Transition
+.fade-in-and-rotate-enter-active {
+  @apply transform transition-all duration-300 ease-out absolute
+}
+.fade-in-and-rotate-enter-from {
+  @apply opacity-0 rotate-180
+}
+.fade-in-and-rotate-enter-to {
+  @apply opacity-100 rotate-0
+}
+.fade-in-and-rotate-leave-active {
+  @apply transform transition-all duration-300 ease-out
+}
+.fade-in-and-rotate-leave-from {
+  @apply opacity-100 rotate-0
+}
+.fade-in-and-rotate-leave-to {
+  @apply opacity-0 rotate-180
+}
+
+// Fade-Out and rotate Transition
+.fade-out-and-rotate-enter-active {
+  @apply transform transition-all duration-300 ease-out absolute
+}
+.fade-out-and-rotate-enter-from {
+  @apply opacity-0 -rotate-180
+}
+.fade-out-and-rotate-enter-to {
+  @apply opacity-100 rotate-0
+}
+.fade-out-and-rotate-leave-active {
+  @apply transform transition-all duration-300 ease-out
+}
+.fade-out-and-rotate-leave-from {
+  @apply opacity-100 rotate-0
+}
+.fade-out-and-rotate-leave-to {
+  @apply opacity-0 rotate-180
+}
