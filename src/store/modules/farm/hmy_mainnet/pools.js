@@ -147,7 +147,7 @@ export const pools = {
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     imgtoken1: "https://openfi.dev/tokens/default/MATIC.png",
     imgtoken0: "https://openfi.dev/tokens/default/oSWAP.png",
-    name: [ "bMATIC", "OpenX"],
+    name: [ "OpenX" , "bMATIC"],
     decimals: [18, 18],
     pid: "10",
     rewards: "3X",

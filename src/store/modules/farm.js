@@ -7,7 +7,10 @@ export default {
       state: {
         farmData: {},
         soloData: {},
-        customData: {}
+        farmPair:{},
+        customData: {},
+        onePrice: 0,
+        OpenXPrice: 0
       },
       getters: {
         // get current step state
@@ -19,6 +22,15 @@ export default {
         },
         getSoloData: (state) => {
           return state.soloData
+        },
+        getStateOnePrice: (state) => {
+          return state.onePrice
+        },
+        getStateOpenXPrice: (state) => {
+          return state.OpenXPrice
+        },
+        getFarmPair: (state) => {
+          return state.farmPair
         }
       },
       actions: {
@@ -36,6 +48,15 @@ export default {
         },
         setToken1Amount({ commit }, value) {
           commit('_setToken1Amount', value)
+        },
+        setOpenXPrice({ commit }, value) {
+          commit('_setOpenXprice', value)
+        },
+        setOnePrice({ commit }, value) {
+          commit('_setOnePrice', value)
+        },
+        setFarmPair({ commit }, value) {
+          commit('_setFarmPair', value)
         }
       },
       mutations: {
@@ -53,10 +74,17 @@ export default {
         },
         _setToken1Amount: (state, value) => {
           state.token1 = value
+        },
+        _setOpenXprice: (state, value) => {
+          state.OpenXPrice = value
+        },
+        _setOnePrice: (state, value) => {
+          state.onePrice = value
+        },
+        _setFarmPair: (state, value) => {
+          state.farmPair = value
         }
-
       }
     }
-  },
-  mixins: [openswap]
+  }
 }

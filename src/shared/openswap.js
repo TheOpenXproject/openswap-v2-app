@@ -33,8 +33,10 @@ export default {
   },
   methods: {
     ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
-    
+    ...mapGetters('farm/farmData', ['getStateOpenXPrice', 'getStateOnePrice']),
+    ...mapActions('farm/farmData', ['setOpenXPrice', 'setOnePrice']),
     ...mapActions('exchange/swapper', ['setBtnState']),
+    ...mapGetters('farm/farmData', ['getFarmPairs']),
     ...mapActions('liquidity/buttons', ['setBtnState']),
     getProvider: function(call){
        let networks = {
@@ -103,11 +105,10 @@ export default {
       });
       console.log(res);
       },
-    getOswapPrice: async function () {
+    getOpenXPrice: async function () {
         this.balances = [];
         let chainID = this.getChainID()
-        console.log(chainID)
-        console.log(this.oSWAPTOKEN(chainID))
+
         const Oswap = new Token(
           chainID,
           this.oSWAPTOKEN(chainID),
@@ -132,6 +133,45 @@ export default {
         }
         
 
+    },
+    getOnePrice: async function () {
+        this.balances = [];
+        let chainID = this.getChainID()
+
+        const Oswap = new Token(
+          chainID,
+          this.WONE(chainID),
+          18
+        );
+        const Busd = new Token(
+          chainID,
+          this.bBUSD(chainID),
+          18
+        );
+
+        const pair = await Fetcher.fetchPairData(Oswap, Busd).catch(error => {
+          console.log(error);
+          this.error = 1;
+          this.errormessage = "Pool Doesn't Exist";
+        });
+        console.log(pair)
+        if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID)){
+          return pair.token0Price.toSignificant(4);
+        }else {
+          return pair.token1Price.toSignificant(4);
+        }
+        
+
+    },
+    getOswapPrice: async function(){
+      return this.getStateOpenXPrice()
+    },
+    getTokenPrices: async function(){
+      let oswap = await this.getOpenXPrice();
+      let one = await this.getOnePrice();
+
+      this.setOnePrice(one);
+      this.setOpenXPrice(oswap)
     },
     getOneBalance: async function(){
         const provider = this.getProvider()
@@ -857,6 +897,21 @@ export default {
     token.decimals = 18
     return token;
     },
+     getPairByAddressFarm: async function(token0, token1){
+      const Token0 = await Fetcher.fetchTokenData(
+      1666600000,
+      token0
+    );
+    const Token1 = await Fetcher.fetchTokenData(
+      1666600000,
+      token1
+    );
+    const pair = await Fetcher.fetchPairData(Token0,Token1).catch(error => {
+      console.log(error); 
+      throw error 
+    });
+    return pair;
+    },
     getRate: function(pair, token1) {
       let rate = [];
       if (
@@ -893,16 +948,44 @@ export default {
       getLiquidityValue: async function(pool, tt0sBN, tt1sBN){
       let is0Stable = this.isStablecoin(pool.token0address)
       let is1Stable = this.isStablecoin(pool.token1address)
+      let onePrice = this.getStateOnePrice();
+      let openxPrice = this.getStateOpenXPrice();
+
       
       let tt0s = parseFloat(this.getFormatedUnitsDecimals(tt0sBN.toString(), pool.decimals[0]))
       let tt1s = parseFloat(this.getFormatedUnitsDecimals(tt1sBN.toString(), pool.decimals[1]))
       if(is0Stable == true ){
         return [ethers.utils.commify(parseFloat(tt0s).toFixed(2) * 2), parseFloat(tt0s).toFixed(2) *2];
       }
-       
+       let check = false
       if(is1Stable == true){
+        check = true
         return [ethers.utils.commify(parseFloat(tt1s).toFixed(2) * 2), parseFloat(tt1s).toFixed(2) * 2];
-      }else{
+
+      }
+      console.log(onePrice)
+      console.log(openxPrice)
+      if(pool.token0address == this.WONE(this.getChainID())){
+        check = true
+        return [ethers.utils.commify((parseFloat(tt0s).toFixed(2)* onePrice * 2).toFixed(2)), parseFloat(tt0s).toFixed(2)* onePrice * 2];
+      }
+      if(pool.token1address == this.WONE(this.getChainID())){
+        check = true
+        return [ethers.utils.commify((parseFloat(tt1s).toFixed(2)* onePrice * 2).toFixed(2)), parseFloat(tt1s).toFixed(2)* onePrice * 2];
+      }
+      if(pool.token0address == this.oSWAPTOKEN(this.getChainID())){
+        check = true
+        return [ethers.utils.commify((parseFloat(tt0s).toFixed(2)* openxPrice * 2).toFixed(2)), parseFloat(tt0s).toFixed(2) * openxPrice * 2];
+      }
+      if(pool.token1address == this.oSWAPTOKEN(this.getChainID())){
+        check = true
+        return [ethers.utils.commify((parseFloat(tt1s).toFixed(2)* openxPrice * 2).toFixed(2)), parseFloat(tt1s).toFixed(2) * openxPrice * 2];
+      }
+
+
+
+
+      if(check == false){
         var Token0 = {oneZeroxAddress: pool.token0address} 
         let Token1 = {oneZeroxAddress: this.bBUSD(this.getChainID())}
         let wei = ethers.utils.parseUnits('1', 18)
@@ -1098,6 +1181,28 @@ export default {
             ]);
 
       const bestRoute = await Trade.bestTradeExactIn([paira,pairab,pairc,paircd,paire,pairef, pairgh, pairij,pairfg,pair01, pairTHATEXISTS],new TokenAmount(Token0, parsedAmount), Token1)
+
+      return bestRoute[0]
+    },
+    getBestRouteFarmsV2: async function(parsedAmount, token0, token1) {
+            const [
+      Token0,
+      Token1] = await Promise.all([
+        Fetcher.fetchTokenData(
+                this.getChainID(),
+                token0.oneZeroxAddress
+                ),
+        Fetcher.fetchTokenData(
+                this.getChainID(),
+                token1.oneZeroxAddress
+                )
+      ]);
+
+            let pairs = this.getFarmPairs();
+
+      const bestRoute = await Trade.bestTradeExactIn(pairs,new TokenAmount(Token0, parsedAmount), Token1).catch(err => {
+        console.log(err)
+      })
 
       return bestRoute[0]
     },

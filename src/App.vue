@@ -18,9 +18,11 @@
   import Header from '@/components/Header';
   import Footer from '@/components/Footer';
   import { mapActions, mapGetters } from 'vuex';
+  import openswap from "@/shared/openswap.js";
 
   export default {
     name: 'OpenSwap',
+    mixins: [openswap],
     components: {
       Header,
       Footer,
@@ -28,12 +30,8 @@
     created() {
       window.addEventListener('scroll', this.handleScroll);
     },
-    mounted() {
-
-      let fm = localStorage.getItem("firstmigration");
-      if(!fm){
-        localStorage.setItem("firstmigration", "true");
-      }
+    mounted: async function() {
+      
       
       // Color Mode!
       let theme = localStorage.getItem("oSwap\_theme");

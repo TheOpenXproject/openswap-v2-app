@@ -1,27 +1,11 @@
 <template>
   <div id="farm" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center justify-center oswap-layout xl:px-0 px-3 text-gray-500 pb-16">
-    <transition v-if="this.haveWarnings" tag="div" name="warning-body" class="flex mt-3 items-start w-full h-auto px-3 bg-red-50 dark:bg-gray-600 space-x-3 rounded-xl ring-1 ring-red-300">
-    <div>
-      <div class="flex justify-start my-3">
-        <i class="las la-exclamation-triangle text-xl text-red-300"></i>
-      </div>
-
-      <!-- display warnings -->
-      <transition-group tag="div" name="warning-body-item" class="flex flex-col space-y-2 my-3 overflow-hidden">
-        <div v-for="(warning, index) in this.warnings" :key="index" class="flex justify-start">
-          <p class="text-sm font-extralight text-red-300 break-words">
-            {{warning}}
-          </p>
-        </div>
-      </transition-group>
-    </div>
-  </transition>
     <transition name="fall" appear>
       <FarmHeader :data="farmHeaderData" @updateData="getTotalPending"/>
     </transition>
     
     <transition name="farm" appear>
-      <div v-if="soloData != null && farmData != null" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
+      <div v-if="soloData != null && farmData != null && pairsLoaded" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
         <SoloFarmPair  v-for="(pool, index) in this.SoloPools" @updateTVL="updateTVL" :key="index" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData"/>
         <FarmPair v-for="(pool, index) in this.Pools" @updateTVL="updateTVL" @updateAPR="updateAPR" :key="index" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData"/>
       </div>
@@ -56,10 +40,8 @@
       SoloFarmPair
     },
     mounted: async function () {
-      let fm = localStorage.getItem("firstmigration");
-      if(fm == "true"){
-       this.warnings['Migration'] = "Don't panic ! Your funds aren't shown here because we are undergoing a protocol migration. Please Visit app.v1.openswap.one and unstake all your Tokens in v1 farms, and break lpTokens in the liquidity tab. Once all liquidity is removed, please head over to the migrate tab on app.openswap.one , and exchange your oSWAP tokens for OpenX, our new token. Once all your oswap are converted to OpenX you can head over to these farms and add liquidity with the new OpenX Token. Then Final step is to stake your LP tokens in the farms and you are set ! A more comprehensive step by step guide can be found at : https://docs.openswap.one/guide/openswap-v2-has-arrived . If you run into any issues, we are highly available on Telegram.";
-      }
+     await this.getTokenPrices();
+     await this.loadFarmPairs(pools[this.getChainID()].pools)
 
       console.log(this.SoloPools)
       console.log(this.Pools)
@@ -82,20 +64,6 @@
         
       }.bind(this), timeout);
 
-      let iid = await setInterval(async function(){
-       
-        await this.getTotalPending();
-        this.farmData = await this.initMulticall(this.Pools)
-        console.log(this.farmData)
-        this.setFarmDataState(this.farmData);
-        this.soloData = await this.initSoloMulticall(this.SoloPools)
-        this.setSoloDataState(this.soloData);
-        if(this.$route.name != 'OpenSwap Farms'){
-          clearInterval(iid)
-          console.log(this.$route.name)
-        }
-      }.bind(this), 15000)
-      
     },
     data() {
       return {
@@ -125,7 +93,7 @@
     },
     methods: {
       ...mapGetters('wallet', ['getUserAddress', 'getUserSignedIn', 'getChainID']),
-      ...mapActions('farm/farmData', ['setFarmDataState', 'setSoloDataState', 'setCustomDataState']),
+      ...mapActions('farm/farmData', ['setFarmDataState', 'setSoloDataState', 'setCustomDataState', 'setFarmPair']),
 
       updateTVL: function(TVLData){
    
@@ -151,7 +119,79 @@
           this.farmHeaderData.APRs.tAPR =  parseFloat((parseFloat(this.farmHeaderData.APRs.tAPR) + parseFloat(APRData.pAPR)) / 2).toFixed(1)
         }
       },
+      
+      loadFarmPairs: async function(farms){
+        //let chain = 1666600000
+              /*const [
+      ONE,
 
+      BUSD,
+      EUSDC,
+      BUSDC] = await Promise.all([
+        new Token(
+                chain,
+                this.WONE(chain),
+                18
+                ),
+        new Token(
+                chain,
+                this.bBUSD(chain),
+                18
+                ),
+        new Token(
+                chain,
+                this.eUSDC(chain), //eusdc
+                6
+                ),
+        new Token(
+                chain,
+                this.bUSDC(chain), //busdc
+                18
+                )
+      ]);
+
+      const pairTHATEXISTS = await Fetcher.fetchPairData(BUSD, ONE)
+
+      const [
+             pair01,
+             paira,
+             pairab,
+             pairc
+             
+            ] = await Promise.all([
+              Fetcher.fetchPairData(ONE, BUSD).catch(() => {
+                      return pairTHATEXISTS
+              }), 
+              Fetcher.fetchPairData(ONE, EUSDC).catch(() => {
+                      return pairTHATEXISTS
+              }),
+              Fetcher.fetchPairData(BUSDC, EUSDC).catch(() => {
+                      return pairTHATEXISTS
+              }),
+              Fetcher.fetchPairData(EUSDC, BUSDC).catch(() => {
+                      return pairTHATEXISTS
+              })
+            ]);
+        let prepair = [];
+        prepair[0] = pair01;
+        prepair[1] = paira;
+        prepair[2] = pairab;
+        prepair[3] = pairc;
+    */
+        let pairs = [];
+        let farm;
+        let i = 0;
+        for(farm in farms){
+          let pair = this.getPairByAddressFarm(farms[farm].token0address, farms[farm].token1address);
+     
+          pairs[i] = pair;
+          i++
+        }
+       // pairs = pairs.concat(prepair);
+       pairs= await Promise.all(pairs);
+        this.setFarmPair(pairs);
+        this.pairsLoaded = true;
+      },
       updateData: async function(){
         this.farmData = await this.initMulticall(this.Pools)
         this.setFarmDataState(this.farmData);
