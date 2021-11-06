@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { toastMe } from '@/components/toaster/toaster.js'
 
 export default {
@@ -104,24 +104,11 @@ export default {
       search: '',
     }
   },
-  created() {
-    window.addEventListener('keyup', this.doCommand)
-    const tokens = this.retrieveTokens(this.search, 1666600000)
-  },
-  unmounted() {
-    window.removeEventListener('keyup', this.doCommand)
-  },
-  props: {
-    whichToken: String,
-  },
+  created() {},
   computed: {
     ...mapGetters('bridge', ['retrieveTokens']),
-    ...mapGetters('wallet', ['getChainID']),
   },
   methods: {
-    ...mapActions('bridge', ['setToken', 'goTo']),
-    ...mapGetters('bridge', ['getToken']),
-
     shortenAddress(address) {
       return address ? (address = `${address.slice(0, 3)}...${address.slice(address.length - 3, address.length)}`) : address
     },
