@@ -135,6 +135,13 @@ import openswap from "@/shared/openswap.js";
 
       this.weeklyRewards = rewards[0];
       this.monthlyRewards = rewards[1];
+
+      let headerData = {
+        weeklyRewards: this.weeklyRewards,
+        monthlyRewards: this.monthlyRewards 
+      }
+
+      this.$emit('rewardsPerTime', headerData)
     },
     methods: {
       closeStats() {

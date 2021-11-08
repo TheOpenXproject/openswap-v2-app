@@ -164,7 +164,12 @@ import openswap from "@/shared/openswap.js";
       this.weeklyRewards = rewards[0];
       this.monthlyRewards = rewards[1];
 
-     
+      let headerData = {
+        weeklyRewards: this.weeklyRewards,
+        monthlyRewards: this.monthlyRewards 
+      }
+
+      this.$emit('rewardsPerTime', headerData)
        
         this.pt0s = parseFloat(this.getFormatedUnitsDecimals(this.poolData.token0Pstaked.toString(), this.pool.decimals[0])).toFixed(8)
         this.pt1s = parseFloat(this.getFormatedUnitsDecimals(this.poolData.token1Pstaked.toString(), this.pool.decimals[1])).toFixed(8)

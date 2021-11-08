@@ -1,13 +1,21 @@
 <template>
   <div id="farm" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center justify-center oswap-layout xl:px-0 px-3 text-gray-500 pb-16">
-    <transition name="fall" appear>
-      <FarmHeader :data="farmHeaderData" @updateData="getTotalPending"/>
+    <transition  name="fall" appear>
+      <FarmHeader v-if="soloData" :data="farmHeaderData" :rewardsPerTime="rewardsPerTimeObj" @updateData="getTotalPending"/>
     </transition>
+<!--
+    <transition name="fall" appear>
+      <div class="grid pb-5 gap-3 w-full">
+        <StakingInfo />
+      </div>
+    </transition>
+-->
     
-    <transition name="farm" appear>
+    
+    <transition name="fall" appear>
       <div v-if="soloData != null && farmData != null && pairsLoaded" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-        <SoloFarmPair  v-for="(pool, index) in this.SoloPools" @updateTVL="updateTVL" :key="index" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData"/>
-        <FarmPair v-for="(pool, index) in this.Pools" @updateTVL="updateTVL" @updateAPR="updateAPR" :key="index" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData"/>
+        <SoloFarmPair  v-for="(pool, index) in this.SoloPools" @updateTVL="updateTVL" :key="index" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData"/>
+        <FarmPair v-for="(pool, index) in this.Pools" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :key="index" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData"/>
       </div>
       <div v-else class="flex h-full items-center mt-16">
         <svg class="animate-spin h-8 w-8 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -23,6 +31,7 @@
   import FarmHeader from "@/components/farm/FarmHeader"
   import FarmPair from '@/components/farm/FarmPair'
   import SoloFarmPair from '@/components/farm/SoloFarmPair'
+  import StakingInfo from "@/components/farm/Validators/StakingInfo"
 
   import openswap from "@/shared/openswap.js";
 
@@ -37,7 +46,8 @@
     components: {
       FarmHeader,
       FarmPair,
-      SoloFarmPair
+      SoloFarmPair,
+      StakingInfo
     },
     mounted: async function () {
      await this.getTokenPrices();
@@ -73,6 +83,10 @@
         soloData: null,
         haveWarnings: true,
         warnings: {},
+        rewardsPerTimeObj: {
+          monthly: [],
+          weekly: []
+        },
         farmHeaderData: {
           rewardsPending: 0,
           TVL: 0,
@@ -82,8 +96,8 @@
             tAPR: 0
           },
           chartData: {
-            name: '',
-            liquidity: 0
+            name: [],
+            liquidity: []
           }
         },
       }
@@ -100,12 +114,15 @@
         this.farmHeaderData.TVL = this.farmHeaderData.TVL + TVLData.pool.TVL
         
         // sends info to chart
-        this.farmHeaderData.chartData.name = TVLData.pool.name;
-        this.farmHeaderData.chartData.liquidity = TVLData.pool.TVL;
+        this.farmHeaderData.chartData.name.push(TVLData.pool.name);
+        this.farmHeaderData.chartData.liquidity.push(TVLData.pool.TVL);
 
         this.farmHeaderData.PVL = this.farmHeaderData.PVL + TVLData.pvl
       },
-
+      rewardsPerTime(value){
+        this.rewardsPerTimeObj.monthly.push(value.monthlyRewards)
+        this.rewardsPerTimeObj.weekly.push(value.weeklyRewards)
+      },
       updateAPR: function(APRData){
         if (APRData.staked > 0) {
           if (this.farmHeaderData.APRs.pAPR == 0) {

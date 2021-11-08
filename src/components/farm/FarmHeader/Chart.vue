@@ -20,14 +20,12 @@
       apexchart: VueApexCharts
     },
     props: {
-      poolName: String,
-      liquidity: Number
+      data: Object,
     },
-    watch: {
-      poolName(value) {        
-        this.series.push(this.liquidity);
-        this.chartOptions.labels.push(this.poolName);
-      },
+    mounted() {      
+        this.series = this.data.chartData.liquidity
+        this.chartOptions.labels = this.data.chartData.name
+        this.totalPools = this.data.chartData.length
     },
     methods: {
       prettify: function(number){
@@ -47,7 +45,7 @@
             options: {
               chart: {
                 width: 150,
-                height: 168
+                height: 150
               }
             }
           }],
@@ -98,7 +96,7 @@
               allowMultipleDataPointsSelection: false,
               filter: {
                 type: 'none',
-                value: 0.35,
+                value: 0.45,
               }
             },
           },

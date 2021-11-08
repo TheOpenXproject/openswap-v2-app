@@ -3,49 +3,30 @@
   
     <div class="flex space-x-2 items-center mb-6">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
-      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Personal :</p>
+      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Income :</p>
     </div>
 
     <div class="grid grid-cols-2 gap-3 w-full">
-
       <div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-percent text-3xl dark:text-oswapGreen"></i>
-        </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">{{PAPR}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Averag APR</p>
-        </div>
-      </div>
-
-<div class="flex items-center space-x-3 w-full">
         <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
           <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(parseFloat(TVL).toFixed(2))}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked Value</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{getMonthly}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly Income Value</p>
         </div>
       </div>
-</div>
-      <div class="grid grid-cols-2 gap-3 w-full">
-      <div class="flex items-center space-x-3 w-full mt-6 col-span-2">
+
+      <div class="flex items-center space-x-3 w-full">
         <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-coins text-3xl dark:text-oswapGreen"></i>
+          <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-xl xs:text-md font-extrabold">{{parseFloat(REWARDS).toFixed(2)}} / $ {{pendingValue}}</p>
-          <p class="text-md font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
-          
+          <p class="ss:text-md xs:text-md font-extrabold">{{getWeekly}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly Income Value</p>
         </div>
       </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-        <button @click="collectAllButton" class="flex mt-2 h-8 items-center justify-center rounded-md text-oswapGreen bg-slightGray dark:bg-slightDark w-48 hover:bg-oswapGreen hover:text-slightGray dark:hover:text-slightDark dark:hover:bg-oswapGreen">
-            <p class="text-sm">Claim All</p>
-          </button>
-          </div>
-      </div>
-    
+    </div>
 
   </div>
   
@@ -62,14 +43,14 @@
     name: 'Personal',
     mixins: [openswap],
     props: {
-      TVL: Number,
-      PAPR: Number,
-      REWARDS: Number
+      rewardsPerTime: Object
     },
     data() {
       return {
         oswapPrice: 0,
-        usdValue: 0.00
+        usdValue: 0.00,
+        weekly: 0,
+        monthly: 0
       }
     },
     mounted: async function(){
@@ -80,20 +61,41 @@
       } else {
         timeout = 1000
       }
-
+      
       await setTimeout(async function (){
-        this.oswapPrice = await this.getOswapPrice();
+
       }.bind(this), timeout);
 
       await setInterval(async function(){
-        this.oswapPrice = await this.getOswapPrice();
-      }.bind(this), 15000)
+       // this.oswapPrice = await this.getOswapPrice();
+
+      }.bind(this), 10000)
+
+      
       
     },
     computed: {
       pendingValue: function() {
         return this.prettify(String(parseFloat(this.REWARDS * this.oswapPrice).toFixed(2)))
+      },
+      getMonthly: function(){
+        let n;
+        let monthlyIncome = 0
+        for(n in this.rewardsPerTime.monthly){
+          monthlyIncome = monthlyIncome +  parseFloat(this.rewardsPerTime.monthly[n])
+          console.log(this.rewardsPerTime.monthly[n])
+        }
+        return monthlyIncome
+      },
+      getWeekly: function() {
+        let n;
+        let weeklyIncome = 0
+        for(n in this.rewardsPerTime.weekly){
+          weeklyIncome = weeklyIncome +  parseFloat(this.rewardsPerTime.weekly[n])
+        }
+        return weeklyIncome
       }
+      
     },
     methods: {
       ...mapGetters('wallet', ['getUserSignedIn']),

@@ -9,7 +9,7 @@
 
       <!-- <div v-if="isOpen" class="fixed inset-0 bg-gray-700 bg-opacity-30"></div> -->
       <!-- Show this when pool details is opened -->
-      <PoolStatsInfo  :isOpen="poolStatsOn" :poolData="poolData" :pool="pool" @setPool="setPool" />
+      <PoolStatsInfo  :isOpen="poolStatsOn" :poolData="poolData" :pool="pool"  @rewardsPerTime="rewardsPerTime" @setPool="setPool" />
 
       <!-- Show this when the pool is opened and clicked on Stake -->
       <PoolStake :isOpen="poolStakeOn" :maxAmount="poolData.lpBalance" :pool="pool" @setPool="setPool"  @updateData="updateData" />
@@ -61,6 +61,10 @@
       },
       updateAPR(value){
         this.$emit("updateAPR", value)
+       
+      },
+      rewardsPerTime(value){
+        this.$emit("rewardsPerTime", value)
        
       },
       setPool(value) {

@@ -31,7 +31,7 @@
       window.addEventListener('scroll', this.handleScroll);
     },
     mounted: async function() {
-      
+      //location.reload(true);
       
       // Color Mode!
       let theme = localStorage.getItem("oSwap\_theme");
