@@ -51,7 +51,7 @@
                 <p class="text-xs text-el">{{delegator['delegator-address']}}</p>
                 <p class="text-xs text-oswapBlue-light">Amount:</p>
                 <p class="text-xs text-el">{{prettify((delegator.amount/10**18).toFixed(2))}}</p>
-                <p class="text-xs text-oswapBlue-light">Weigth:</p>
+                <p class="text-xs text-oswapBlue-light">Weight:</p>
                 <p class="text-xl text-el font-bold">{{toPercent(loadedData, delegator.amount).toFixed(4)}}%</p>
               </div>
             </div>
