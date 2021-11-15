@@ -78,10 +78,11 @@
                       </p>
                     </div>
                   </div>
-                  <div class="w-4/12">
+                  <div class="w-4/12 flex flex-none space-y-2 flex-col items-center">
                     <button class="flex items-center justify-center ml-3 rounded-full border border-oswapGreen st5 text-oswapGreen hover:bg-oswapGreen hover:text-gray-200 dark:hover:text-slightDark">
                       <p class="text-sm p-1 px-3">Add to wallet</p>
                     </button>
+                    <AllowanceToken v-if="this.getUserSignedIn" :address='token.oneZeroxAddress' />
                   </div>
                 </div>
               </div>
@@ -96,8 +97,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import { toastMe } from '@/components/toaster/toaster.js'
-
+import AllowanceToken from '@/components/tokens/AllowanceToken'
 export default {
+  components: { AllowanceToken },
   name: 'Tokens',
   data() {
     return {
@@ -107,6 +109,7 @@ export default {
   created() {},
   computed: {
     ...mapGetters('bridge', ['retrieveTokens']),
+    ...mapGetters('wallet', ['getUserSignedIn'])
   },
   methods: {
     shortenAddress(address) {
