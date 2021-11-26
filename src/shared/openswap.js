@@ -1244,6 +1244,19 @@ export default {
       return ethers.utils.formatUnits(rewardsPerWeek.toString(), 18).toString()
 
     },
+
+    getAllocPoints: async function(pool){
+      const provider = this.getProvider()
+      const abi = MasterChef.abi;
+      const contract = new ethers.Contract(this.oSWAPCHEF(this.getChainID()), abi, provider);
+
+      const oswapPerBlock = await contract.OpenSwapPerBlock();
+      const poolInfo = await contract.poolInfo(pool.pid);
+
+      
+      return poolInfo.allocPoint.toString()/1
+
+    },
     
     getRewardValue: async function(pool, poolWeight) {
   
@@ -1251,24 +1264,14 @@ export default {
       const price = await this.getOswapPrice()
       
       const aWeekly = await this.getOswapPerBlock();
+      const allocpoint = await this.getAllocPoints(pool)
       const aMonthly = aWeekly * 4;
 
-    
-      var weekly = ((price * aWeekly * poolWeight) / 10).toFixed(2) 
-      var monthly = ((price * aMonthly * poolWeight) / 10).toFixed(2) 
-       if (pool.pid == "0"){
-          weekly = String(weekly * 6);
-          monthly = String(monthly * 6);
-       }
-  
-      if (pool.pid == "1" || pool.pid == "10"  || pool.pid == "11" || pool.pid == "12" || pool.pid == "1") {
-        weekly = String(weekly * 3);
-        monthly = String(monthly * 3);
-      }
-      if (pool.pid == "18" || pool.pid == '17') {
-        weekly = String(weekly * 2);
-        monthly = String(monthly * 2);
-      }
+      
+
+          const weekly = String(price * aWeekly*allocpoint * poolWeight / 100);
+          const monthly = String(price * aMonthly*allocpoint * poolWeight / 100);
+
       return [weekly.substring(0, 10), monthly.substring(0, 10)];
     },
     getTokenAmounts: async function(pool, LPsupply, staked, totalStaked) {

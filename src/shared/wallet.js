@@ -18,9 +18,6 @@ export default {
           console.log("connecting wallet")
           if(window.onewallet !== undefined){
             this.setWalletType('oneWallet');
-            //const isOneWallet = window.onewallet && window.onewallet.isOneWallet;
-            //await window.onewallet.forgetIdentity();
-            //window.onewallet.signin()
             const onewallet = window.onewallet;
             const getAccount = await onewallet.getAccount();
             console.log(getAccount)
@@ -144,7 +141,7 @@ export default {
         },
         setdefaultWallet: function(){
           const provider =  new ethers.providers.JsonRpcProvider("https://harmony-0-rpc.gateway.pokt.network", {chainId: 1666600000, name: "Harmony"})
-          this.setUserAddress("0x0000000000000000000000000000000000000009")
+          this.setUserAddress("0x0000000000000000000000000000000000000010")
           this.setUserWallet( provider );
         }
     }

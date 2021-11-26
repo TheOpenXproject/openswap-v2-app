@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap w-full">
+  <div class="flex flex-wrap pl-3 w-full">
   
     <div class="flex space-x-2 items-center mb-6">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
@@ -14,7 +14,7 @@
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-md font-extrabold">{{PAPR}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Averag APR</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
         </div>
       </div>
 
@@ -24,7 +24,7 @@
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(parseFloat(TVL).toFixed(2))}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked Value</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
         </div>
       </div>
 </div>

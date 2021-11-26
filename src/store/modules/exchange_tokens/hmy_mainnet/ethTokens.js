@@ -56,6 +56,17 @@ export const ethtokens = {
     oneImg: "",
     decimals: 6
   },
+  SUSHI: {
+    Symbol: "eSUSHI",
+    name: "SushiToken",
+    ethAddress: "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
+    ethImg: "",
+    imgSrc: "https://openfi.dev/tokens/default/SUSHI.png",
+    oneAddress: "one1hmrhtj6z40ay9zx7s8ec02d350ztc4f2gfax0c",
+    oneZeroxAddress: "0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A",
+    oneImg: "",
+    decimals: 18
+  },
   LINK: {
     Symbol: "eLINK",
     name: "ChainLink Token",
@@ -134,6 +145,7 @@ export const ethtokens = {
     decimals: 18,
     oneImg: ""
   },
+
 /*
   MEME: {
     Symbol: "eMEME",
@@ -219,17 +231,6 @@ export const ethtokens = {
     decimals: 18
   },
 */
-  SUSHI: {
-    Symbol: "eSUSHI",
-    name: "SushiToken",
-    ethAddress: "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
-    ethImg: "",
-    imgSrc: "https://openfi.dev/tokens/default/SUSHI.png",
-    oneAddress: "one1hmrhtj6z40ay9zx7s8ec02d350ztc4f2gfax0c",
-    oneZeroxAddress: "0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A",
-    oneImg: "",
-    decimals: 18
-  },
 
   YFI: {
     Symbol: "eYFI",
@@ -241,7 +242,7 @@ export const ethtokens = {
     oneZeroxAddress: "0x3C2B8Be99c50593081EAA2A724F0B8285F5aba8f",
     decimals: "",
     oneImg: 18
-  },
+  },/*
 
   REN: {
     Symbol: "eREN",
@@ -277,7 +278,7 @@ export const ethtokens = {
     oneZeroxAddress: "0x0a47D2dC4B7Ee3D4D7FD471d993b0821621e1769",
     oneImg: "",
     decimals: 18
-  },
+  },*/
 
   COMP: {
     Symbol: "eCOMP",
@@ -302,7 +303,7 @@ export const ethtokens = {
     oneImg: "",
     decimals: 18
   },
-
+/*
   LAYER: {
     Symbol: "eLAYER",
     name: "Unilayer",
@@ -314,7 +315,7 @@ export const ethtokens = {
     oneImg: "",
     decimals: 18
   },
-
+*/
   BAL: {
     Symbol: "eBAL",
     name: "Balancer",

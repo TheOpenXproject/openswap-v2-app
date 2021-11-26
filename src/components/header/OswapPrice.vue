@@ -16,9 +16,13 @@
           <i class="las la-coins text-xl text-yellow-500"></i>
           <p>Circ. Market Cap: ${{marketCap}} USD</p>
         </div>
+        <div class="flex space-x-2 mb-3 items-center">
+          <i class="las la-fire-alt text-xl text-red-400"></i>
+          <p>Tokens Burnt V2: {{balances.burnedAmount}} OpenX</p>
+        </div>
         <div class="flex space-x-2 items-center">
           <i class="las la-fire-alt text-xl text-red-400"></i>
-          <p>Tokens Burnt: {{balances.burnedAmount}} OpenX</p>
+          <p>Tokens Burnt Total: {{balances.totalBurnedAmount}} OpenX</p>
         </div>
       </div>
       <div class="flex flex-col p-3 bg-gray-100 dark:bg-slightDark rounded-md text-gray-500 dark:text-gray-300">
@@ -67,6 +71,7 @@
           totalSupply: 0.00,
           circSupply: 0.00,
           burnedAmount: 0.00,
+          totalBurnedAmount: 0.00,
           devLocked: 0.00
         },
         marketCap: 0.00,
@@ -116,12 +121,13 @@
         }
       },
       loadData: async function(){
-      this.oswapPrice = await this.getOswapPrice();
+      this.oswapPrice = await this.getOpenXPrice();
       let tempBalances = await this.getBurnAndTotalSupply();
       this.marketCap = commify((tempBalances.circSupply * this.oswapPrice).toFixed(2));
       this.balances.circSupply = commify(tempBalances.circSupply);
       this.balances.totalSupply = commify(tempBalances.totalSupply);
       this.balances.burnedAmount = commify(tempBalances.burnedAmount);
+      this.balances.totalBurnedAmount = commify(parseFloat(tempBalances.burnedAmount) + 1220000)
       },
       adjustTooltip() {
         // gets the tooltip location bounduary

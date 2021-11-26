@@ -7,7 +7,7 @@
     </div>
 
     <div class="flex flex-col space-y-2 text-gray-600 dark:text-gray-300 mb-3">
-      <p class="md:text-xl ss:text-2xl xs:text-5xl font-extrabold">$ {{prettify(parseFloat(TVL).toFixed(2))}}</p>
+      <p class="md:text-4xl ss:text-2xl inline xs:text-5xl font-extrabold">${{prettify(parseFloat(TVL).toFixed(2))}}</p>
       <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked Value</p>
     </div>
 

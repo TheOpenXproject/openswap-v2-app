@@ -1,7 +1,7 @@
 export const terratokens = {
   tWLUNA: {
-    Symbol: "tWLUNA",
-    name: "Bridged Terra Wrapped Luna",
+    Symbol: "tLUNA",
+    name: "Luna Terra",
     oneAddress: "one1jh89gltnq5v6jr00xrty0umanef4nd4war9hfn",
     oneZeroxAddress: "0x95CE547D730519A90dEF30d647F37D9E5359B6Ae",
     imgSrc: "https://assets.terra.money/icon/60/Luna.png",

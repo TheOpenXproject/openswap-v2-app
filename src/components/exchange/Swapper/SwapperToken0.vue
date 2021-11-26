@@ -56,11 +56,11 @@
       }
     },
     computed: {
-      ...mapGetters('exchange/swapper', ['getBalanceToken', 'getInputAmount', 'getSlippageRate', 'getPriceImpact', ])
+      ...mapGetters('exchange/swapper', ['getBalanceToken', 'getInputAmount', 'getSlippageRate', 'getPriceImpact'])
     },
     methods: {
       ...mapGetters('exchange', ['getToken']),
-       ...mapActions('exchange/swapper/buttons', ['setBtnState']),
+      ...mapActions('exchange/swapper/buttons', ['setBtnState']),
       ...mapActions('exchange/swapper', [
         'setBalanceToken', 
         'setInputAmount', 

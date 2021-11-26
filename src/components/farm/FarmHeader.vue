@@ -1,21 +1,19 @@
 <template>
-  <div class="flex flex-wrap w-full h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
-    <div class="grid  xs:grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-3 w-auto">
-      <div class="flex flex-1 items-start">
+  <div class="flex w-full h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
+    <div class="flex flex-col ss:w-full xs:w-auto mdd:flex-row bg-gradient-to-l from-slightGray dark:from-slightDark to-transparent p-3 rounded-3xl">
+
+      <div class="flex flex-1 pr-5 items-center">
         <Total :TVL="data.TVL" :TAPR="data.APRs.tAPR" />
-      </div>
-      <div class="flex flex-1 items-center">
-        <Chart :data="data" />
-      </div>
-      
-      <div class="flex flex-2 items-start">
-        <Personal :TVL="data.PVL" :PAPR="data.APRs.pAPR" :REWARDS="data.rewardsPending" />
-      </div>
-      <div class="flex flex-2 items-start">
-        <PersonalRewards :rewardsPerTime="rewardsPerTime" :REWARDS="data.rewardsPending" />
+         <Chart :data="data" />
       </div>
 
-      
+      <div class="flex items-center pt-3 pr-3 mdd:divide-x mdd:divide-oswapGreen">
+        <div class="mdd:flex hidden"></div>
+        <Personal :TVL="data.PVL" :PAPR="data.APRs.pAPR" :REWARDS="data.rewardsPending" />
+      </div>
+      <div class="flex pt-3 pr-3 flex-2 items-start">
+        <PersonalRewards :rewardsPerTime="rewardsPerTime" :REWARDS="data.rewardsPending" />
+      </div>
 
     </div>
   </div>

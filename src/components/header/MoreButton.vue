@@ -25,7 +25,7 @@
                     </div>
                   </div>
                   <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Analytic</p>
+                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Analytics</p>
                     <p class="text-sm text-gray-500 dark:text-gray-300">Check token and pair stats</p>
                   </div>
                 </a>

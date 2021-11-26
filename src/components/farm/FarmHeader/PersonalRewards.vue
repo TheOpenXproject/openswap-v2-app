@@ -1,33 +1,41 @@
 <template>
   <div class="flex flex-wrap w-full">
   
-    <div class="flex space-x-2 items-center mb-6">
+    <div class="flex space-x-3 items-center mb-6">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
-      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Income :</p>
+      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Income:</p>
     </div>
 
-    <div class="grid grid-cols-2 gap-3 w-full">
-      <div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
-        </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">{{getMonthly}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly Income Value</p>
+    <div class="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 w-full">
+
+      <div class="flex space-x-1 w-full">
+        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+          <p class="ss:text-md xs:text-lg font-extrabold">${{(getWeekly/7).toFixed(2)}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Daily</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
+      <div class="flex  space-x-3 w-full">
+        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+          <p class="ss:text-md xs:text-md font-extrabold">${{getWeekly}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly</p>
         </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">{{getWeekly}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly Income Value</p>
+      </div>
+
+      <div class="flex space-x-3 w-full">
+        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+          <p class="ss:text-md xs:text-lg text font-extrabold">${{getMonthly}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly</p>
+        </div>
+      </div>
+
+      <div class="flex space-x-3 w-full">
+        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+          <p class="ss:text-md xs:text-md font-extrabold">${{(getMonthly * 12).toFixed(2)}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Yearly</p>
         </div>
       </div>
     </div>
-
   </div>
   
 </template>
@@ -85,7 +93,7 @@
           monthlyIncome = monthlyIncome +  parseFloat(this.rewardsPerTime.monthly[n])
           console.log(this.rewardsPerTime.monthly[n])
         }
-        return monthlyIncome
+        return monthlyIncome.toFixed(2)
       },
       getWeekly: function() {
         let n;
@@ -93,7 +101,7 @@
         for(n in this.rewardsPerTime.weekly){
           weeklyIncome = weeklyIncome +  parseFloat(this.rewardsPerTime.weekly[n])
         }
-        return weeklyIncome
+        return weeklyIncome.toFixed(2)
       }
       
     },

@@ -10787,10 +10787,10 @@
     "@openzeppelin/contracts" "^3.1.0"
     "@openzeppelin/test-helpers" "^0.5.11"
 
-"openswap-v2-sdk@3.0.0":
-  "integrity" "sha512-bPuQdTR30dmxJKd4utcVSZG3oQUtgXqBzk9GyQwXwA2ROVYdRCDXVOHo8JcjQkrRRDz/hZGlB7gYNrXTrrJiXQ=="
-  "resolved" "https://registry.npmjs.org/openswap-v2-sdk/-/openswap-v2-sdk-3.0.0.tgz"
-  "version" "3.0.0"
+"openswap-v2-sdk@3.0.1":
+  "integrity" "sha512-a5Ug8BJPWUltoQjFruo0AS4NyGHp5PftnKZwqVBK5me3IK552qHn1Ar+r7BoVVIR4V3LAslmD5qaOoiv24OKLA=="
+  "resolved" "https://registry.npmjs.org/openswap-v2-sdk/-/openswap-v2-sdk-3.0.1.tgz"
+  "version" "3.0.1"
   dependencies:
     "big.js" "^5.2.2"
     "decimal.js-light" "^2.5.0"

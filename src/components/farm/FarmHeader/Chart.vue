@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-none items-center relative">
     <div class="flex z-30">
-      <apexchart type="donut" width="200" height="224" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="donut" width="250" height="275" :options="chartOptions" :series="series"></apexchart>
     </div>
     <div class="flex flex-col z-20 items-center text-gray-500 dark:text-gray-300 center-component">
       <p class="ss:text-5xl xs:text-7xl">{{totalPools}}</p>
-      <p class="text-xs">Farm Pools</p>
+      <p class="text-xs">Weight Distribution</p>
     </div>
   </div>
 </template>

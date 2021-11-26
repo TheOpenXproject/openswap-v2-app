@@ -246,11 +246,69 @@ export const pools = {
     rewards: "2X",
     i: 17
   },
-  //PID 20 == VALIDATOR TOKEN
+  bCAKEWONE: {
+    pair: "bCAKE/ONE",
+    pairaddress: "0x40f582032D5281CAfC0C9D14A2e2C0d56eDcE8c5",
+    token0address: "0x3e9D32580B0BF3aE72AFCBEbC68710d2Fd9a18F0",
+    token1address: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
+    imgtoken0: "https://s2.coinmarketcap.com/static/img/coins/128x128/7186.png",
+    imgtoken1: "https://openfi.dev/tokens/default/ONE.png",
+    name: ["bCake", "ONE"],
+    decimals: [18, 18],
+    pid: "20",
+    rewards: "2X",
+    i: 18
+  },
+  USTWONE: {
+    pair: "tUST/ONE",
+    pairaddress: "0xbF6b68d9446E7c392967C94D283210F43DB118Bc",
+    token0address: "0x224e64ec1BDce3870a6a6c777eDd450454068FEC",
+    token1address: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
+    imgtoken0: "https://assets.terra.money/icon/60/UST.png",
+    imgtoken1: "https://openfi.dev/tokens/default/ONE.png",
+    name: ["UST", "ONE"],
+    decimals: [18, 18],
+    pid: "21",
+    rewards: "2X",
+    i: 19
+  },
+  LUNAWONE: {
+    pair: "tLUNA/ONE",
+    pairaddress: "0x1E0e3Ec3Db09bf0f1cEfEdA528cbe315C4e85758",
+    token0address: "0x95CE547D730519A90dEF30d647F37D9E5359B6Ae",
+    token1address: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
+    imgtoken0: "https://assets.terra.money/icon/60/Luna.png",
+    imgtoken1: "https://openfi.dev/tokens/default/ONE.png",
+    name: ["tLuna", "ONE"],
+    decimals: [18, 18],
+    pid: "22",
+    rewards: "2X",
+    i: 20
+  },
+  eSUSHIWONE: {
+    pair: "eSUSHI/ONE",
+    pairaddress: "0x41C5d1D13443848f5583dE9adB8C09Ee8BfCd2E6",
+    token0address: "0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A",
+    token1address: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
+    imgtoken0: "https://openfi.dev/tokens/default/SUSHI.png",
+    imgtoken1: "https://openfi.dev/tokens/default/ONE.png",
+    name: ["eSUSHI", "ONE"],
+    decimals: [18, 18],
+    pid: "23",
+    rewards: "2X",
+    i: 21
+  },
+  //PID 19 == VALIDATOR TOKEN
+  //0x40f582032D5281CAfC0C9D14A2e2C0d56eDcE8c5- bsccake-one
+  
+  //0xbF6b68d9446E7c392967C94D283210F43DB118Bc- ust-ONE
+  //0x1E0e3Ec3Db09bf0f1cEfEdA528cbe315C4e85758- Luna-one
+  //0x41C5d1D13443848f5583dE9adB8C09Ee8BfCd2E6- eSUSHI-ONE
+
 };
 export const SoloPools = {
   oSWAPWONE: {
-    pair: "OpenX",
+    pair: "OPENx",
     pairaddress: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token1address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",

@@ -23,14 +23,13 @@ export const hmytokens = {
     decimals: 18,
     imgSrc: "https://assets.coingecko.com/coins/images/15305/large/0c4b902b40f14db918f4500956386414ab7ebcfe.jpeg?1620371961"
   },
-  VINCI: {
-    Symbol: "VINCI",
-    name: "DaVinci Token",
-    oneAddress: "one1hrsyjuqcexg7scc3ke80m82hkp4wmwawwuv9ft",
-    oneZeroxAddress: "0xb8e0497018c991e86311b64efd9d57b06aedbbae",
+  VIPER: {
+    Symbol: "VIPER",
+    name: "Viper Token",
+    oneAddress: "one1afvfayllrzc6ru0fhtr7705x4d32mhrewz4c77",
+    oneZeroxAddress: "0xEa589E93Ff18b1a1F1e9BaC7EF3E86Ab62addc79",
     decimals: 18,
-    imgSrc:
-      "https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/VINCI.png"
+    imgSrc: "https://assets.coingecko.com/coins/images/15305/large/0c4b902b40f14db918f4500956386414ab7ebcfe.jpeg?1620371961"
   },
   HMOCHI: {
     Symbol: "hMOCHI",
@@ -48,6 +47,15 @@ export const hmytokens = {
     decimals: 18,
     imgSrc: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/LMA.png"
   },
+  VINCI: {
+    Symbol: "VINCI",
+    name: "DaVinci Token",
+    oneAddress: "one1hrsyjuqcexg7scc3ke80m82hkp4wmwawwuv9ft",
+    oneZeroxAddress: "0xb8e0497018c991e86311b64efd9d57b06aedbbae",
+    decimals: 18,
+    imgSrc:
+      "https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/VINCI.png"
+  },
   XYA: {
     Symbol: "XYA",
     name: "Freyala",
@@ -55,7 +63,7 @@ export const hmytokens = {
     oneZeroxAddress: "0x9b68BF4bF89c115c721105eaf6BD5164aFcc51E4",
     decimals: 18,
     imgSrc: "https://freyala.com/images/logo.png"
-  },
+  },/*
   SEED: {
     Symbol: "SEED",
     name: "SEED Token",
@@ -72,7 +80,7 @@ export const hmytokens = {
     decimals: 18,
     imgSrc: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/ARANK.png"
   },
-
+  
   EUSK: {
     Symbol: "EUSK",
     name: "Mintbes Token",
@@ -88,5 +96,5 @@ export const hmytokens = {
     oneZeroxAddress: "0x7fA202fdb3B0eCB975119cc3A895BFB3104aDA68",
     decimals: 18,
     imgSrc: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/SEE.png"
-  }
+  }*/
 };
