@@ -1,5 +1,5 @@
 <template>
-  <div class="flex ss:max-w-xs lg:max-w-none h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
+  <div class="flex lg:max-w-none h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
     <div class="flex flex-col ss:w-full xs:w-auto mdd:flex-row bg-gradient-to-l from-slightGray dark:from-slightDark to-transparent p-3 rounded-3xl">
       <div class="flex flex-1 pr-5 items-center">
         <Total :TVL="data.TVL" :TAPR="data.APRs.tAPR" />

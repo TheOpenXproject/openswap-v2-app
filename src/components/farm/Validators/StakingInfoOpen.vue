@@ -8,22 +8,22 @@
         <div class="flex flex-wrap ss:w-full xs:w-full lg:w-6/12">
           <StakingInfoTabs :validator="validator" />
           <div class="flex w-full">
-            <div class="grid w-full xs:grid-cols-1 lg:grid-cols-2 gap-3 lg:ml-8 h-full pt-3 pb-3 px-6 py-8 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">
-              <div class="flex h-12 space-x-2">
+            <div class="grid w-full xs:grid-cols-2 ss:grid-cols-2 lg:grid-cols-3 gap-2 lg:ml-8 h-full p-3 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full"><i class="las la-handshake text-xl text-oswapGreen"></i></div>
                 <div class="flex flex-col h-full justify-between">
                   <p class="text-xs text-oswapBlue-light">Pending Undelegation</p>
                   <p class="text-lg dark:text-gray-400">{{ this.pendingUndelegation }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full"><i class="las la-dollar-sign text-xl text-oswapGreen"></i></div>
                 <div class="flex flex-col h-full justify-between">
                   <p class="text-xs text-oswapBlue-light">USD Value Earned</p>
-                  <p class="text-lg dark:text-gray-400">what data to use here</p>
+                  <p class="text-lg dark:text-gray-400">data</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-center justify-center rounded-full bg-gray-50 h-5 w-5 overflow-hidden"><img src="https://openfi.dev/tokens/default/ONE.png" class="h-4" alt="" /></div>
                 </div>
@@ -32,7 +32,7 @@
                   <p class="text-lg dark:text-gray-400">{{ this.totalOneRewarded }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-center justify-center rounded-full bg-gray-50 h-5 w-5 overflow-hidden"><img src="https://openfi.dev/tokens/default/oSWAP.png" class="h-4" alt="" /></div>
                 </div>
@@ -41,7 +41,7 @@
                   <p class="text-lg dark:text-gray-400">{{ this.totalOpenXrewarded }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-start h-full"><i class="las la-coins text-xl text-oswapGreen"></i></div>
                 </div>
@@ -50,7 +50,7 @@
                   <p class="text-lg dark:text-gray-400">{{ this.totalOneRewarded / this.totalOpenXrewarded }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-start h-full"><i class="las la-percentage text-xl text-oswapGreen"></i></div>
                 </div>
@@ -59,7 +59,7 @@
                   <p class="text-lg dark:text-gray-400">{{ this.totalApr }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-start h-full"><i class="las la-percentage text-xl text-oswapGreen"></i></div>
                 </div>
@@ -68,19 +68,19 @@
                   <p class="text-lg dark:text-gray-400">{{ this.injectedApr }}</p>
                 </div>
               </div>
-              <div class="flex h-12 space-x-2">
+              <div class="flex h-12 space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-start h-full"><i class="las la-dollar-sign text-xl text-oswapGreen"></i></div>
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">Total Staked</p>
-                  <p class="text-lg dark:text-gray-400">what data to use here</p>
+                  <p class="text-lg dark:text-gray-400">data</p>
                 </div>
               </div>
             </div>
           </div>
           <!-- Open Details Button -->
-          <div class="flex justify-end w-full mt-4">
+          <div class="flex justify-end w-full mt-2">
             <div @click="selectValidator()" class="flex h-9 items-center space-x-2 rounded-full group bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 pl-3 cursor-pointer">
               <p class="text-sm text-gray-500 dark:text-oswapBlue-light">close</p>
               <i class="las la-arrow-down text-lg p-2 text-gray-500 dark:text-oswapBlue-light rounded-full bg-gray-100 dark:bg-oswapDark-gray group-hover:bg-oswapGreen dark:group-hover:text-oswapDark-gray group-hover:text-gray-100 border-2 border-gray-200 dark:border-gray-700"></i>

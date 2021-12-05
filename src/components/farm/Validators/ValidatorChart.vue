@@ -21,12 +21,12 @@
                 </div>
 
                 <div class="flex flex-col space-x-1 text-gray-400 dark:text-gray-300 mb-3">
-                  <p class="ss:text-2xl xs:text-5xl font-extrabold">{{ validator.totalDelegated }}</p>
+                  <p class="text-2xl font-extrabold">{{ validator.totalDelegated }}</p>
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
                 </div>
 
                 <div class="flex flex-col space-x-1 text-gray-600 dark:text-gray-200">
-                  <p class="ss:text-2xl xs:text-5xl font-extrabold">{{ validator.apr }} %</p>
+                  <p class="text-2xl font-extrabold">{{ validator.apr }} %</p>
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
                 </div>
               </div>

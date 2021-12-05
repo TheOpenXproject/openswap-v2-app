@@ -21,7 +21,6 @@
             </div>
           </div>
         </div>
-
         <!-- Open Details Button -->
         <div class="flex justify-end h-12 ss:mt-4 xs:mt-4 lg:mt-0">
           <div @click="selectValidator()" class="flex h-9 items-center space-x-2 rounded-full group bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 pl-3 cursor-pointer">
