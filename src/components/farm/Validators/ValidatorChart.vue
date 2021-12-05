@@ -13,7 +13,7 @@
       <div v-if="isLoaded" class="flex flex-col w-full space-y-3 text-gray-400 dark:text-gray-300">
         <div class="flex flex-col w-full space-y-4">
           <div class="grid grid-cols-3 gap-3 w-full h-auto ss:mt-3 mb-8 xs:mt-8">
-            <div class="flex w-full col-span-1">
+            <div class="flex w-full col-span-2">
               <div class="flex flex-col">
                 <div class="flex space-x-1 items-center mb-6">
                   <i class="las la-sitemap text-lg dark:text-oswapGreen"></i>
