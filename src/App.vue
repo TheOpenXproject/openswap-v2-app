@@ -19,6 +19,8 @@
   import Footer from '@/components/Footer';
   import { mapActions, mapGetters } from 'vuex';
   import openswap from "@/shared/openswap.js";
+  import Snowflakes from 'magic-snowflakes';
+
 
   export default {
     name: 'OpenSwap',
@@ -32,6 +34,23 @@
     },
     mounted: async function() {
       //location.reload(true);
+      const snowflakes = new Snowflakes({
+            color: '#5ECDEF', // Default: "#5ECDEF"
+             // Default: document.body
+            count: 100, // 100 snowflakes. Default: 50
+            minOpacity: 0.1, // From 0 to 1. Default: 0.6
+            maxOpacity: 0.95, // From 0 to 1. Default: 1
+            minSize: 3, // Default: 10
+            maxSize: 15, // Default: 25
+            rotation: true, // Default: true
+            speed: 0.5, // The property affects the speed of falling. Default: 1
+            wind: false, // Without wind. Default: true
+            zIndex: 100 // Default: 9999
+        });
+// ...
+snowflakes.stop();
+// ...
+snowflakes.start();
       
       // Color Mode!
       let theme = localStorage.getItem("oSwap\_theme");

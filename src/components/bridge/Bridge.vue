@@ -63,7 +63,7 @@
     import { toBech32 } from '@harmony-js/crypto'
   import { ethers } from "ethers";
   const { BridgeSDK, TOKEN, NETWORK_TYPE, EXCHANGE_MODE, STATUS } = require('bridge-sdk');
-  const DEFAULT_ADDRESS = '0x0000000000000000000000000000000000000009';
+  const DEFAULT_ADDRESS = '0x0000000000000000000000000000000000000011';
   const configs = require('bridge-sdk/lib/configs');
   import openswap from "@/shared/openswap.js";
 

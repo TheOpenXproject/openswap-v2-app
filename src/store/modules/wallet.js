@@ -6,7 +6,7 @@ export default {
   state: {
     signedIn: false,
     signedOut: true,
-    address: "0x0000000000000000000000000000000000000010",
+    address: "0x0000000000000000000000000000000000000011",
     wallet: null,
     walletType: 'metamask',
     explorer: "https://explorer.harmony.one/#/tx/",
@@ -24,7 +24,7 @@ export default {
       },
       1666600000: {
         rpcURL: 'https://api.harmony.one',
-        provider: new ethers.providers.JsonRpcProvider('https://harmony-0.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
+        provider: new ethers.providers.JsonRpcProvider('https://harmony-0-rpc.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
         name: "mainnet harmony"
       },
       1666700000: {

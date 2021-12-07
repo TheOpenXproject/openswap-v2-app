@@ -141,7 +141,7 @@ export default {
         },
         setdefaultWallet: function(){
           const provider =  new ethers.providers.JsonRpcProvider("https://harmony-0-rpc.gateway.pokt.network", {chainId: 1666600000, name: "Harmony"})
-          this.setUserAddress("0x0000000000000000000000000000000000000010")
+          this.setUserAddress("0x0000000000000000000000000000000000000011")
           this.setUserWallet( provider );
         }
     }
