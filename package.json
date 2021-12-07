@@ -53,6 +53,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "jshint": "^2.13.0",
+    "magic-snowflakes": "^6.0.0",
     "prerender-spa-plugin": "^3.0.0-beta.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

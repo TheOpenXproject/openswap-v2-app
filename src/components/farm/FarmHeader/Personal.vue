@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-wrap pl-3 w-full">
+  <div class="flex flex-wrap w-full">
   
-    <div class="flex space-x-2 items-center mb-6">
+    <div class="flex space-x-3 items-center mb-6">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
       <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Personal :</p>
     </div>

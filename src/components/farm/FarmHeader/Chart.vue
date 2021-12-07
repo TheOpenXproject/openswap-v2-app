@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-none items-center relative">
     <div class="flex z-30">
-      <apexchart type="donut" width="250" height="275" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="donut" width="250" height="275" :options="chartOptions" :series="data.chartData.liquidity"></apexchart>
     </div>
     <div class="flex flex-col z-20 items-center text-gray-500 dark:text-gray-300 center-component">
       <p class="ss:text-5xl xs:text-7xl">{{totalPools}}</p>
@@ -22,7 +22,7 @@
     props: {
       data: Object,
     },
-    mounted() {      
+    mounted() {    
         this.series = this.data.chartData.liquidity
         this.chartOptions.labels = this.data.chartData.name
         this.totalPools = this.data.chartData.length
@@ -34,8 +34,8 @@
     },
     data() {
       return {
-        totalPools: 16,
-        series: [],
+        totalPools: 22,
+        series: ["0"],
         chartOptions: {
           chart: {
             type: 'donut'

@@ -347,7 +347,7 @@ export default {
     getAllRewards: async function () {
       const provider = this.getProvider(true)
       const address = this.getUserAddress();
-      if (address != "0x0000000000000000000000000000000000000009") {
+      if (address != "0x0000000000000000000000000000000000000011") {
         var i = 0, n;
         var totalUnclaimedRewards = ethers.BigNumber.from("0");
 
@@ -2197,7 +2197,7 @@ export default {
       return deadline;
     },
     checkSignedIn: function(){
-      if(this.getUserAddress() == '0x0000000000000000000000000000000000000009'){
+      if(this.getUserAddress() == '0x0000000000000000000000000000000000000011'){
         return true
       }else{
         return false;
