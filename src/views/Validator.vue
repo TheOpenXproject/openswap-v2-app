@@ -153,7 +153,7 @@
         }),
       };
 
-      const response = await fetch("https://harmony-0.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3", requestOptions);
+      const response = await fetch("https://harmony-0-rpc.gateway.pokt.network", requestOptions);
       this.loadedData = await response.json();
 
       this.validator = {

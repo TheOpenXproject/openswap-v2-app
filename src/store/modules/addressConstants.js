@@ -89,7 +89,7 @@ export default {
 	  harmonyRPC: {
       1:"",
       56:"",
-      1666600000: "https://harmony-0.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3",
+      1666600000: "https://harmony-0-rpc.gateway.pokt.network",//"https://harmony-0.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3",
       1666700000: "https://api.s0.b.hmny.io",
       1337:"http://localhost:7545"
     },/* v1

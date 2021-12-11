@@ -10,7 +10,7 @@ export const hmytokens = {
   oSWAP: {
     Symbol: "OpenX",
     name: "OpenSwap",
-    oneAddress: "one1cpp3mhxq6gfm7flvaj5vyd3vp5pq33kuch2zg8",
+    oneAddress: "one1qxjtq4q3p4tsd8qktzhmc3nnq5568cexh9c90j",
     oneZeroxAddress: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     decimals: 18,
     imgSrc: "https://openfi.dev/tokens/default/oSWAP.png"

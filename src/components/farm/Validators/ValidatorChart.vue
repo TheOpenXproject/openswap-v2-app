@@ -1,6 +1,6 @@
 <template>
-  <div id="farm" class="max-w-screen-xl sm:w-full lg:w-6/12 mx-auto flex flex-1 flex-col oswap-layout xl:px-0 px-3 text-gray-500">
-    <div v-if="!isLoaded" class="flex flex-1 items-center justify-center w-full h-full">
+  <div id="farm" class="max-w-screen-xl sm:w-full h-auto flex-col oswap-layout xl:px-0 pa-3 text-gray-500">
+    <div v-if="!isLoaded" class="flex flex-1 items-center justify-center w-full h-auto">
       <transition name="fade-in" appear>
         <svg class="animate-spin h-7 w-7 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -8,36 +8,13 @@
         </svg>
       </transition>
     </div>
-
     <transition name="fade-in" appear>
-      <div v-if="isLoaded" class="flex flex-col w-full space-y-3 text-gray-400 dark:text-gray-300">
-        <div class="flex flex-col w-full space-y-4">
-          <div class="grid grid-cols-3 gap-3 w-full h-auto ss:mt-3 mb-8 xs:mt-8">
-            <div class="flex w-full col-span-2">
-              <div class="flex flex-col">
-                <div class="flex space-x-1 items-center mb-6">
-                  <i class="las la-sitemap text-lg dark:text-oswapGreen"></i>
-                  <p class="text-sm uppercase">{{ validator.name }}</p>
-                </div>
-
-                <div class="flex flex-col space-x-1 text-gray-400 dark:text-gray-300 mb-3">
-                  <p class="text-2xl font-extrabold">{{ validator.totalDelegated }}</p>
-                  <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
-                </div>
-
-                <div class="flex flex-col space-x-1 text-gray-600 dark:text-gray-200">
-                  <p class="text-2xl font-extrabold">{{ validator.apr }} %</p>
-                  <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
-                </div>
-              </div>
-            </div>
-            <!-- chart -->
-          </div>
-          <div class="flex flex-col w-full rounded-2xl bg-gradient-to-l dark:from-slightDark from-darkGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray py-3 px-4">
+      <div v-if="isLoaded" class="flex flex-col w-full h-auto text-gray-400 dark:text-gray-300">
+          <div class="flex flex-col w-full rounded-2xl bg-gradient-to-l dark:from-slightDark from-darkGray to-transparent ">
             <apexchart type="line" class="w-full" height="250" :options="chart.chartOptions" :series="chart.series"></apexchart>
           </div>
         </div>
-      </div>
+     
     </transition>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray border-l border-oswapGreen rounded-3xl">
     <!-- Header -->
-     <PoolHeader :pool="pool" :poolData="poolData"/>
+     <PoolHeader :pool="pool" @updateAPR="updateAPR" :poolData="poolData"/>
     <!-- Body -->
     <div class="flex flex-col h-full mt-3 relative">
       <!-- Show this when pool details is closed -->

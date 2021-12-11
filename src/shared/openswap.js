@@ -4,10 +4,13 @@ import SushiMaker from "openswap-v2-core/build/contracts/SushiMaker.json";
 import IERC20 from "openswap-v2-core/build/contracts/IERC20.json";
 import OpenSwapBridge from "openswap-v2-core/build/contracts/OpenSwapBridge.json";
 import OpenSwapToken from "openswap-v2-core/build/contracts/OpenSwapToken.json";
+import DelegatorContract from "@/components/farm/Validators/delegateContract.json";
 import { ethers } from "ethers";
 
 import { Harmony } from '@harmony-js/core';
-import { ChainType } from '@harmony-js/utils'
+import { toBech32 } from '@harmony-js/crypto'
+
+import { ChainType, numberToHex, Unit } from '@harmony-js/utils'
 import oneWallet from './OneWallet.js'
 
 
@@ -125,7 +128,6 @@ export default {
           this.error = 1;
           this.errormessage = "Pool Doesn't Exist";
         });
-        console.log(pair)
         if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID)){
           return pair.token1Price.toSignificant(4);
         }else {
@@ -154,7 +156,6 @@ export default {
           this.error = 1;
           this.errormessage = "Pool Doesn't Exist";
         });
-        console.log(pair)
         if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID)){
           return pair.token0Price.toSignificant(4);
         }else {
@@ -963,8 +964,7 @@ export default {
         return [ethers.utils.commify(parseFloat(tt1s).toFixed(2) * 2), parseFloat(tt1s).toFixed(2) * 2];
 
       }
-      console.log(onePrice)
-      console.log(openxPrice)
+      
       if(pool.token0address == this.WONE(this.getChainID())){
         check = true
         return [ethers.utils.commify((parseFloat(tt0s).toFixed(2)* onePrice * 2).toFixed(2)), parseFloat(tt0s).toFixed(2)* onePrice * 2];
@@ -1263,8 +1263,10 @@ export default {
       
       const price = await this.getOswapPrice()
       
-      const aWeekly = await this.getOswapPerBlock();
+      const aWeekly = await this.getOswapPerBlock()
+     
       const allocpoint = await this.getAllocPoints(pool)
+
       const aMonthly = aWeekly * 4;
 
       
@@ -1273,6 +1275,24 @@ export default {
           const monthly = String(price * aMonthly*allocpoint * poolWeight / 100);
 
       return [weekly.substring(0, 10), monthly.substring(0, 10)];
+    },
+    getRewardValueVal: async function(pool, poolWeight) {
+  
+      
+      const price = await this.getOswapPrice()
+      
+      const aWeekly = await this.getOswapPerBlock()
+     
+      const allocpoint = await this.getAllocPoints(pool)
+      
+      const aMonthly = aWeekly * 4;
+
+      
+
+          //const weekly = String(price * aWeekly*allocpoint * poolWeight / 100);
+          const monthly = String(price * aMonthly*allocpoint * poolWeight / 100);
+
+      return monthly;
     },
     getTokenAmounts: async function(pool, LPsupply, staked, totalStaked) {
       
@@ -2116,7 +2136,6 @@ export default {
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      console.log(abi)
       const contract = new ethers.Contract(this.OPENSWAPBRIDGE(this.getChainID()), abi, signer);
       const tx = await contract.convert(amount).catch(err => {
           var message;
@@ -2188,6 +2207,205 @@ export default {
       const value = amount.div(divider).mul(slippage);
       const value2 = amount.sub(value);
       return value2;
+    },//21.6186
+    setRatioValidator: async function(amount){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = DelegatorContract.abi;
+      const delContractAddr = "0x98824823f4dec035ee3f2912f708029b0ac76bac"
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress();
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.setRatioPercentageOpenswap(amount).catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Collect request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+        //const gas = await contract.methods.withdraw(pid, '0').estimateGas(options).catch();
+        //console.log(gas)
+        options = {
+          gasPrice: 1000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.setRatioPercentageOpenswap(amount.toString()).send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
+    unDelegateValidator: async function(amountIn, valAddr){
+      if(this.getWalletType() == 'metamask'){
+        toastMe('warning', {
+            title: 'Cant unstake with metamask yet.',
+            msg: "Sorry.",
+            link: false,
+            href: ''
+          })
+        return
+      }
+      hmy.stakings.setTxParams({
+        gasLimit: 25000,
+        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        chainId: 1
+      });
+      const delegate = hmy.stakings.undelegate({
+        delegatorAddress: toBech32(this.getUserAddress()),
+        validatorAddress: valAddr,
+        amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
+      });
+      const delegateStakingTx = delegate.build();
+      const explorer = 'https://explorer.harmony.one/#/tx/'
+      let wallet = new oneWallet()
+        await wallet.signin()
+        await wallet.signStakingTxn(delegateStakingTx).then(signedTxn => {
+          if(signedTxn[0].txStatus == 'REJECTED'){
+            toastMe('error', {
+            title: 'Tx Failed',
+            msg: signedTxn[1],
+            link: false,
+            href: ""
+            })
+            return
+          }
+          let transaction =  signedTxn[0].id
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Success',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        });
+    },
+    delegateValidator: async function(amountIn, valAddr){
+      if(this.getWalletType() == 'metamask'){
+        toastMe('warning', {
+            title: 'Cant stake with metamask yet.',
+            msg: "Sorry.",
+            link: false,
+            href: ''
+          })
+        return
+      }
+      hmy.stakings.setTxParams({
+        gasLimit: 25000,
+        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        chainId: 1
+      });
+      const delegate = hmy.stakings.delegate({
+        delegatorAddress: toBech32(this.getUserAddress()),
+        validatorAddress: valAddr,
+        amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
+      });
+      const delegateStakingTx = delegate.build();
+      const explorer = 'https://explorer.harmony.one/#/tx/'
+      let wallet = new oneWallet()
+        await wallet.signin()
+        await wallet.signStakingTxn(delegateStakingTx).then(signedTxn => {
+          if(signedTxn[0].txStatus == 'REJECTED'){
+            toastMe('error', {
+            title: 'Tx Failed',
+            msg: signedTxn[1],
+            link: false,
+            href: ""
+            })
+            return
+          }
+          let transaction =  signedTxn[0].id
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Success',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        });
+    },
+    delegateValidatorMetamaskTestingStuff: async function(amountIn, valAddr){
+        hmy.stakings.setTxParams({
+        gasLimit: 25000,
+        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        chainId: 1
+      });
+      const delegate = hmy.stakings.delegate({
+        delegatorAddress: toBech32(this.getUserAddress()),
+        validatorAddress: valAddr,
+        amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
+      });
+      const delegateStakingTx = delegate.build();
+      console.log(delegateStakingTx)
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      console.log(provider)
+      console.log(delegateStakingTx)
+      const [encoded, raw] = delegateStakingTx.encode()
+      console.log(encoded)
+      console.log(raw)
+      const signer = provider.getSigner();
+      let TX = await signer.signMessage(raw)
+      console.log(TX)
+     TX =  await signer.sendTransaction(TX)
+      console.log(TX)
+      if(this.getWalletType == 'metamask'){
+
+      }
     },
 
     //----------------------------------------Utils------------------------------------------
@@ -2256,10 +2474,8 @@ export default {
       const address = this.getUserAddress();
       let path = this.getPath(bestRoute)
       const abi = IUniswapV2Router02.abi;
-      console.log(path)
       const contract = new ethers.Contract(this.UNIROUTERV2(this.getChainID()), abi, provider);
       let allowance = await contract.getAmountsIn(parsedAmount, path)
-      console.log(allowance.toString())
       let amountIn = this.getFormatedUnits(allowance[0].toString(), token2)
       return amountIn;
 

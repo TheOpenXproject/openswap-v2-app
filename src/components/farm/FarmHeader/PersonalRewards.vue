@@ -91,7 +91,6 @@
         let monthlyIncome = 0
         for(n in this.rewardsPerTime.monthly){
           monthlyIncome = monthlyIncome +  parseFloat(this.rewardsPerTime.monthly[n])
-          console.log(this.rewardsPerTime.monthly[n])
         }
         return monthlyIncome.toFixed(2)
       },

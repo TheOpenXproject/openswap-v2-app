@@ -27,7 +27,7 @@
     name: 'Total',
     props: {
       TVL: Number,
-      TAPR: Number
+      TAPR: String
     },
     methods: {
       prettify: function(number){

@@ -1,12 +1,12 @@
 <template>
-  <div id="farm" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center justify-center oswap-layout xl:px-0 px-3 text-gray-500 pb-16">
+  <div id="farm" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center justify-center oswap-layout xl:px-0 px-3 text-gray-500">
     <transition name="fall" appear>
       <FarmHeader v-if="soloData" :data="farmHeaderData" :rewardsPerTime="rewardsPerTimeObj" @updateData="getTotalPending" />
     </transition>
 
     <transition name="fall" appear>
-      <div class="flex flex-wrap w-full mb-12">
-        <StakingInfo />
+      <div class="flex-wrap w-full">
+        <StakingInfo :farmloaded="loaded"/>
       </div>
     </transition>
 
@@ -51,8 +51,6 @@ export default {
     await this.getTokenPrices();
     await this.loadFarmPairs(pools[this.getChainID()].pools);
 
-    console.log(this.SoloPools);
-    console.log(this.Pools);
     let timeout;
 
     if (this.getUserSignedIn()) {
@@ -68,14 +66,15 @@ export default {
         this.farmData = await this.initMulticall(this.Pools);
         this.setFarmDataState(this.farmData);
         this.soloData = await this.initSoloMulticall(this.SoloPools);
-        console.log(this.soloData);
         this.setSoloDataState(this.soloData);
+        this.loaded = true
       }.bind(this),
       timeout
     );
   },
   data() {
     return {
+      loaded:false,
       Pools: null,
       SoloPools: null,
       farmData: null,
@@ -272,13 +271,10 @@ export default {
       const RPC = this.hRPC(this.getChainID());
       const [CALL, poolByIndex] = this.generateCalls(pools);
       var results = [];
-      console.log(RPC);
-      console.log(MULTICALL);
       const config = {
         rpcUrl: RPC,
         multicallAddress: MULTICALL,
       };
-      console.log(CALL);
 
       const watcher = createWatcher(CALL, config);
 
@@ -420,8 +416,7 @@ export default {
       let CALL = [];
       let userAddress = this.getUserAddress();
       const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
-      console.log(MASTERCHEF);
-      console.log("mass");
+      
       var i = 0;
       var poolByIndex = [];
 

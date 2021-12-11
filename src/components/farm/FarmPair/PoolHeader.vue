@@ -122,8 +122,8 @@ import { ethers } from "ethers";
           this.rewards = parseFloat( ((rewardValue[1] / liquidityValue[1]) * 12) * 100).toFixed(2)
           if(this.rewards != '0'){
             var APRData = {}
-          APRData.pAPR = this.rewards,
-          APRData.tAPR = this.rewards,
+          APRData.pAPR = this.rewards
+          APRData.tAPR = this.rewards
         this.tt0s = ethers.utils.commify(parseFloat(this.getFormatedUnitsDecimals(this.poolData.token0Tstaked.toString(), this.pool.decimals[0])).toFixed(0))
         this.tt1s = ethers.utils.commify(parseFloat(this.getFormatedUnitsDecimals(this.poolData.token1Tstaked.toString(), this.pool.decimals[1])).toFixed(8))
         this.tas = ethers.utils.commify(parseFloat(this.getFormatedUnitsDecimals(this.poolData.lpStakedTotal.toString(), this.pool.decimals[0])).toFixed(8))

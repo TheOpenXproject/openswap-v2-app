@@ -110,8 +110,15 @@
         if(liquidityValue !== undefined){
           this.rewards = parseFloat( ((rewardValue[1] / liquidityValue) * 12) * 100).toFixed(2)
         }
+
          
       }.bind(this), 1000);
+
+      var APRData = {}
+      APRData.pAPR = this.rewards
+      APRData.tAPR = this.rewards
+      APRData.staked = poolData.lpBalanceStaked
+      this.$emit("updateAPR", APRData)
     },
     methods: {
       ...mapGetters('farm/farmData', ['getSoloData']),
