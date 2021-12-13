@@ -2,20 +2,17 @@
   <transition name="fall" appear disappear>
   <div class="flex flex-wrap xs:w-full lg:w-half">
     <div v-if="validator" class="flex min-w-0 w-full text-gray-400 dark:text-gray-300">
-      <div class="flex w-full flex-wrap rounded-lg py-3 px-4 items-center dark:from-slightDark from-slightGray to-transparent rounded-lg border border-oswapGreen">
+      <div class="flex w-full flex-wrap rounded-lg py-3 px-4 items-center dark:from-slightDark from-slightGray to-transparent border border-oswapGreen">
         <div class="flex w-full bg-gray-200 dark:bg-oswapDark-gray bg-slightGray rounded-lg mb-2">
-          <div class="grid grid-cols-3 gap-3 w-full h-auto ss:mt-3 xs:mt-8">
-      
-                <div class="flex items-center mb-6">
+          <div class="grid grid-cols-3 gap-3 w-full h-auto items-center p-4">
+                <div class="flex items-center">
                   <i class="las la-sitemap pl-2 text-lg dark:text-oswapGreen"></i>
                   <p class="text-2xl justify-center pl-2">{{ validator.name }}</p>
                 </div>
-
-                <div class="flex flex-col text-gray-400 dark:text-gray-300 mb-3">
+                <div class="flex flex-col text-gray-400 dark:text-gray-300">
                   <p class="text-xl font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
                 </div>
-
                 <div class="flex flex-col text-gray-600 dark:text-gray-200">
                   <p class="text-xl font-extrabold">{{ validator.apr }} %</p>
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
@@ -24,9 +21,17 @@
         </div>
 
         <div class="grid overflow-hidden md:grid-cols-2 sm:grid-cols-1 gap-3.5 w-full">
-          <div><ValidatorChart :validator="validator" /></div>
           <div>
-             <div class="flex flex-wrap">
+            <ValidatorChart :validator="validator" />
+            <p class="text-oswapGreen my-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi venenatis leo at dictum tincidunt. Maecenas orci augue, posuere quis luctus nec, efficitur quis turpis.</p>
+            <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
+              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
+              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
+              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
+            </ul>
+          </div>
+        <div>
+        <div class="flex flex-wrap">
           <StakingInfoTabs :validator="validator" />
           <div class="flex w-full">
             <div class="grid w-full xs:grid-cols-2 ss:grid-cols-2 lg:grid-cols-3 gap-2 lg:ml-8 h-auto p-3 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">

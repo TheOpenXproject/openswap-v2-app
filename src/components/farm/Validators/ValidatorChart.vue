@@ -1,5 +1,5 @@
 <template>
-  <div id="farm" class="max-w-screen-xl sm:w-full h-auto flex-col oswap-layout xl:px-0 pa-3 text-gray-500">
+  <div id="farm" class="max-w-screen-xl sm:w-full h-auto flex-col xl:px-0 pa-3 text-gray-500">
     <div v-if="!isLoaded" class="flex flex-1 items-center justify-center w-full h-auto">
       <transition name="fade-in" appear>
         <svg class="animate-spin h-7 w-7 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
