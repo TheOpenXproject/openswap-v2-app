@@ -1,6 +1,6 @@
 <template>
   <transition name="fall" appear>
-  <div v-if="validator" class="grid grid-cols-4 grid-rows-1 dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray rounded-lg border-l border-oswapGreen" >
+  <div v-if="validator" class="grid grid-cols-4 grid-rows-1 mb-1 pl-4 py-2 dark:from-slightDark items-center from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray rounded-lg border-l border-oswapGreen" >
     <div class="text-oswapBlue-light">{{ validator.name }}</div>
     <div class="rounded-md align-middle">
       <div class="flex items-center align-middle space-x-2">
