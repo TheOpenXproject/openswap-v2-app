@@ -1,11 +1,11 @@
 <template>
-    <Coming id='information'/>
+    <Coming id='launchpad'/>
 </template>
 
 <script>
 import Coming from "@/components/Coming";
 export default {
-  name: 'Information',
+  name: 'Launchpad',
   components: {
     Coming,
   },

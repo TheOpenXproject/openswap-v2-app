@@ -134,6 +134,21 @@ const routes = [
     component: () => import('../views/Migrate.vue')
   },
   {
+    path: '/DAO',
+    name: 'DAO',
+    component: () => import('../views/DAO.vue')
+  },
+  {
+    path: '/lending',
+    name: 'Lending',
+    component: () => import('../views/Lending.vue')
+  },
+  {
+    path: '/launchpad',
+    name: 'Launchpad',
+    component: () => import('../views/Launchpad.vue')
+  },
+  {
     path: '/information',
     name: 'Information',
     component: () => import('../views/Information.vue')
