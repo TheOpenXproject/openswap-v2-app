@@ -52,7 +52,7 @@
                   </div>
                   <div class="ml-4">
                     <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Pairs</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Check pair adresses</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">Check pair addresses</p>
                   </div>
                 </router-link>
               </MenuItem>
@@ -78,7 +78,7 @@
                     </div>
                   </div>
                   <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Infomation</p>
+                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Information</p>
                     <p class="text-sm text-gray-500 dark:text-gray-300">OpenSwap useful information</p>
                   </div>
                 </router-link>
