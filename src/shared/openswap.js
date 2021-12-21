@@ -2228,7 +2228,7 @@ export default {
       const signer = provider.getSigner();
  
       const contract = new ethers.Contract(delContractAddr, abi, signer);
-      const tx = await contract.setRatioPercentageOpenswap(amount).catch(err => {
+      const tx = await contract.setRatioPercentageOpenswap(100 - amount).catch(err => {
           var message;
           if(!err.data?.message){
             message = err.message
@@ -2249,7 +2249,7 @@ export default {
 
       toastMe('info', {
         title: 'Transaction Sent',
-        msg: "Collect request sent to network. Waiting for confirmation",
+        msg: "Ratio change request sent to network. Waiting for confirmation",
         link: false,
         href: `${explorer}${transaction}`
       })
@@ -2275,7 +2275,7 @@ export default {
           gasPrice: 1000000000,
           gasLimit: 3000000
           };
-        var tx1 = await contract.methods.setRatioPercentageOpenswap(amount.toString()).send(options)
+        var tx1 = await contract.methods.setRatioPercentageOpenswap((100 - amount).toString()).send(options)
         if(tx1.transaction.txStatus == 'CONFIRMED'){
           this.setBtnState({add: 'added'})
           let transaction = tx1.transaction.id

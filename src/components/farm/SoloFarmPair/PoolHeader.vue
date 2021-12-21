@@ -117,7 +117,7 @@
       var APRData = {}
       APRData.pAPR = this.rewards
       APRData.tAPR = this.rewards
-      APRData.staked = poolData.lpBalanceStaked
+      APRData.staked = this.poolData.lpBalanceStaked
       this.$emit("updateAPR", APRData)
     },
     methods: {

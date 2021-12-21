@@ -82,7 +82,7 @@
       </div>
 
       <div class="flex items-center h-12 pt-2 justify-between">
-        <!-- Burn Fees Button -->
+        <!-- Burn Fees Button 
         <tooltip-me>
           <div @click="this.burnPool(this.pool)" class="flex items-center justify-center ss:space-x-0 ss:pl-0 ss:pr-0 ss:w-9 xs:space-x-2 xs:pl-3 xs:pr-1 xs:w-full md:space-x-0 md:pl-0 md:pr-0 md:w-9 xl:space-x-2 xl:pl-3 xl:pr-1 xl:w-full rounded-full h-9 border border-oswapGreen-dark dark:border-oswapGreen group-scope hover:bg-red-400 dark:hover:bg-red-400 hover:border-red-400 dark:hover:border-red-400 cursor-pointer">
             <p class="ss:hidden xs:block md:hidden xl:block text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Burn Fees</p>
@@ -94,7 +94,7 @@
             </div>
           </tooltip-me-content>
         </tooltip-me>
-
+-->
         <!-- Unstake Button -->
         <div @click="this.$emit('setPool', 'unstake')" class="flex items-center space-x-2 pl-3 pr-1 rounded-full h-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
           <p class="text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Unstake</p>

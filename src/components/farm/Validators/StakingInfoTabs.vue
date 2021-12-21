@@ -74,6 +74,7 @@ export default {
     };
   },
   mounted(){
+    
     this.watWallet = this.getWalletType()
     if(this.watWallet == 'metamask'){
       this.openTab = 3

@@ -6,7 +6,7 @@
 
     <transition name="fall" appear>
       <div class="flex-wrap w-full">
-        <StakingInfo :farmloaded="loaded"/>
+        <StakingInfo v-if="loaded" :farmloaded="loaded"/>
       </div>
     </transition>
 
