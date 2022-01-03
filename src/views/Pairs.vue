@@ -50,13 +50,12 @@ import Pair from "@/components/pairs/Pair";
 import openswap from "@/shared/openswap.js";
 
 import { mapGetters, mapActions } from "vuex";
-
-const { multicall } = require("@/store/modules/multicall/multicall.js");
 export default {
   name: "Pairs",
   mixins: [openswap],
   components: { Pair },
     computed: {
+    ...mapGetters("addressConstants", ["oSWAPCHEF", "UNIROUTERV2", "hMULTICALL"]),
   },
   methods: {
     ...mapActions('pairs', ['setPairs']),
@@ -72,11 +71,11 @@ export default {
     }
     await setTimeout(
       async function () {
-        const multicallProps = multicall[this.getChainID()].multicall;
+        const MULTICALL = this.hMULTICALL(this.getChainID());
         const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
         await this.setPairs({
           provider:this.getProvider(this.getChainID()), 
-          multicallAddress:multicallProps.multicallAddress,
+          multicallAddress:MULTICALL,
           masterchef: MASTERCHEF
         })
         this.Pools = this.getPairs();

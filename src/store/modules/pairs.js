@@ -1,5 +1,4 @@
 const { createWatcher } = require('@makerdao/multicall');
-const IUniswapFactory = require("openswap-v2-core/build/contracts/IUniswapV2Factory.json")
 const ethers = require("ethers")
 const { pools } = require("./farm/pools.js");
 import { toBech32 } from '@harmony-js/crypto'
