@@ -89,7 +89,7 @@ export default {
       await this.unDelegateValidator(this.amount,this.validator.address)
     },
     setRatioVal:async function(){
-      await this.setRatioValidator(this.amount)
+      await this.setRatioValidator(100- this.amount)
     },
     toggleTabs: function (tabNumber) {
       if(this.watWallet == 'oneWallet'){

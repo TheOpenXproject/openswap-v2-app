@@ -66,7 +66,7 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">OpenX Reward Ratio</p>
-                  <p class="text-lg dark:text-gray-400">% {{ this.validator.oxratio }}</p>
+                  <p class="text-lg dark:text-gray-400">% {{100 - this.validator.oxratio }}</p>
                 </div>
               </div>
               <div class="flex space-x-1">
