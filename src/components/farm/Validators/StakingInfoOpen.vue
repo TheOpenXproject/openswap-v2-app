@@ -14,7 +14,7 @@
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
                 </div>
                 <div class="flex flex-col text-gray-600 dark:text-gray-200">
-                  <p class="text-xl font-extrabold">{{ validator.apr }} %</p>
+                  <p class="text-xl font-extrabold">{{ validator.totalAPR }} %</p>
                   <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
                 </div>
           </div>
@@ -23,11 +23,11 @@
         <div class="grid overflow-hidden md:grid-cols-2 sm:grid-cols-1 gap-3.5 w-full">
           <div>
             <ValidatorChart :validator="validator" />
-            <p class="text-oswapGreen my-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi venenatis leo at dictum tincidunt. Maecenas orci augue, posuere quis luctus nec, efficitur quis turpis.</p>
+            <p class="text-oswapGreen my-1">Info: Harmony validators have an undelegation period of approx. 6 days. however, this is the safest form of earning interest as funds never leave your wallet.</p>
             <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
-              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
-              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
-              <li class="w-full text-oswapGreen my-1">Notes about the delegator</li>
+              <li class="w-full text-oswapGreen my-1">Delegation and undelegation are only supported by Chrome One Wallet extension.</li>
+              <li class="w-full text-oswapGreen my-1">15% Validator node currently doesnt support token ratio. Will be replaced shortly.</li>
+              <li class="w-full text-oswapGreen my-1">AutoCompounding and reward ratios with other tokens than ONE is planned. Thank you for securing Harmony.</li>
             </ul>
           </div>
         <div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">OpenX Reward Ratio</p>
-                  <p class="text-lg dark:text-gray-400">% {{ this.validator.oxratio }}</p>
+                  <p class="text-lg dark:text-gray-400">% {{100 - this.validator.oxratio }}</p>
                 </div>
               </div>
               <div class="flex space-x-1">

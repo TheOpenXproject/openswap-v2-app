@@ -109,7 +109,7 @@
           url: 'information',
           icon: 'la-info-circle',
           name: 'Information',
-          description: 'OpenSwap useful information'
+          description: 'Information'
         }
       ]
     })

@@ -90,7 +90,28 @@ const routes = [
   },
   {
     path: '/pairs',
-    name: 'Pairs',
+    name: 'OpenSwap Pairs',
+    meta: {
+      title: 'OpenSwap Pairs',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Openswap Decentralized Farms on Harmony Blockchain. Stake Liquidity to earn Passive income.  Harmony DEX'
+        },
+        {
+          property: 'og:description',
+          content: 'Openswap Decentralized Farms on Harmony Blockchain. Stake Liquidity to earn Passive income.  Harmony DEX'
+        },
+        {
+          name: 'robots',
+          content: 'index,follow'
+        },
+        {
+          name: 'keywords',
+          content: 'Dex, Decentralised Exchange, dex, blockchain, harmony, openswap,APR, apy, yield farming, one, Uniswap Fork, liquidity, provide, add, remove,'
+        },
+      ]
+    },
     component: () => import('../views/Pairs.vue')
   },
   {
