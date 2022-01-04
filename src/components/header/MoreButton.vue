@@ -30,56 +30,16 @@
                   </div>
                 </a>
               </MenuItem>
-              <MenuItem>
-                <router-link to="/migrate" class="flex items-center p-2 -m-3 transition group duration-150 ease-in-out rounded-lg rounded-b-lg hover:bg-gray-50 dark:hover:bg-oswapDark-gray focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+              <MenuItem v-for="route in routes" :key="route.url">
+                <router-link :to="route.url" class="flex items-center p-2 -m-3 transition group duration-150 ease-in-out rounded-lg rounded-b-lg hover:bg-gray-50 dark:hover:bg-oswapDark-gray focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
                   <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
                     <div class="flex flex-1 dark:bg-oswapDark-gray h-full items-center bg-gray-100 justify-center rounded-lg">
-                      <i class="las la-route text-3xl text-oswapGreen group-hover:text-oswapBlue-light"></i>
+                      <i :class="route.icon" class="las text-3xl text-oswapGreen group-hover:text-oswapBlue-light"></i>
                     </div>
                   </div>
                   <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Migrate</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Migrate your oSWAP Token to OpenX</p>
-                  </div>
-                </router-link>
-              </MenuItem>
-              <MenuItem>
-                <router-link to="/pairs" class="flex items-center p-2 -m-3 transition group duration-150 ease-in-out rounded-lg rounded-b-lg hover:bg-gray-50 dark:hover:bg-oswapDark-gray focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                  <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                    <div class="flex flex-1 dark:bg-oswapDark-gray h-full items-center bg-gray-100 justify-center rounded-lg">
-                      <i class="las la-balance-scale text-3xl text-oswapGreen group-hover:text-oswapBlue-light"></i>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Pairs</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Check pair addresses</p>
-                  </div>
-                </router-link>
-              </MenuItem>
-              <MenuItem>
-                <router-link to="/tokens" class="flex items-center p-2 -m-3 transition group duration-150 ease-in-out rounded-lg hover:bg-gray-50 dark:hover:bg-oswapDark-gray focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                  <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                    <div class="flex flex-1 dark:bg-oswapDark-gray h-full items-center bg-gray-100 justify-center rounded-lg">
-                      <i class="las la-tasks text-3xl text-oswapGreen group-hover:text-oswapBlue-light"></i>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Tokens</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Check tokens available</p>
-                  </div>
-                </router-link>
-              </MenuItem>
-
-              <MenuItem>
-                <router-link to="/information" class="flex items-center p-2 -m-3 transition group duration-150 ease-in-out rounded-lg hover:bg-gray-50 dark:hover:bg-oswapDark-gray focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                  <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                    <div class="flex flex-1 dark:bg-oswapDark-gray h-full items-center bg-gray-100 justify-center rounded-lg">
-                      <i class="las la-info-circle text-3xl text-oswapGreen group-hover:text-oswapBlue-light"></i>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">Information</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">OpenSwap useful information</p>
+                    <p class="text-sm font-medium text-gray-900 dark:text-oswapGreen">{{route.name}}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">{{route.description}}</p>
                   </div>
                 </router-link>
               </MenuItem>
@@ -106,6 +66,52 @@
       MenuButton,
       MenuItems,
       MenuItem,
-    }
+    },
+    data: () => ({
+      routes: [
+        {
+          url: '/migrate',
+          icon: 'la-route',
+          name: 'Migrate',
+          description: 'Migrate your oSWAP Token to OpenX'
+        },
+        {
+          url: '/pairs',
+          icon: 'la-balance-scale',
+          name: 'Pairs',
+          description: 'Check pair addresses'
+        },
+        {
+          url: 'tokens',
+          icon: 'la-tasks',
+          name: 'Tokens',
+          description: 'Check tokens available'
+        },
+        {
+          url: 'DAO',
+          icon: 'la-vote-yea',
+          name: 'DAO',
+          description: 'Vote and propose'
+        },
+        {
+          url: 'lending',
+          icon: 'la-hand-holding-usd',
+          name: 'Lending',
+          description: 'Lend and borrow'
+        },
+        {
+          url: 'launchpad',
+          icon: 'la-coins',
+          name: 'Launchpad',
+          description: 'Launch of new secure tokens'
+        },
+        {
+          url: 'information',
+          icon: 'la-info-circle',
+          name: 'Information',
+          description: 'Information'
+        }
+      ]
+    })
   }
 </script>
