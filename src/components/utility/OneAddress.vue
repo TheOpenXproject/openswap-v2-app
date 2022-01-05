@@ -1,5 +1,5 @@
 <template>
-  <div class="relative grid  md:grid-cols-2 ss:grid-cols-1 w-full h-full px-4 py-5 justify-start rounded-3xl bg-opaqueDark-light dark:bg-opaqueDark-dark gap">
+  <div class="relative grid  md:grid-cols-4 ss:grid-cols-1 w-full h-full px-4 py-5 justify-start rounded-3xl bg-opaqueDark-light dark:bg-opaqueDark-dark gap">
     <span class="ss:mb-4 md:mb-0">
       <p class="dark:text-oswapGreen">One Address</p>
       <p>{{ shortenAddress(this.oneAddress) }}
