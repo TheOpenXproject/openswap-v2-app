@@ -75,10 +75,12 @@ module.exports = {
       slightDark: {
         DEFAULT: '#313547'
       },
-
+      opaqueDark: {
+        light: 'rgba(255, 255, 255, 0.2)',
+        dark: 'rgba(0, 0, 0, 0.1)'
+      },
       transparent: 'transparent',
       current: 'currentColor',
-
       black: colors.black,
       white: colors.white,
       gray: colors.coolGray,
