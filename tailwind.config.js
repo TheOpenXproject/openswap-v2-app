@@ -525,7 +525,8 @@ module.exports = {
       half: '50%',
       full: '100%',
       screen: '100vh',
-      344: '344px'
+      344: '344px',
+      500: '500px'
     }),
     maxWidth: (theme, { breakpoints }) => ({
       none: 'none',
