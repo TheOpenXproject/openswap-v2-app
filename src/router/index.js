@@ -6,7 +6,7 @@ const routes = [
     path: '/',
     name: 'OpenSwap Exchange',
     meta: {
-      title: 'OpenSwap Exchange - Exchange ERC20 / BEP20 tokens',
+      title: 'OpenSwap Exchange - Exchange HRC-20 tokens',
       metaTags: [
         {
           name: 'description',
@@ -36,7 +36,7 @@ const routes = [
     path: '/liquidity',
     name: 'OpenSwap Liquidity',
     meta: {
-      title: 'OpenSwap Liquidity - Provide Liquidity ERC20 / BEP20 tokens',
+      title: 'OpenSwap Liquidity - Provide Liquidity HRC-20 tokens',
       metaTags: [
         {
           name: 'description',
@@ -66,7 +66,7 @@ const routes = [
     path: '/farm',
     name: 'OpenSwap Farms',
     meta: {
-      title: 'OpenSwap Farms - Yield Farm ERC20 / BEP20 tokens',
+      title: 'OpenSwap Farms - Yield Farm HRC-20 tokens',
       metaTags: [
         {
           name: 'description',
