@@ -120,6 +120,11 @@ const routes = [
     component: () => import('../views/Tokens.vue')
   },
   {
+    path: '/utility',
+    name: 'Utility',
+    component: () => import('../views/Utility.vue')
+  },
+  {
     path: '/Bridge',
     name: 'BridgePage',
     meta: {
