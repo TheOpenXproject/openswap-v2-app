@@ -45,6 +45,11 @@ export default {
         name: 'Polygon Chain Tokens', 
         icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
         tokens: tokens.polytokens 
+      },
+      { 
+        name: 'Community Tokens', 
+        icon: '[&#xf0c0;]',
+        tokens: tokens.communitytokens 
       }
       
     ]

@@ -57,7 +57,9 @@ export default {
         this.loading = pair.pid;
         const total = await this.getLpStaked(pair.pairaddress)
         const totalLP = await this.getLpTokens(amounts.pair, total.supply, amounts.amount0, pair.decimals[0], amounts.amount1, pair.decimals[1])
-        const stakeWeight = (totalLP.toFixed(3) / parseFloat(this.getEthUnits(total.staked)).toFixed(3) * 100).toFixed(15)
+        console.log("0hello")
+        console.log(totalLP)
+        const stakeWeight = ((totalLP.toFixed(3)) / (((parseFloat(this.getEthUnits(total.supply.add(this.getBN(totalLP.raw.toString())))).toFixed(3)))) * 100).toFixed(15)
         let rewards = await this.getRewardValue(pair, stakeWeight);
         const weekly = parseFloat(rewards[0])
         const daily = weekly / 7
@@ -106,6 +108,7 @@ export default {
         watcher.start();
         await watcher.awaitInitialFetch();
         watcher.stop();
+        console.log(totalStaked)
         return totalStaked;
     }
   },

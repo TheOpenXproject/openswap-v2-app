@@ -3,6 +3,7 @@ import {ethtokens as mainnet_eth} from "./hmy_mainnet/ethTokens.js"
 import {hmytokens as mainnet_hmy} from "./hmy_mainnet/hmyTokens.js"
 import {polytokens as mainnet_poly} from "./hmy_mainnet/polyTokens.js"
 import {terratokens as mainnet_terra} from "./hmy_mainnet/terraTokens.js"
+import {communitytokens as mainnet_community} from "./hmy_mainnet/communityTokens.js"
 
 import {bsctokens as testnet_bsc} from "./hmy_testnet/bscTokens.js"
 import {ethtokens as testnet_eth} from "./hmy_testnet/ethTokens.js"
@@ -45,6 +46,13 @@ export const tokens = {
 		1: {},
 		56: {},
 		1666600000: mainnet_poly,
+		1666700000:{},
+		1337:{}
+	},
+	communitytokens: {
+		1: {},
+		56: {},
+		1666600000: mainnet_community,
 		1666700000:{},
 		1337:{}
 	}
