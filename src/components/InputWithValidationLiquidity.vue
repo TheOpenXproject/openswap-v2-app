@@ -27,8 +27,19 @@
     },
     watch: {
       input(value) {
-        this.$emit('catchInput', value)
+        if (!this.debounce) {
+          setTimeout(() => {
+            this.$emit('catchInput', this.input)
+            this.debounce = false;
+          }, 700); // 0.7 sec delay
+        }
+        this.debounce = true;
       }
+    },
+    data() {
+      return {
+        debounce: false,
+      };
     },
     computed: {
       invalidInput() {

@@ -105,6 +105,13 @@
           name: 'Launchpad',
           description: 'Launch of new secure tokens'
         },
+        // Uncomment when you want utility page UP BTW
+        // {
+        //   url: 'utility',
+        //   icon: 'la-tools',
+        //   name: 'Utility',
+        //   description: 'Useful tools'
+        // },
         {
           url: 'information',
           icon: 'la-info-circle',
