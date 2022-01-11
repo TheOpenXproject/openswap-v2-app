@@ -227,7 +227,7 @@ export default {
         CALL.push({
           target: MASTERCHEF,
           call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(this.SoloPools[n].pid), userAddress],
-          returns: [["PENDING_OF_" + n, (val) => val]],
+          returns: [["PENDING_OF_SOLO_" + n, (val) => val]],
         });
       }
       for (var n in this.Pools) {
