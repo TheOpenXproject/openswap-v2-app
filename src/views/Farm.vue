@@ -18,6 +18,7 @@
                 <SwitchLabel class="mr-4">Show only staked pools</SwitchLabel>
                 <Switch
                   v-model="enabled"
+                  @click="setEnabled(enabled)"
                   :class='enabled ? "bg-oswapGreen-dark" : "bg-gray-500"'
                   class="relative inline-flex items-center h-4 transition-colors rounded-full w-10 focus:outline-none"
                 >
@@ -30,11 +31,11 @@
             </SwitchGroup>
         </div>
         <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-          <template v-for="(pool, index) in this.SoloPools" >
-            <SoloFarmPair v-if="parseFloat(this.getEthUnits(soloData[pool.i]?.lpBalanceStaked)).toFixed(5) > 0" @updateTVL="updateTVL" :key="index" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData" />
+          <template v-for="(pool, index) in this.SoloPools"  :key="index">
+            <SoloFarmPair  :class="parseFloat(this.getEthUnits(soloData[pool.i]?.lpBalanceStaked)).toFixed(5) > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData" />
           </template>
-          <template v-for="(pool, index) in this.Pools" >
-            <FarmPair v-if="farmData[pool.i]?.stakeWeight > 0" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :key="index" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData" />
+          <template v-for="(pool, index) in this.Pools"  :key="index">
+            <FarmPair :class="farmData[pool.i]?.stakeWeight > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData" />
           </template>
         </div>
       </div>
@@ -85,7 +86,7 @@ export default {
     } else {
       timeout = 1000;
     }
-
+    this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'false'? false : true;
     await setTimeout(
       async function () {
         this.Pools = pools[this.getChainID()].pools;
@@ -103,7 +104,7 @@ export default {
   },
   data() {
     return {
-      enabled: true,
+      enabled: false,
       loaded:false,
       Pools: null,
       SoloPools: null,
@@ -136,7 +137,10 @@ export default {
   methods: {
     ...mapGetters("wallet", ["getUserAddress", "getUserSignedIn", "getChainID"]),
     ...mapActions("farm/farmData", ["setFarmDataState", "setSoloDataState", "setCustomDataState", "setFarmPair"]),
-
+    setEnabled: function (value) {
+      localStorage.setItem("oSwap\_enable_farms", value);
+      console.log(value)
+    },
     updateTVL: function (TVLData) {
       this.farmHeaderData.TVL = this.farmHeaderData.TVL + TVLData.pool.TVL;
 
