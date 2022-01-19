@@ -13,6 +13,7 @@ const options = {
   newestOnTop: true
 };
 
+import VueGtag from "vue-gtag-next";
 
 import PerfectScrollbar from 'vue3-perfect-scrollbar'
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
@@ -36,5 +37,9 @@ app.use(PerfectScrollbar);
 app.use(Toast, options);
 app.use(TooltipMe);
 app.use(VueApexCharts);
-
+app.use(VueGtag, { 
+  property: { 
+    id: "G-HYPSP2E5Q0" 
+  } 
+})
 app.mount('#oswapApp')
