@@ -6,7 +6,7 @@
         <div v-for="(pair, idx) in this.Pools" :key="idx" class="flex flex-none flex-col p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray border-l border-oswapGreen rounded-3xl">
           <div class="flex flex-1 space-x-2 items-center">
             <div class="relative w-20">
-              <i @click="addTokenToMetamask({oneZeroxAddress:pair.pairAddress})" class="z-10 flex las la-plus text-sm p-1 text-oswapGreen absolute -top-8 items-center justify-center bg-slightGray dark:bg-slightDark rounded-full cursor-pointer shadow hover:bg-oswapGreen dark:hover:bg-oswapGreen hover:text-slightGray dark:hover:text-slightDark"></i>
+              <i @click="addTokenToMetamask({oneZeroxAddress:pair.pairaddress, Symbol: pair.pair,decimals: 18})" class="z-10 flex las la-plus text-sm p-1 text-oswapGreen absolute -top-8 items-center justify-center bg-slightGray dark:bg-slightDark rounded-full cursor-pointer shadow hover:bg-oswapGreen dark:hover:bg-oswapGreen hover:text-slightGray dark:hover:text-slightDark"></i>
               <div class="absolute top-0 bottom-0 my-auto items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
                 <img :src="pair.imgtoken0" class="h-8 w-8">
               </div>
