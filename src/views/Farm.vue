@@ -86,7 +86,7 @@ export default {
     } else {
       timeout = 1000;
     }
-    this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'false'? false : true;
+    this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'true' ? true : false;
     await setTimeout(
       async function () {
         this.Pools = pools[this.getChainID()].pools;
