@@ -11,10 +11,35 @@
     </transition>
 
     <transition name="fall" appear>
-      <div v-if="soloData != null && farmData != null && pairsLoaded" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-        <SoloFarmPair v-for="(pool, index) in this.SoloPools" @updateTVL="updateTVL" :key="index" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData" />
-        <FarmPair v-for="(pool, index) in this.Pools" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :key="index" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData" />
+      <div class="w-full" v-if="soloData != null && farmData != null && pairsLoaded">
+        <div class="flex flex-none p-2 my-2">
+            <SwitchGroup>
+              <div class="flex items-center">
+                <SwitchLabel class="mr-4">Show only staked pools</SwitchLabel>
+                <Switch
+                  v-model="enabled"
+                  @click="setEnabled(enabled)"
+                  :class='enabled ? "bg-oswapGreen-dark" : "bg-gray-500"'
+                  class="relative inline-flex items-center h-4 transition-colors rounded-full w-10 focus:outline-none"
+                >
+                  <span
+                    :class='enabled ? "translate-x-6 bg-opaqueDark-light" : "translate-x-1 bg-white dark:bg-oswapDark-dark"'
+                    class="inline-block w-4 h-4 transition-transform transform rounded-full"
+                  />
+                </Switch>
+              </div>
+            </SwitchGroup>
+        </div>
+        <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
+          <template v-for="(pool, index) in this.SoloPools"  :key="index">
+            <SoloFarmPair  :class="parseFloat(this.getEthUnits(soloData[pool.i]?.lpBalanceStaked)).toFixed(5) > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData" />
+          </template>
+          <template v-for="(pool, index) in this.Pools"  :key="index">
+            <FarmPair :class="farmData[pool.i]?.stakeWeight > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData" />
+          </template>
+        </div>
       </div>
+
       <div v-else class="flex h-full items-center mt-16">
         <svg class="animate-spin h-8 w-8 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -30,7 +55,7 @@ import FarmHeader from "@/components/farm/FarmHeader";
 import FarmPair from "@/components/farm/FarmPair";
 import SoloFarmPair from "@/components/farm/SoloFarmPair";
 import StakingInfo from "@/components/farm/Validators/StakingInfo";
-
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import openswap from "@/shared/openswap.js";
 
 import { createWatcher } from "@makerdao/multicall";
@@ -46,6 +71,9 @@ export default {
     FarmPair,
     SoloFarmPair,
     StakingInfo,
+    Switch, 
+    SwitchGroup, 
+    SwitchLabel 
   },
   mounted: async function () {
     await this.getTokenPrices();
@@ -58,15 +86,17 @@ export default {
     } else {
       timeout = 1000;
     }
-
+    this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'false'? false : true;
     await setTimeout(
       async function () {
         this.Pools = pools[this.getChainID()].pools;
         this.SoloPools = pools[this.getChainID()].SoloPools;
         this.farmData = await this.initMulticall(this.Pools);
         this.setFarmDataState(this.farmData);
+
         this.soloData = await this.initSoloMulticall(this.SoloPools);
         this.setSoloDataState(this.soloData);
+        console.log(this.soloData)
         this.loaded = true
       }.bind(this),
       timeout
@@ -74,6 +104,7 @@ export default {
   },
   data() {
     return {
+      enabled: false,
       loaded:false,
       Pools: null,
       SoloPools: null,
@@ -106,7 +137,10 @@ export default {
   methods: {
     ...mapGetters("wallet", ["getUserAddress", "getUserSignedIn", "getChainID"]),
     ...mapActions("farm/farmData", ["setFarmDataState", "setSoloDataState", "setCustomDataState", "setFarmPair"]),
-
+    setEnabled: function (value) {
+      localStorage.setItem("oSwap\_enable_farms", value);
+      console.log(value)
+    },
     updateTVL: function (TVLData) {
       this.farmHeaderData.TVL = this.farmHeaderData.TVL + TVLData.pool.TVL;
 
@@ -227,7 +261,7 @@ export default {
         CALL.push({
           target: MASTERCHEF,
           call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(this.SoloPools[n].pid), userAddress],
-          returns: [["PENDING_OF_" + n, (val) => val]],
+          returns: [["PENDING_OF_SOLO_" + n, (val) => val]],
         });
       }
       for (var n in this.Pools) {
