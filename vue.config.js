@@ -15,8 +15,7 @@ module.exports = {
             // List of routes to prerender
             [ '/', '/farm', '/liquidity', '/Bridge', '/tokens', '/migrate', '/pairs'],
             new PuppeteerRenderer()
-          ),
-          
+          )
         ]
       }
     },
