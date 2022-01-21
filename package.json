@@ -1,6 +1,6 @@
 {
   "name": "oswap-app",
-  "version": "2.2.22",
+  "version": "2.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
