@@ -112,12 +112,13 @@
         //   name: 'Utility',
         //   description: 'Useful tools'
         // },
-        {
-          url: 'information',
-          icon: 'la-info-circle',
-          name: 'Information',
-          description: 'Information'
-        }
+        // Once we have info about what this will be used for we can discomment it
+        // {
+        //   url: 'information',
+        //   icon: 'la-info-circle',
+        //   name: 'Information',
+        //   description: 'Information'
+        // }
       ]
     })
   }

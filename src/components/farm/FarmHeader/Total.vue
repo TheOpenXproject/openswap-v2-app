@@ -3,7 +3,7 @@
   
     <div class="flex space-x-4 items-center mb-6">
       <i class="las la-globe-europe text-lg dark:text-oswapGreen"></i>
-      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Total :</p>
+      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Total:</p>
     </div>
 
     <div class="flex flex-col space-y-2 text-gray-600 dark:text-gray-300 mb-3">

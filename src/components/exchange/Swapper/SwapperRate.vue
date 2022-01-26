@@ -29,7 +29,7 @@
     },
     mixins: [openswap],
     mounted: async function() {
-      this.updateData();
+      //this.updateData();
     },
     computed: {
       ...mapGetters('exchange/swapper', ['getInputAmount', 'getSlippageRate'])

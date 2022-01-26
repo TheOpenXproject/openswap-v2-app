@@ -3,7 +3,7 @@
   
     <div class="flex space-x-3 items-center mb-6">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
-      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Personal :</p>
+      <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Personal:</p>
     </div>
 
     <div class="grid grid-cols-2 gap-3 w-full">
