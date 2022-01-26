@@ -80,6 +80,7 @@
           1: await this.getAmountOutWithSlippage(this.getInputAmount(0), bestRoute, this.getSlippageRate, token0, token1)
         })
         this.setBtnState({swap: 'swap'});
+        this.setThePath(this.getPath(bestRoute));
       }
     }
   }

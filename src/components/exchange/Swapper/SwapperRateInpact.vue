@@ -26,7 +26,7 @@
        let token0 = this.getToken()['token1']
         let token1 = this.getToken()['token2']
 
-        let units = this.getUnits(this.getInputAmount(0), token0)
+        let units = this.getUnits('1', token0)
         let bestRoute = await this.getBestRoute(units, token0, token1)
         this.setPriceRate(bestRoute.executionPrice.toFixed(6))
     },

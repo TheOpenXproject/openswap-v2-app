@@ -159,7 +159,7 @@ export default {
 
       state: {
         amount: {
-          0: '1.0',
+          0: '0.0',
           1: '0.0'
         },
         balance: {
@@ -266,7 +266,7 @@ export default {
           delete state.warnings[type]
         },
         _resetAll: (state) => {
-          state.amount[0] = '1.0';
+          state.amount[0] = '0.0';
           state.amount[1] = '0.0';
           state.balance[0] = '0.0';
           state.balance[1] = '0.0';
