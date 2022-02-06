@@ -59,7 +59,7 @@ export default {
         chartOptions: {
           chart: {
             height: 250,
-            group: "sparks",
+            
             type: "line",
             sparkline: {
               enabled: true,

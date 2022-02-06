@@ -27,7 +27,7 @@
             <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
               <li class="w-full text-oswapGreen my-1">Delegation and undelegation are only supported by Chrome One Wallet extension.</li>
               <li class="w-full text-oswapGreen my-1">15% Validator node currently doesnt support token ratio. Will be replaced shortly.</li>
-              <li class="w-full text-oswapGreen my-1">AutoCompounding and reward ratios with other tokens than ONE is planned. Thank you for securing Harmony.</li>
+              <li class="w-full text-oswapGreen my-1">Thank you for securing Harmony.</li>
             </ul>
           </div>
         <div>
@@ -35,31 +35,6 @@
           <StakingInfoTabs :validator="validator" />
           <div class="flex w-full">
             <div class="grid w-full xs:grid-cols-2 ss:grid-cols-2 lg:grid-cols-3 gap-2 lg:ml-8 h-auto p-3 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">
-              <div class="flex space-x-1">
-                <div class="flex items-start h-full"><i class="las la-dollar-sign text-xl text-oswapGreen"></i></div>
-                <div class="flex flex-col h-full justify-between">
-                  <p class="text-xs text-oswapBlue-light">USD Value Earned</p>
-                  <p class="text-lg dark:text-gray-400">$ {{ prettify(this.validator.earnedUsd)}}</p>
-                </div>
-              </div>
-              <div class="flex space-x-1">
-                <div class="flex items-start h-full">
-                  <div class="flex items-center justify-center rounded-full bg-gray-50 h-5 w-5 overflow-hidden"><img src="https://openfi.dev/tokens/default/ONE.png" class="h-4" alt="" /></div>
-                </div>
-                <div class="flex flex-col h-full justify-between pt-0.5">
-                  <p class="text-xs text-oswapBlue-light">One Earned</p>
-                  <p class="text-lg dark:text-gray-400">{{ prettify(this.validator.earnedOne) }}</p>
-                </div>
-              </div>
-              <div class="flex space-x-1">
-                <div class="flex items-start h-full">
-                  <div class="flex items-center justify-center rounded-full bg-gray-50 h-5 w-5 overflow-hidden"><img src="https://openfi.dev/tokens/default/oSWAP.png" class="h-4" alt="" /></div>
-                </div>
-                <div class="flex flex-col h-full justify-between pt-0.5">
-                  <p class="text-xs text-oswapBlue-light">OpenX Earned</p>
-                  <p class="text-lg dark:text-gray-400">{{ prettify(this.validator.earnedOpenx) }}</p>
-                </div>
-              </div>
               <div class="flex space-x-1">
                 <div class="flex items-start h-full">
                   <div class="flex items-start h-full"><i class="las la-coins text-xl text-oswapGreen"></i></div>
