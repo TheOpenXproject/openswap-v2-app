@@ -3,24 +3,32 @@
     <TabGroup :defaultIndex="activatedTab" v-if="activatedTab !== null">
       <TabList class="space-x-2 pb-4" :selectedIndex="activatedTab">
         <Tab  v-slot="{ selected }" as="template">
+          <router-link :to="{path: '/utility', query: {utility:'networks'}}">
             <button 
               :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Networks Setup</button>
+          </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
+          <router-link :to="{path: '/utility', query: {utility:'revoker'}}">
             <button 
               :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Revoker</button>
+          </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
+          <router-link :to="{path: '/utility', query: {utility:'calculator'}}">
             <button 
               :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Calculator</button>
+          </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
+          <router-link :to="{path: '/utility', query: {utility:'counter'}}">
             <button 
               :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Counter</button>
+          </router-link>
         </Tab>
       </TabList>
       <TabPanels class="flex flex-1 w-full">
