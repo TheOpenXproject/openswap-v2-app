@@ -1,6 +1,6 @@
 <template>
   <div id="utility" class="relative max-w-screen-xl mx-auto items-center flex flex-1 flex-col justify-start xl:px-0 px-3 pt-8 text-gray-500">
-    <TabGroup :defaultIndex="0">
+    <TabGroup :defaultIndex="activatedTab" v-if="activatedTab !== null">
       <TabList class="space-x-2 pb-4" :selectedIndex="activatedTab">
         <Tab  v-slot="{ selected }" as="template">
             <button 
@@ -54,12 +54,38 @@ import RewardsCounter from '@/components/utility/RewardsCounter'
 export default {
   name: 'Utility',
   components: {MainNetContainer, TestNetContainer, OneAddress, RevokeAddress, Calculator, RewardsCounter, TabGroup, TabList, Tab, TabPanels, TabPanel},
+  watch: {
+    $route(to, from) {
+      this.updateTab(to.query.utility)
+    }
+  },
   mounted: function () {
+    this.updateTab(this.$route.query.utility)
   },
   methods: { 
+    updateTab(utilityDesc) {
+      switch (utilityDesc) {
+        case 'networks':
+          this.activatedTab = 0;
+          break;
+        case 'revoker':
+          this.activatedTab = 1;
+          break;
+        case 'calculator':
+          this.activatedTab = 2;
+          break;
+        case 'counter':
+          this.activatedTab = 3;
+          break;
+        default:
+          this.activatedTab = 0;
+          break;
+      }
+    }
   },
   data() {
     return {
+      activatedTab: null,
       oneAddress: '0xC794D74E042126A6FB4333AA7430C9192198EDD0',
       oxAddress: '0xC794D74E042126A6FB4333AA7430C9192198EDD0'
     }
