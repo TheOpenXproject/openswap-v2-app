@@ -1,34 +1,26 @@
 <template>
   <div id="utility" class="relative max-w-screen-xl mx-auto items-center flex flex-1 flex-col justify-start xl:px-0 px-3 pt-8 text-gray-500">
-    <TabGroup :selectedIndex="activatedTab" >
-      <TabList class="space-x-2 pb-4">
-        <Tab>
-          <router-link :to="{path: '/utility', query: {utility:'networks'}}">
+    <TabGroup :defaultIndex="0">
+      <TabList class="space-x-2 pb-4" :selectedIndex="activatedTab">
+        <Tab  v-slot="{ selected }" as="template">
             <button 
-              :class="activatedTab === 0 ? 'bg-slightDark':''"
+              :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Networks Setup</button>
-          </router-link>
         </Tab>
-        <Tab>
-          <router-link :to="{path: '/utility', query: {utility:'revoker'}}">
+        <Tab v-slot="{ selected }" as="template">
             <button 
-              :class="activatedTab === 1 ? 'bg-slightDark':''"
+              :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Revoker</button>
-          </router-link>
         </Tab>
-        <Tab>
-          <router-link :to="{path: '/utility', query: {utility:'calculator'}}">
+        <Tab v-slot="{ selected }" as="template">
             <button 
-              :class="activatedTab === 2 ? 'bg-slightDark':''"
+              :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Calculator</button>
-          </router-link>
         </Tab>
-        <Tab>
-          <router-link :to="{path: '/utility', query: {utility:'counter'}}">
+        <Tab v-slot="{ selected }" as="template">
             <button 
-              :class="activatedTab === 3 ? 'bg-slightDark':''"
+              :class="selected ? 'bg-slightDark':''"
               class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Counter</button>
-          </router-link>
         </Tab>
       </TabList>
       <TabPanels class="flex flex-1 w-full">
@@ -52,8 +44,8 @@
 </template>
 
 <script>
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import MainNetContainer from '@/components/utility/MainNetContainer'
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import TestNetContainer from '@/components/utility/TestNetContainer'
 import OneAddress from '@/components/utility/OneAddress'
 import RevokeAddress from '@/components/utility/RevokeAddress'
@@ -62,38 +54,12 @@ import RewardsCounter from '@/components/utility/RewardsCounter'
 export default {
   name: 'Utility',
   components: {MainNetContainer, TestNetContainer, OneAddress, RevokeAddress, Calculator, RewardsCounter, TabGroup, TabList, Tab, TabPanels, TabPanel},
-  watch: {
-    $route(to, from) {
-      this.updateTab(to.query.utility)
-    }
-  },
   mounted: function () {
-    this.updateTab(this.$route.query.utility)
   },
   methods: { 
-    updateTab(utilityDesc) {
-      switch (utilityDesc) {
-        case 'networks':
-          this.activatedTab = 0;
-          break;
-        case 'revoker':
-          this.activatedTab = 1;
-          break;
-        case 'calculator':
-          this.activatedTab = 2;
-          break;
-        case 'counter':
-          this.activatedTab = 3;
-          break;
-        default:
-          this.activatedTab = 0;
-          break;
-      }
-    }
   },
   data() {
     return {
-      activatedTab: 0,
       oneAddress: '0xC794D74E042126A6FB4333AA7430C9192198EDD0',
       oxAddress: '0xC794D74E042126A6FB4333AA7430C9192198EDD0'
     }
