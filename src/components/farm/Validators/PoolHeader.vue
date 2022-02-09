@@ -23,7 +23,7 @@
                 <i class="las la-coins text-3xl"></i>
               </div>
               <div class="flex flex-1 flex-col space-y-2">
-                <p class="text-sm mt-1">Earn {{pool.name[0]}} and {{pool.name[1]}}</p>
+                <p class="text-sm mt-1">Earn {{pool.name[0]}} and {{pool.name[1]}} from One Rewards which get compounded daily earning you your share of fees from the Exchange's transaction. You earn OpenX from the farm at the same rate as the selected farm's APR from the liquidity added. LP can be unstaked in Farms and withdrawn from Liquidity page.. Refer to Docs for more details.</p>
           
                 
               </div>
@@ -41,10 +41,17 @@
         </svg>
       </div>
       <div v-else>
-        <div class="flex pt-2">
-        <button @click="setCompounding()" class="flex mt-2 items-right justify-center rounded-xl border border-oswapGreen st5 text-oswapGreen hover:bg-oswapGreen hover:text-gray-200 dark:hover:text-slightDark">
-                <p class="text-sm p-1 px-3">Select !</p>
+        <div v-if="this.isActive" class="flex pt-2">
+        <button @click="setCompounding()" class="flex mt-2 items-right justify-center rounded-xl border border-oswapGreen st5 bg-oswapGreen text-gray-200 dark:text-slightDark">
+                <p class="text-sm p-1 px-3">Active!</p>
               </button> 
+
+              </div>
+              <div v-if="!this.isActive"  class="flex pt-2">
+        <button  @click="setCompounding()" class="flex mt-2 items-right justify-center rounded-xl border border-oswapGreen st5 text-oswapGreen hover:bg-oswapGreen hover:text-gray-200 dark:hover:text-slightDark">
+                <p class="text-sm p-1 px-3">Select!</p>
+              </button> 
+              
               </div>
        
             </div>
@@ -63,7 +70,10 @@ import { ethers } from "ethers";
     mixins: [openswap],
     props: {
       pool: Object,
-      poolData: Object
+      poolData: Object,
+      farmPair: String,
+      compActive: Boolean,
+      index: Number
     },
     data() {
       return {
@@ -81,11 +91,18 @@ import { ethers } from "ethers";
         tt1s: '?',
         tas: '?',
         rewards: '0',
-        selected: null
+        selected: null,
+        isActive: false,
       } 
     },
     mounted: async function() {
+      if(this.pool.pairaddress == this.farmPair && this.compActive){
+        this.isActive = true
+      }
+      console.log(this.pool.pairaddress)
+      console.log(this.farmPair)
       this.ttpObj = document.querySelector(`div[tooltipme="tooltip-me_${this.tooltip.name}"]`);
+      console.log(this.ttpObj)
       // Mobile
       // Adjust Tooltips for mobile
       if (this.getWindowSize().width < 768) {
@@ -121,7 +138,7 @@ import { ethers } from "ethers";
       ...mapGetters('farm/farmData', ['getFarmData']),
       setCompounding: async function(){
         console.log(this.poolData.index)
-        this.setValCompounding(this.poolData.index, true)
+        this.setValCompounding(this.poolData.index, true , this.index)
       },
       updatePoolState: function(pool){
       var farmData = this.getFarmData()

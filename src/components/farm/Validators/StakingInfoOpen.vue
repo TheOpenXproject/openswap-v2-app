@@ -7,15 +7,19 @@
           <div class="grid grid-cols-3 gap-3 w-full h-auto items-center p-4">
                 <div class="flex items-center">
                   <i class="las la-sitemap pl-2 text-lg dark:text-oswapGreen"></i>
-                  <p class="text-2xl justify-center pl-2">{{ validator.name }}</p>
+                  <p class="lg-text-2xl md-text-sm pl-2">{{ validator.name }}</p>
                 </div>
                 <div class="flex flex-col text-gray-400 dark:text-gray-300">
-                  <p class="text-xl font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
-                  <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
+                  <p class="text-xl md-text-sm justify-center font-extrabold">{{ prettify(validator.userDelegations) }}</p>
+                  <p class="text-xs md-text-sm justify-center font-bold text-gray-500 dark:text-gray-400">Staked</p>
+                </div>
+                <div class="flex  flex-col xs:hidden ss:hidden sm:hidden text-gray-400 dark:text-gray-300">
+                  <p class="text-xl justify-center md-text-sm font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
+                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Total</p>
                 </div>
                 <div class="flex flex-col text-gray-600 dark:text-gray-200">
-                  <p class="text-xl font-extrabold">{{ validator.totalAPR }} %</p>
-                  <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
+                  <p class="text-xl justify-center  md-text-sm font-extrabold">{{ validator.totalAPR }} %</p>
+                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
                 </div>
           </div>
         </div>
@@ -32,7 +36,7 @@
           </div>
         <div>
         <div class="flex flex-wrap">
-          <StakingInfoTabs :validator="validator" />
+          <StakingInfoTabs v-if="!this.isFifteen()" :validator="validator" />
           <div class="flex w-full">
             <div class="grid w-full xs:grid-cols-2 ss:grid-cols-2 lg:grid-cols-3 gap-2 lg:ml-8 h-auto p-3 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">
               <div class="flex space-x-1">
@@ -137,7 +141,13 @@ export default {
   },
   async mounted() {},
   methods: {
-    
+    isFifteen: function() {
+      if(this.validator.name.includes('15%')){
+        return true
+      } else {
+      return false
+    }
+    },
     selectValidator: function () {
       this.$emit("selectValidator", null);
     },

@@ -50,7 +50,6 @@ export default {
       1666700000: "0xF6D83D9c2CeE668728B6C4db1079A9EcbC821149",
       1337:"0x514196CdA081505a6A3A94b94eCfF9Ed666901Df"
     },
-
     eBUSD: {
       1:"",
       56:"",
@@ -92,7 +91,27 @@ export default {
       1666600000: "https://harmony-0-rpc.gateway.pokt.network",//"https://harmony-0.gateway.pokt.network/v1/lb/618a63ac7335c800360b4ce3",
       1666700000: "https://api.s0.b.hmny.io",
       1337:"http://localhost:7545"
-    },/* v1
+    },
+    validatorContracts: {
+      1:"",
+      56:"",
+      1666600000: {
+          0: {
+            valv4: "",
+            delegateContract: "",
+            registery: ""
+          },
+          1: {
+            valv4: "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57",
+            delegateContract: "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045",
+            registery: "0x41d6eC6451e3e195A6C5AE740C79f3871167D5F8"
+          }
+      },
+      1666700000: "https://api.s0.b.hmny.io",
+      1337:"http://localhost:7545"
+    },
+
+    /* v1
     lockedAddress: {
       1:"",
       56:"",
@@ -144,7 +163,10 @@ export default {
   	},
   	hRPC:(state) => (id) => {
   		return state.harmonyRPC[id];
-  	}
+  	},
+    getValContracts: (state) => (id) => {
+      return state.validatorContracts[id];
+    }
   },
   actions: {},
   modules: {}

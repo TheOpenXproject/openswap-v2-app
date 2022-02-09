@@ -54,7 +54,7 @@
               </button> 
                <div class="w-full"  v-for="(pool, index) in this.compoundableFarms">
               
-                <PoolHeader :pool="pool" :poolData="this.compoundableFarms0[index]" />
+                <PoolHeader :pool="pool" :farmPair="this.validator.farmPair" :compActive="this.validator.isCompounding" :index="this.validator.index" :poolData="this.compoundableFarms0[index]" />
 
               </div>
                <div class="w-full pt-3">
@@ -102,7 +102,9 @@ export default {
       watWallet: "",
       pids: [0,1,11,10,12],
       compoundableFarms: [],
-      compoundableFarms0: []
+      compoundableFarms0: [],
+      isActive: [],
+    
     };
   },
   mounted(){
@@ -118,11 +120,12 @@ export default {
           this.compoundableFarms.push(farms[i].pool)
           farms0[i].index = n
           this.compoundableFarms0.push(farms0[i])
+
         }
 
         n++
       }
-      
+  
     }
     console.log(this.compoundableFarms)
     console.log(this.compoundableFarms0)
@@ -135,19 +138,19 @@ export default {
      ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
      ...mapGetters('farm/farmData', ['getFarmData', 'getFarmPair']),
     delegateVal:async function(){
-      await this.delegateValidator(this.amount,this.validator.address)
+      await this.delegateValidator(this.amount,this.validator.address, this.validator.index)
     },
     unDelegateVal:async function(){
-      await this.unDelegateValidator(this.amount,this.validator.address)
+      await this.unDelegateValidator(this.amount,this.validator.address , this.validator.index)
     },
     setRatioVal:async function(){
-      await this.setRatioValidator(this.amount)
+      await this.setRatioValidator(this.amount, this.validator.index)
     },
     setRewardTo:async function(){
-      await this.setValRewardTo(this.rewardTo)
+      await this.setValRewardTo(this.rewardTo, this.validator.index)
     },
     resetCompounding:async function(){
-      await this.setValCompounding(0, false)
+      await this.setValCompounding(0, false , this.validator.index)
     },
     toggleTabs: function (tabNumber) {
       if(this.watWallet == 'oneWallet'){

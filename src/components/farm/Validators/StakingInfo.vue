@@ -42,33 +42,14 @@ export default {
       farmloaded: Boolean,
   },
   computed: {
-    ...mapGetters("addressConstants", ["hMULTICALL", "hRPC", "oSWAPCHEF"]),
+    ...mapGetters("addressConstants", ["hMULTICALL", "hRPC", "oSWAPCHEF", 'getValContracts']),
   },
   data() {
     return {
       loaded: false,
       validators: [],
       selectedValidator: null,
-      delegateSetterContracts:{
-        0: "0x98824823f4dec035ee3f2912f708029b0ac76bac",
-        1: "0x30DF4c82b35d3ab430C5B7C651e063faA61115b3"
-
-      },
-      delegateDataContracts:{
-        0: "0x3e12DD620Dda61d23CCFFE3755ac142f13880F06",
-        1: '0x3e12DD620Dda61d23CCFFE3755ac142f13880F06'
-      },
-      V4:{
-        0: "0x3e12DD620Dda61d23CCFFE3755ac142f13880F06",
-        1: '0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57'
-      },
-      delegateContracts:{
-        0: "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045",
-        1: "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045"
-
-      },
       validatorAddresses: {
-        
         0: "one1p2e0a0806jv8tqr37k7c8k67zgfjwtzpf9apv2",
         1: "one1j35d0vd4uzwffeawjjfukn8t9wjt8csungj0z0",
 
@@ -76,13 +57,13 @@ export default {
     }
   },
   async mounted() {
-
-   
-      for(let n in this.validatorAddresses){
+      
+      var i = 0;
+      for(var n in this.validatorAddresses){
       await this.getValidatorData(this.validatorAddresses[n], n)
       await this.getUserData(this.validatorAddresses[n])
-      await this.getContractInfo(n);
-
+      await this.getContractInfo(n, i);
+      i++;
       }    
       this.loaded = true
     
@@ -154,7 +135,7 @@ export default {
           val.userDelegations = (userValInfo.result[n].amount.toLocaleString('fullwide', { useGrouping: false }) /10**18).toFixed(2)
          
             for(var x in userValInfo.result[n].Undelegations){
-              console.log("shityo")
+           
               console.log((userValInfo.result[n].Undelegations[x].Amount / 10**18).toFixed(2))
             if(userValInfo.result[n].Undelegations.length>0){
               console.log((userValInfo.result[n].Undelegations[x].Amount / 10**18).toFixed(2))
@@ -173,31 +154,40 @@ export default {
     },
     getContractInfo: async function(n){
       const MULTICALL = this.hMULTICALL(this.getChainID());
+      const valContracts = this.getValContracts(this.getChainID())
+      console.log( valContracts[n])
+      const valContract = valContracts[1]
+      
       const RPC = this.hRPC(this.getChainID());
      
         let CALL = [];
         //uint256 public proposalCount;
         const addr = this.getUserAddress()
-        console.log(n)
+       
     CALL.push({
-      target: this.V4[1],
+      target: valContract.valv4,
       call: ['getPendingRewards(address)(uint256)', addr],
       returns: [['pending : ', (val) => val]]
     })
     CALL.push({
-      target: this.V4[1],
+      target: valContract.valv4,
       call: ['isCompoundingEnabled(address)(bool)', addr],
       returns: [['isComp : ', (val) => val]]
     })
     CALL.push({
-      target: this.V4[1],
+      target: valContract.valv4,
       call: ['rewardTo(address)(address)', addr],
       returns: [['rewTo : ', (val) => val]]
     })
     CALL.push({
-      target: this.delegateContracts[1],
+      target: valContract.delegateContract,
       call: ['getRatio(address)(uint256)', addr],
       returns: [['oxratio : ', (val) => val]]
+    })
+    CALL.push({
+      target: valContract.registery,
+      call: ['getPairFromRegisteryByAddress(address)(address, address, address, uint256)', addr],
+      returns: [['farma : ', (val) => val],['oxrdatio : ', (val) => val],['oxrwatio : ', (val) => val],['oxrsatio : ', (val) => val]]
     })
         var results = [];
       
@@ -233,13 +223,18 @@ export default {
       this.validators[n].totalAPR = (parseFloat(addedAPR) + parseFloat(this.validators[n].apr)).toFixed(2)
       this.validators[n].usdValueDelegated = parseFloat(onePrice * this.validators[n].userDelegations).toFixed(2)
       this.validators[n].isCompounding = results[1].value
+      this.validators[n].farmPair = results[6].value
+      this.validators[n].index = n
       if(results[2].value == "0x0000000000000000000000000000000000000000"){
         this.validators[n].rewardTo = addr;
       }else{
         this.validators[n].rewardTo = results[2].value
       }
+
+      console.log(results[6].value)
       
       if(n == 0){
+        this.validators[n].isCompounding = results[1].value
         this.validators[n].oneStaked = "NA"
         this.validators[n].oxratio = "NA"
         this.validators[n].earnedOne = "NA"

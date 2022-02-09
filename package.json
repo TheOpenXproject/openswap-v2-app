@@ -1,6 +1,6 @@
 {
   "name": "oswap-app",
-  "version": "2.3.2",
+  "version": "2.3.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -55,6 +55,8 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "eslint": "^8.8.0",
+    "eslint-loader": "^4.0.2",
     "jshint": "^2.13.0",
     "magic-snowflakes": "^6.0.0",
     "prerender-spa-plugin": "^3.0.0-beta.2",

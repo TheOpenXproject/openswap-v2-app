@@ -33,7 +33,7 @@ import { toastMe } from '@/components/toaster/toaster.js';
 export default {
   created: function () {},
   computed: {
-    ...mapGetters('addressConstants', ['oSWAPMAKER', 'oSWAPCHEF','WONE' , 'UNIROUTERV2', 'OPENSWAPBRIDGE','oSWAPTOKEN', 'bBUSD', 'eBUSD', 'eUSDC', 'bUSDC', 'lockedAddress']),
+    ...mapGetters('addressConstants', ['oSWAPMAKER', 'oSWAPCHEF','WONE' , 'UNIROUTERV2', 'OPENSWAPBRIDGE','oSWAPTOKEN', 'bBUSD', 'eBUSD', 'eUSDC', 'bUSDC', 'lockedAddress','getValContracts']),
     ...mapGetters('wallet', ['getStateProvider'])
   },
   methods: {
@@ -2220,10 +2220,11 @@ export default {
       const value2 = amount.sub(value);
       return value2;
     },//21.6186
-    setValRewardTo: async function(addr){
+    setValRewardTo: async function(addr, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = MultiTransfer.abi;
-      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2303,10 +2304,11 @@ export default {
       }
 
     },
-      setValCompounding: async function(id, active){
+      setValCompounding: async function(id, active, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = MultiTransfer.abi;
-      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2386,10 +2388,11 @@ export default {
       }
 
     },
-    setRatioValidator: async function(amount){
+    setRatioValidator: async function(amount, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = DelegatorContract.abi;
-      const delContractAddr = "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].delegateContract;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2481,7 +2484,7 @@ export default {
       }
       hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.undelegate({
@@ -2525,7 +2528,7 @@ export default {
       }
       hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({
@@ -2560,7 +2563,7 @@ export default {
     delegateValidatorMetamaskTestingStuff: async function(amountIn, valAddr){
         hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({
