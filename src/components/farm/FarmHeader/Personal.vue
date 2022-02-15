@@ -13,39 +13,45 @@
           <i class="las la-percent text-3xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">{{PAPR}}</p>
+          <p class="ss:text-md xs:text-md font-extrabold">{{this.getUserAPR().toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
         </div>
       </div>
+<div class="flex items-center space-x-3 w-full">
+        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
+          <i class="las la-percent text-3xl dark:text-oswapGreen"></i>
+        </div>
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
+          <p class="ss:text-md xs:text-md font-extrabold">{{parseFloat(this.getPendingRewards()).toFixed(2)}} / $ {{pendingValue}}</p>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
+        </div>
+      </div>
 
+
+    <div class="grid grid-cols-2 gap-3 w-full">
 <div class="flex items-center space-x-3 w-full">
         <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
           <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(parseFloat(TVL).toFixed(2))}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(this.getUserStake().toFixed(2))}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
         </div>
       </div>
 </div>
-      <div class="grid grid-cols-2 gap-3 w-full">
-      <div class="flex items-center space-x-3 w-full mt-6 col-span-2">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-coins text-3xl dark:text-oswapGreen"></i>
-        </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-xl xs:text-md font-extrabold">{{parseFloat(REWARDS).toFixed(2)}} / $ {{pendingValue}}</p>
-          <p class="text-md font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
-          
-        </div>
-      </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-        <button @click="collectAllButton" class="flex mt-2 h-8 items-center justify-center rounded-md text-oswapGreen bg-slightGray dark:bg-slightDark w-48 hover:bg-oswapGreen hover:text-slightGray dark:hover:text-slightDark dark:hover:bg-oswapGreen">
+      
+
+<div class="flex items-center space-x-3 w-full">
+        
+        <button @click="collectAllButton" class="flex mt-2 h-8 items-center justify-center rounded-md  w-48 bg-oswapGreen text-slightGray dark:text-slightDark dark:bg-oswapGreen">
             <p class="text-sm">Claim All</p>
           </button>
-          </div>
+        
       </div>
-    
+</div>
+
+
+
 
   </div>
   
@@ -62,9 +68,6 @@
     name: 'Personal',
     mixins: [openswap],
     props: {
-      TVL: Number,
-      PAPR: Number,
-      REWARDS: Number
     },
     data() {
       return {
@@ -92,10 +95,11 @@
     },
     computed: {
       pendingValue: function() {
-        return this.prettify(String(parseFloat(this.REWARDS * this.oswapPrice).toFixed(2)))
+        return this.prettify(String(parseFloat(this.getPendingRewards() * this.oswapPrice).toFixed(2)))
       }
     },
     methods: {
+      ...mapGetters("farm/farmData", [ "getPendingRewards","getUserStake", "getTVL", "getUserAPR"]),
       ...mapGetters('wallet', ['getUserSignedIn']),
       prettify: function(number){
         return  ethers.utils.commify(number)

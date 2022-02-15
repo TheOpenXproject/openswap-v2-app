@@ -35,7 +35,8 @@ export default {
   name: 'WalletButton',
   mixins: [wallet],
   async mounted() {
-    let wallet = localStorage.getItem("walletmode");
+    const wallet = localStorage.getItem("walletmode");
+
     if(wallet !== undefined){
       await this.autoConnect()
     }
@@ -52,7 +53,7 @@ export default {
     ...mapActions('wallet', ['switchWalletType']),
     
     connect: async function() {
-     let wallet = localStorage.getItem("walletmode");
+     const wallet = localStorage.getItem("walletmode");
       if(wallet !== null){
         if (wallet == '0') {
           this.connectMetamaskWallet()

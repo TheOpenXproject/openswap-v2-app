@@ -1,21 +1,19 @@
 <template>
-  <div class="flex flex-col p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray border-l border-oswapGreen rounded-3xl">
+  <div class="flex flex-col p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray rounded-3xl border-l border-oswapGreen">
     <!-- Header -->
-     <PoolHeader :pool="pool" @updateAPR="updateAPR" :poolData="poolData"/>
+    <PoolHeader  :pool="pool" />
     <!-- Body -->
-    <div class="flex flex-col h-full mt-3 relative">
+    <div class="flex flex-col h-full mt-3 pb-3 relative">
       <!-- Show this when pool details is closed -->
-      <PoolStatsClosed @updateTVL="updateTVL" @setPool="setPool" :poolData="poolData" :pool="pool"  :isOpen="poolStatsOff" />
+      <PoolStatsClosed @setPool="setPool" :isOpen="poolStatsOff" :pool="pool" />
 
-      <!-- <div v-if="isOpen" class="fixed inset-0 bg-gray-700 bg-opacity-30"></div> -->
-      <!-- Show this when pool details is opened -->
-      <PoolStatsInfo :isOpen="poolStatsOn" :poolData="poolData" :pool="pool" @rewardsPerTime="rewardsPerTime" @setPool="setPool" />
+      
+      <PoolStatsInfo   :isOpen="poolStatsOn" :pool="pool" @setPool="setPool" />
 
-      <!-- Show this when the pool is opened and clicked on Stake -->
-      <PoolStake :isOpen="poolStakeOn" :maxAmount="poolData.lpBalance" :pool="pool" @setPool="setPool" />
+     
+      <PoolStake :isOpen="poolStakeOn" :maxAmount="pool.user.lpTokenBalBigString" :pool="pool" @setPool="setPool"   />
 
-      <!-- Show this when the pool is opened and clicked on Unstake -->
-      <PoolUnstake :isOpen="poolUnstakeOn" :maxAmount="poolData.lpBalanceStaked"  @updateData="updateData" :pool="pool" @setPool="setPool" />
+          <PoolUnstake :isOpen="poolUnstakeOn" :maxAmount="pool.user.lpStakedBalBigString" :pool="pool" @setPool="setPool" />
     </div>
   </div>
 </template>

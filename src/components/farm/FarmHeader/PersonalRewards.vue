@@ -10,28 +10,28 @@
 
       <div class="flex space-x-1 w-full">
         <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">${{(getWeekly/7).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">${{(this.getUserRewardsPerWeek()/7).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Daily</p>
         </div>
       </div>
 
       <div class="flex  space-x-3 w-full">
         <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">${{getWeekly}}</p>
+          <p class="ss:text-md xs:text-md font-extrabold">${{this.getUserRewardsPerWeek().toFixed(1)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
         <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg text font-extrabold">${{getMonthly}}</p>
+          <p class="ss:text-md xs:text-lg text font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
         <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">${{(getMonthly * 12).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-md font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34 * 12).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Yearly</p>
         </div>
       </div>
@@ -51,7 +51,6 @@
     name: 'Personal',
     mixins: [openswap],
     props: {
-      rewardsPerTime: Object
     },
     data() {
       return {
@@ -105,7 +104,8 @@
       
     },
     methods: {
-      ...mapGetters('wallet', ['getUserSignedIn']),
+      ...mapGetters('wallet', ['getUserSignedIn']),//getUserRewardsPerWeek
+      ...mapGetters('farm/farmData', ['getUserRewardsPerWeek']),
       prettify: function(number){
         return  ethers.utils.commify(number)
       },

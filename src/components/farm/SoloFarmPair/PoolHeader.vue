@@ -6,10 +6,10 @@
       <div class="absolute items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
         <img :src="pool.imgtoken0" class="h-8 w-8">
       </div>
-      
+      <!-- Icon token1 -->
       <!-- Pair Title -->
-      <div class="absolute left-10 pl-5 items-center justify-center flex h-12 space-x-2">
-        <p class="text-xs text-oswapBlue-light">{{pool.name[0]}}</p>
+      <div class="absolute left-20 pl-2 items-center justify-center flex h-12 space-x-2">
+        <p class="text-xs text-oswapBlue-light">{{pool.pair}}</p>
         <tooltip-me>
           <i class="las la-exclamation-circle text-xl transform rotate-180 hover:text-oswapGreen"></i>
           <tooltip-me-content :options="tooltip"
@@ -23,8 +23,11 @@
               <div class="flex flex-1 flex-col space-y-2">
                 <p class="text-sm mt-1">Total Staked</p>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.name[0]}} Staked: {{tas}}</p>
+                  <p>{{pool.pair}} Staked: {{pool.totalStaked}}</p>
                 </div>
+        
+           
+
               </div>
             </div>
           </tooltip-me-content>
@@ -33,15 +36,9 @@
     </div>
     <!-- Header right side -->
     <div class="flex h-10 w-20 items-center justify-end pr-2">
-      <div v-if="!this.rewards" class="flex flex-1 items-center justify-end">
-        <svg class="animate-spin h-7 w-7 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </div>
-      <div v-else>
+      <div>
         <p class="ss:text-xs xs:text-sm xl:text-xs lg:text-xs lgg:text-xs font-bold text-oswapGreen-dark group-hover:text-oswapGreen italic">APR: </p>
-        <p class="ss:text-xs xs:text-sm xl:text-sm lg:text-sm lgg:text-sm font-bold text-oswapGreen-dark group-hover:text-oswapGreen italic"> {{this.rewards}} %</p>
+        <p class="ss:text-xs xs:text-sm xl:text-sm lg:text-sm lgg:text-sm font-bold text-oswapGreen-dark group-hover:text-oswapGreen italic"> {{this.pool.apr.toFixed(2)}} %</p>
       </div>
     </div>
   </div>
@@ -57,8 +54,7 @@
     name: 'PoolHeader',
     mixins: [openswap],
     props: {
-      pool: Object,
-      poolData: Object
+      pool: Object
     },
     data() {
       return {
@@ -102,23 +98,6 @@
         }
       });
 
-     var rewardValue = await this.getRewardValue(this.pool, 100)
-      setTimeout(async function (){
-        var poolData = this.updatePoolState(this.pool);
-        this.tas = ethers.utils.commify(parseFloat(this.getEthUnits(this.poolData.lpStakedTotal)).toFixed(5));
-        var liquidityValue = parseFloat(await this.getLiquidityValueSolo(this.pool, this.poolData.lpStakedTotal))
-        if(liquidityValue !== undefined){
-          this.rewards = parseFloat( ((rewardValue[1] / liquidityValue) * 12) * 100).toFixed(2)
-        }
-
-         
-      }.bind(this), 1000);
-
-      var APRData = {}
-      APRData.pAPR = this.rewards
-      APRData.tAPR = this.rewards
-      APRData.staked = this.poolData.lpBalanceStaked
-      this.$emit("updateAPR", APRData)
     },
     methods: {
       ...mapGetters('farm/farmData', ['getSoloData']),

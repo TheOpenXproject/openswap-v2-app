@@ -19,7 +19,7 @@
               </div>
               <div class="flex flex-col h-full justify-between">
                 <p class="text-xs text-oswapBlue-light">LP Tokens Staked</p>
-                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(this.maxAmount)).toFixed(5)}}</p>
+                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(pool.user.lpStakedBalBigString)).toFixed(5)}}</p>
               </div>
             </div>
             <div class="flex items-center justify-end group-scope">
@@ -112,7 +112,7 @@
         buttonState: 'disabled',
       }
     },
-    mounted() {
+     mounted() {
       this.buttonState = 'executing'
 
       if ( this.maxAmount > 0 ) {
@@ -125,12 +125,10 @@
       unstake: async function() {
         this.buttonState = 'executing';
         await this.unstakeLP(this.pool, this.amount);
-        this.buttonState = 'finished';
-        this.$emit("updateData")
+        this.buttonState = 'active';
       },
       setMax() {
-        
-        this.amount = this.getEthUnits(this.maxAmount.toString());
+        this.amount = this.getEthUnits(this.maxAmount);
       },
       setPool() {
         // reset Input
@@ -147,7 +145,7 @@
         this.amount = value;
         // Checking if the input is in the right format.
         // parseFloat seems to behave like this regex rule.
-        if (parseFloat(this.getEthUnits(this.maxAmount)) == 0) {
+        if (parseFloat(this.maxAmount) == 0) {
           this.errors['zeroStaked'] = 'Your don\'t have anything staked!';
         } else {
           delete this.errors['zeroStaked'];

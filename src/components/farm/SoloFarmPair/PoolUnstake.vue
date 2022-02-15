@@ -19,7 +19,7 @@
               </div>
               <div class="flex flex-col h-full justify-between">
                 <p class="text-xs text-oswapBlue-light">LP Tokens Staked</p>
-                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(this.maxAmount)).toFixed(5)}}</p>
+                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(pool.user.lpStakedBalBigString)).toFixed(5)}}</p>
               </div>
             </div>
             <div class="flex items-center justify-end group-scope">
@@ -125,7 +125,7 @@
       unstake: async function() {
         this.buttonState = 'executing';
         await this.unstakeLP(this.pool, this.amount);
-        this.buttonState = 'finished';
+        this.buttonState = 'active';
       },
       setMax() {
         this.amount = this.getEthUnits(this.maxAmount);

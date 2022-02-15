@@ -1,547 +1,130 @@
 <template>
   <div id="farm" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center justify-center oswap-layout xl:px-0 px-3 text-gray-500">
     <transition name="fall" appear>
-      <FarmHeader v-if="soloData" :data="farmHeaderData" :rewardsPerTime="rewardsPerTimeObj" @updateData="getTotalPending" />
+      <FarmHeader v-if="this.getFarms() != null" />
     </transition>
 
     <transition name="fall" appear>
-      <div class="flex-wrap w-full">
-        <StakingInfo v-if="loaded" :farmloaded="loaded"/>
+      <div v-if="this.getFarms() != null" class="flex-wrap w-full">
+        <StakingInfo />
       </div>
     </transition>
 
     <transition name="fall" appear>
-      <div class="w-full" v-if="soloData != null && farmData != null && pairsLoaded">
+      <div class="w-full" v-if="this.getFarms() != null && this.getSoloFarms() != null">
         <div class="flex flex-none p-2 my-2">
-            <SwitchGroup>
-              <div class="flex items-center">
-                <SwitchLabel class="mr-4">Show only staked pools</SwitchLabel>
-                <Switch
-                  v-model="enabled"
-                  @click="setEnabled(enabled)"
-                  :class='enabled ? "bg-oswapGreen-dark" : "bg-gray-500"'
-                  class="relative inline-flex items-center h-4 transition-colors rounded-full w-10 focus:outline-none"
-                >
-                  <span
-                    :class='enabled ? "translate-x-6 bg-opaqueDark-light" : "translate-x-1 bg-white dark:bg-oswapDark-dark"'
-                    class="inline-block w-4 h-4 transition-transform transform rounded-full"
-                  />
-                </Switch>
-              </div>
-            </SwitchGroup>
-        </div>
-        <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-          <template v-for="(pool, index) in this.SoloPools"  :key="index">
-            <SoloFarmPair  :class="parseFloat(this.getEthUnits(soloData[pool.i]?.lpBalanceStaked)).toFixed(5) > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @rewardsPerTime="rewardsPerTime" :poolData="soloData[pool.i]" :pool="pool" @updateData="updateData" />
-          </template>
-          <template v-for="(pool, index) in this.Pools"  :key="index">
-            <FarmPair :class="farmData[pool.i]?.stakeWeight > 0 || !enabled ? '':'hidden'" @updateTVL="updateTVL" @updateAPR="updateAPR" @rewardsPerTime="rewardsPerTime" :poolData="farmData[pool.i]" :pool="pool" @updateData="updateData" />
-          </template>
-        </div>
+          <SwitchGroup>
+            <div class="flex items-center">
+              <SwitchLabel class="mr-4">Show only staked pools</SwitchLabel>
+              <Switch
+              v-model="enabled"
+              @click="setEnabled(enabled)"
+              :class='enabled ? "bg-oswapGreen-dark" : "bg-gray-500"'
+              class="relative inline-flex items-center h-4 transition-colors rounded-full w-10 focus:outline-none"
+              >
+              <span
+              :class='enabled ? "translate-x-6 bg-opaqueDark-light" : "translate-x-1 bg-white dark:bg-oswapDark-dark"'
+              class="inline-block w-4 h-4 transition-transform transform rounded-full"
+              />
+            </Switch>
+          </div>
+        </SwitchGroup>
       </div>
+      <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-1 gap-3 w-full">
+          
+          <template v-for="(solopool, index) in this.getSoloFarms()"  :key="index">
+            <SoloFarmPair :class="parseFloat(solopool.user.lpStakedBal).toFixed(5) > 0 || !enabled ? '':'hidden'" :pool="solopool" />
+          </template>
+        
+        <template  v-for="(pool, index) in this.getFarms()"  :key="index">
+          <FarmPair :class="parseFloat(pool.user.lpStakedBal).toFixed(5) > 0 || !enabled ? '':'hidden'" :pool="pool" />
+        </template>
+      </div>
+    </div>
 
-      <div v-else class="flex h-full items-center mt-16">
-        <Loading/>
-      </div>
-    </transition>
-  </div>
+    <div v-else class="flex h-full items-center mt-16">
+      <Loading/>
+    </div>
+  </transition>
+</div>
 </template>
 
 <script>
-import FarmHeader from "@/components/farm/FarmHeader";
-import Loading from "@/components/Loading";
-import FarmPair from "@/components/farm/FarmPair";
-import SoloFarmPair from "@/components/farm/SoloFarmPair";
-import StakingInfo from "@/components/farm/Validators/StakingInfo";
-import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
-import openswap from "@/shared/openswap.js";
+  import Loading from "@/components/Loading";
+  import FarmHeader from "@/components/farm/FarmHeader";
+  import FarmPair from "@/components/farm/FarmPair";
+  import SoloFarmPair from "@/components/farm/SoloFarmPair";
+  import StakingInfo from "@/components/farm/Validators/StakingInfo";
+  import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
+  import openswap from "@/shared/openswap.js";
 
-import { createWatcher } from "@makerdao/multicall";
-import { mapGetters, mapActions } from "vuex";
+  import { createWatcher } from "@makerdao/multicall";
+  import { mapGetters, mapActions } from "vuex";
 
-const { pools } = require("@/store/modules/farm/pools.js");
+  const { pools } = require("@/store/modules/farm/pools.js");
+  export default {
+    name: "Farm",
+    mixins: [openswap],
+    components: {
+      FarmHeader,
+      Loading,
+      FarmPair,
+      SoloFarmPair,
+      StakingInfo,
+      Switch, 
+      SwitchGroup, 
+      SwitchLabel 
+    },
+    mounted: async function () {
 
-export default {
-  name: "Farm",
-  mixins: [openswap],
-  components: {
-    FarmHeader,
-    Loading,
-    FarmPair,
-    SoloFarmPair,
-    StakingInfo,
-    Switch, 
-    SwitchGroup, 
-    SwitchLabel 
-  },
-  mounted: async function () {
-    await this.getTokenPrices();
-    await this.loadFarmPairs(pools[this.getChainID()].pools);
 
-    let timeout;
 
-    if (this.getUserSignedIn()) {
-      timeout = 1;
-    } else {
-      timeout = 1000;
-    }
-    this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'true' ? true : false;
-    await setTimeout(
-      async function () {
-        this.Pools = pools[this.getChainID()].pools;
-        this.SoloPools = pools[this.getChainID()].SoloPools;
-        this.farmData = await this.initMulticall(this.Pools);
-        this.setFarmDataState(this.farmData);
 
-        this.soloData = await this.initSoloMulticall(this.SoloPools);
-        this.setSoloDataState(this.soloData);
-        console.log(this.soloData)
-        this.loaded = true
-      }.bind(this),
-      timeout
-    );
-  },
-  data() {
-    return {
-      enabled: false,
-      loaded:false,
-      Pools: null,
-      SoloPools: null,
-      farmData: null,
-      soloData: null,
-      haveWarnings: true,
-      warnings: {},
-      rewardsPerTimeObj: {
-        monthly: [],
-        weekly: [],
-      },
-      farmHeaderData: {
-        rewardsPending: 0,
-        TVL: 0,
-        PVL: 0,
-        APRs: {
-          pAPR: 0,
-          tAPR: 0,
+
+    },
+    data() {
+      return {
+        enabled: false,
+        loaded:false,
+        Pools: null,
+        SoloPools: null,
+        farmData: null,
+        soloData: null,
+        haveWarnings: true,
+        warnings: {},
+        rewardsPerTimeObj: {
+          monthly: [],
+          weekly: [],
         },
-        chartData: {
-          name: [],
-          liquidity: [],
+        farmHeaderData: {
+          rewardsPending: 0,
+          TVL: 0,
+          PVL: 0,
+          APRs: {
+            pAPR: 0,
+            tAPR: 0,
+          },
+          chartData: {
+            name: [],
+            liquidity: [],
+          },
         },
+      };
+    },
+    computed: {
+      ...mapGetters("addressConstants", ["oSWAPMAKER", "oSWAPCHEF", "hMULTICALL", "hRPC"]),
+    },
+    methods: {
+      ...mapGetters("farm/farmData", [ "getFarms", "getSoloFarms"]),
+      ...mapGetters("wallet", [ "getUserAddress"]),
+      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek"]),
+      setEnabled: function (value) {
+        localStorage.setItem("oSwap\_enable_farms", value);
+        console.log(value)
       },
-    };
-  },
-  computed: {
-    ...mapGetters("addressConstants", ["oSWAPMAKER", "oSWAPCHEF", "hMULTICALL", "hRPC"]),
-  },
-  methods: {
-    ...mapGetters("wallet", ["getUserAddress", "getUserSignedIn", "getChainID"]),
-    ...mapActions("farm/farmData", ["setFarmDataState", "setSoloDataState", "setCustomDataState", "setFarmPair"]),
-    setEnabled: function (value) {
-      localStorage.setItem("oSwap\_enable_farms", value);
-      console.log(value)
-    },
-    updateTVL: function (TVLData) {
-      this.farmHeaderData.TVL = this.farmHeaderData.TVL + TVLData.pool.TVL;
-
-      // sends info to chart
-      this.farmHeaderData.chartData.name.push(TVLData.pool.name);
-      this.farmHeaderData.chartData.liquidity.push(TVLData.pool.TVL);
-
-      this.farmHeaderData.PVL = this.farmHeaderData.PVL + TVLData.pvl;
-    },
-    rewardsPerTime(value) {
-      this.rewardsPerTimeObj.monthly.push(value.monthlyRewards);
-      this.rewardsPerTimeObj.weekly.push(value.weeklyRewards);
-    },
-    updateAPR: function (APRData) {
-      if (APRData.staked > 0) {
-        if (this.farmHeaderData.APRs.pAPR == 0) {
-          this.farmHeaderData.APRs.pAPR = this.farmHeaderData.APRs.pAPR + parseFloat(APRData.pAPR);
-        } else {
-          this.farmHeaderData.APRs.pAPR = parseFloat((parseFloat(this.farmHeaderData.APRs.pAPR) + parseFloat(APRData.pAPR)) / 2).toFixed(1);
-        }
-      } else if (this.farmHeaderData.APRs.tAPR == 0) {
-        this.farmHeaderData.APRs.tAPR = this.farmHeaderData.APRs.tAPR + parseFloat(APRData.tAPR);
-      } else {
-        this.farmHeaderData.APRs.tAPR = parseFloat((parseFloat(this.farmHeaderData.APRs.tAPR) + parseFloat(APRData.pAPR)) / 2).toFixed(1);
+      updateFarms: async function(){
+        this.Pools = this.getFarms();
       }
     },
-
-    loadFarmPairs: async function (farms) {
-      //let chain = 1666600000
-      /*const [
-      ONE,
-
-      BUSD,
-      EUSDC,
-      BUSDC] = await Promise.all([
-        new Token(
-                chain,
-                this.WONE(chain),
-                18
-                ),
-        new Token(
-                chain,
-                this.bBUSD(chain),
-                18
-                ),
-        new Token(
-                chain,
-                this.eUSDC(chain), //eusdc
-                6
-                ),
-        new Token(
-                chain,
-                this.bUSDC(chain), //busdc
-                18
-                )
-      ]);
-
-      const pairTHATEXISTS = await Fetcher.fetchPairData(BUSD, ONE)
-
-      const [
-             pair01,
-             paira,
-             pairab,
-             pairc
-             
-            ] = await Promise.all([
-              Fetcher.fetchPairData(ONE, BUSD).catch(() => {
-                      return pairTHATEXISTS
-              }), 
-              Fetcher.fetchPairData(ONE, EUSDC).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(BUSDC, EUSDC).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(EUSDC, BUSDC).catch(() => {
-                      return pairTHATEXISTS
-              })
-            ]);
-        let prepair = [];
-        prepair[0] = pair01;
-        prepair[1] = paira;
-        prepair[2] = pairab;
-        prepair[3] = pairc;
-    */
-      let pairs = [];
-      let farm;
-      let i = 0;
-      for (farm in farms) {
-        let pair = this.getPairByAddressFarm(farms[farm].token0address, farms[farm].token1address);
-
-        pairs[i] = pair;
-        i++;
-      }
-      // pairs = pairs.concat(prepair);
-      pairs = await Promise.all(pairs);
-      this.setFarmPair(pairs);
-      this.pairsLoaded = true;
-    },
-    updateData: async function () {
-      this.farmData = await this.initMulticall(this.Pools);
-      this.setFarmDataState(this.farmData);
-
-      this.soloData = await this.initMulticall(this.SoloPools);
-      this.setSoloDataState(this.soloData);
-    },
-
-    getTotalPending: async function () {
-      let temp = 0;
-
-      let userAddress = this.getUserAddress();
-      const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
-      var i = 0;
-      var poolByIndex = [];
-      var CALL = [];
-      for (var n in this.SoloPools) {
-        //LP Balance CALLS
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(this.SoloPools[n].pid), userAddress],
-          returns: [["PENDING_OF_SOLO_" + n, (val) => val]],
-        });
-      }
-      for (var n in this.Pools) {
-        //LP Balance CALLS
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(this.Pools[n].pid), userAddress],
-          returns: [["PENDING_OF_" + n, (val) => val]],
-        });
-      }
-
-      const MULTICALL = this.hMULTICALL(this.getChainID());
-      const RPC = this.hRPC(this.getChainID());
-
-      var results = [];
-
-      const config = {
-        rpcUrl: RPC,
-        multicallAddress: MULTICALL,
-      };
-
-      const watcher = createWatcher(CALL, config);
-
-      watcher.subscribe((update) => {
-        results.push(update);
-      });
-      watcher.start();
-      await watcher.awaitInitialFetch();
-
-      watcher.stop();
-
-      for (var n in results) {
-        temp = temp + parseFloat(this.getEthUnits(results[n].value.toString()));
-      }
-
-      this.farmHeaderData.rewardsPending = temp;
-    },
-    initMulticall: async function (pools) {
-      //const OPENMAKER = this.oSWAPMAKER();
-      const MULTICALL = this.hMULTICALL(this.getChainID());
-      const RPC = this.hRPC(this.getChainID());
-      const [CALL, poolByIndex] = this.generateCalls(pools);
-      var results = [];
-      const config = {
-        rpcUrl: RPC,
-        multicallAddress: MULTICALL,
-      };
-
-      const watcher = createWatcher(CALL, config);
-
-      watcher.subscribe((update) => {
-        results.push(update);
-      });
-      watcher.start();
-      await watcher.awaitInitialFetch();
-
-      var res = await this.parseResults(results, poolByIndex);
-      watcher.stop();
-
-      return res;
-    },
-    initSoloMulticall: async function (pools) {
-      //const OPENMAKER = this.oSWAPMAKER();
-      const MULTICALL = this.hMULTICALL(this.getChainID());
-      const RPC = this.hRPC(this.getChainID());
-      const [CALL, poolByIndex] = this.generateSoloCalls(pools);
-      var results = [];
-
-      const config = {
-        rpcUrl: RPC,
-        multicallAddress: MULTICALL,
-      };
-
-      const watcher = createWatcher(CALL, config);
-
-      watcher.subscribe((update) => {
-        results.push(update);
-      });
-      watcher.start();
-      await watcher.awaitInitialFetch();
-
-      var res = await this.parseSoloResults(results, poolByIndex);
-      watcher.stop();
-      return res;
-    },
-    parseResults: async function (results, poolByIndex) {
-      let count = results.length;
-
-      var dataObj = {};
-      var numOfCallsPerPool = 8;
-      var i, j, temporary;
-      var pid = 0;
-      for (i = 0, j = results.length; i < j; i += numOfCallsPerPool) {
-        let farmData = {
-          pool: null,
-          lpBalance: null,
-          lpBalanceStaked: null,
-          lpStakedTotal: null,
-          lpTokenTotalSupply: null,
-          pendingReward: null,
-          token0Pstaked: null,
-          token1Pstaked: null,
-          token0Tstaked: null,
-          token1Tstaked: null,
-          tvalue0: null,
-          tvalue1: null,
-        };
-        temporary = results.slice(i, i + numOfCallsPerPool);
-        farmData.pool = poolByIndex[pid];
-        farmData.lpBalance = temporary[0].value;
-        farmData.lpBalanceStaked = temporary[3].value;
-        farmData.lpStakedTotal = temporary[1].value;
-        farmData.lpTokenTotalSupply = temporary[4].value;
-        farmData.pendingReward = temporary[2].value;
-        farmData.token0Tstaked = temporary[5].value;
-        farmData.token1Tstaked = temporary[6].value;
-        farmData.stakeWeight = this.getStakeWeight(temporary[1].value, temporary[3].value);
-        farmData.token0Pstaked = this.getPersonalAmounts(farmData.stakeWeight, farmData.token0Tstaked);
-        farmData.token1Pstaked = this.getPersonalAmounts(farmData.stakeWeight, farmData.token1Tstaked);
-
-        dataObj[pid] = farmData;
-        pid++;
-      }
-
-      return dataObj;
-    },
-    getStakeWeight(amountStaked, totalStaked) {
-      let ps = parseFloat(this.getFormatedUnitsDecimals(amountStaked, 18));
-
-      let ts = parseFloat(this.getFormatedUnitsDecimals(totalStaked, 18));
-
-      if (ps == 0) {
-        return 0;
-      }
-
-      return (ts / ps) * 100;
-    },
-    getPersonalAmounts: function (weight, amount, decimals) {
-      weight = this.getBN(String((weight * 10000000).toFixed(0)));
-      let hund = this.getBN("100");
-      let mil = this.getBN("10000000");
-
-      if (weight == 0) {
-        return 0;
-      }
-
-      return amount.mul(weight).div(hund).div(mil);
-    },
-    parseSoloResults: async function (results, poolByIndex) {
-      let count = results.length;
-
-      var dataObj = {};
-      var numOfCallsPerPool = 5;
-      var i, j, temporary;
-      var pid = 0;
-      for (i = 0, j = results.length; i < j; i += numOfCallsPerPool) {
-        let farmData = {
-          pool: null,
-          lpBalance: null,
-          lpBalanceStaked: null,
-          lpStakedTotal: null,
-          lpTokenTotalSupply: null,
-          pendingReward: null,
-          token0Pstaked: null,
-          token1Pstaked: null,
-          token0Tstaked: null,
-          token1Tstaked: null,
-          tvalue0: null,
-          tvalue1: null,
-        };
-        temporary = results.slice(i, i + numOfCallsPerPool);
-        farmData.pool = poolByIndex[pid];
-        farmData.lpBalance = temporary[0].value;
-        farmData.lpBalanceStaked = temporary[3].value;
-        farmData.lpStakedTotal = temporary[1].value;
-        farmData.lpTokenTotalSupply = temporary[4].value;
-        farmData.pendingReward = temporary[2].value;
-
-        dataObj[pid] = farmData;
-        pid++;
-      }
-
-      return dataObj;
-    },
-    generateCalls: function (pools) {
-      let CALL = [];
-      let userAddress = this.getUserAddress();
-      const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
-      
-      var i = 0;
-      var poolByIndex = [];
-
-      for (var n in pools) {
-        poolByIndex[i] = pools[n];
-        //LP Balance CALLS
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["balanceOf(address)(uint256)", userAddress],
-          returns: [["BALANCE_OF_" + n, (val) => val]],
-        });
-        //Staked LP Balance Calls
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["balanceOf(address)(uint256)", MASTERCHEF],
-          returns: [["TOTAL_LP_STAKED_OF_" + n, (val) => val]],
-        });
-
-        //unclaimed rewards calls
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(pools[n].pid), userAddress],
-          returns: [["PENDING_OF_" + n, (val) => val]],
-        });
-        //total LP staked calls
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["amountStaked(uint256,address)(uint256)", parseInt(pools[n].pid), userAddress],
-          returns: [["LP_STAKED_OF_" + n, (val) => val]],
-        });
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["totalSupply()(uint256)"],
-          returns: [["TOTAL_SUPPLY_OF_" + n, (val) => val]],
-        });
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["getReserves()(uint256, uint256, uint256)"],
-          returns: [
-            ["reserve0_" + n, (val) => val],
-            ["reserve1_" + n, (val) => val],
-            ["timestamp_ " + n, (val) => val],
-          ],
-        });
-        i++;
-      }
-      return [CALL, poolByIndex];
-    },
-    generateSoloCalls: function (pools) {
-      let CALL = [];
-      let userAddress = this.getUserAddress();
-      const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
-      var i = 0;
-      var poolByIndex = [];
-
-      for (var n in pools) {
-        poolByIndex[i] = pools[n];
-        //LP Balance CALLS
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["balanceOf(address)(uint256)", userAddress],
-          returns: [["BALANCE_OF_" + n, (val) => val]],
-        });
-        //Staked LP Balance Calls
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["balanceOf(address)(uint256)", MASTERCHEF],
-          returns: [["TOTAL_LP_STAKED_OF_" + n, (val) => val]],
-        });
-
-        //unclaimed rewards calls
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["pendingOpenSwap(uint256,address)(uint256)", parseInt(pools[n].pid), userAddress],
-          returns: [["PENDING_OF_" + n, (val) => val]],
-        });
-        //total LP staked calls
-        CALL.push({
-          target: MASTERCHEF,
-          call: ["amountStaked(uint256,address)(uint256)", parseInt(pools[n].pid), userAddress],
-          returns: [["LP_STAKED_OF_" + n, (val) => val]],
-        });
-        CALL.push({
-          target: pools[n].pairaddress,
-          call: ["totalSupply()(uint256)"],
-          returns: [["TOTAL_SUPPLY_OF_" + n, (val) => val]],
-        });
-
-        i++;
-      }
-      return [CALL, poolByIndex];
-    },
-  },
-};
+  };
 </script>

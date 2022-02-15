@@ -19,6 +19,9 @@
   import Footer from '@/components/Footer';
   import { mapActions, mapGetters } from 'vuex';
   import openswap from "@/shared/openswap.js";
+  const { SDK } = require("openswap-app-sdk")
+const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = require('@harmony-js/crypto')
+
 
 
   export default {
@@ -32,8 +35,134 @@
       window.addEventListener('scroll', this.handleScroll);
     },
     mounted: async function() {
-      
-      // Color Mode!
+
+   const CHAIN_ID = 1666600000
+      const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
+      console.log(pools)
+      var farmPairAddr = []
+      for(var x in pools[CHAIN_ID].pools){
+        farmPairAddr.push(pools[CHAIN_ID].pools[x].pairaddress)
+      }
+      var farms = []
+      var soloFarms = []
+
+      for(var i in pools[CHAIN_ID].pools){
+        farms.push(pools[CHAIN_ID].pools[i])
+      }
+
+      var validatorAddresses = []
+      var soloFarmsArr = []
+
+      const valContracts = this.getValContracts(this.getChainID())
+      for(let r in valContracts){
+        validatorAddresses.push(valContracts[r].validator)
+      }
+
+      for(var w in pools[CHAIN_ID].SoloPools){
+        soloFarmsArr.push(pools[CHAIN_ID].SoloPools[w])
+      }
+
+
+      var sdk  = new SDK(CHAIN_ID, Multicall)
+      let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
+
+      let supply = await sdk.getOpenXSupply()
+      let burnt = await sdk.getOpenXBurnt()
+
+      this.setOpenXBurnt(burnt)
+      this.setOpenXSupply(supply)
+      await sdk.initFarms(farms)
+
+
+      let onePrice = await sdk.getOnePrice()
+      let oxPrice = await sdk.getOpenXPrice()
+
+      this.setOnePrice(onePrice)
+      this.setOpenXPrice(oxPrice)
+
+
+ 
+      this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'true' ? true : false;
+  
+
+          const user = this.getUserAddress()
+          let vals = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
+          this.setValidatorData(vals)
+          await sdk.initBalances(user)
+
+          farms = await sdk.getFarms()
+          soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
+          console.log( "kjskjskjskjksj " )
+          console.log(soloFarms)
+
+          const TVL = sdk.getTVL()
+          const pending = sdk.getTotalPending()
+          const userStake = sdk.getTotalStakedUser()
+
+         const userRewardsPerWeek = sdk.getTotalRewardsPerWeek()
+         const avgAPRTotal = sdk.getTotalAPR()
+         const avgAPRUser =  sdk.getStakedAPR()
+          
+
+          this.setUserRewardsPerWeek(userRewardsPerWeek)
+          this.setUserAPR(avgAPRUser)
+          this.setStakedAPR(avgAPRTotal)
+          this.setTVL(TVL)
+          this.setPendingRewards(pending)
+          this.setUserStakeTotal(userStake)
+
+
+
+          this.setSoloFarms(soloFarms)
+          this.setFarms(farms)
+
+
+
+            await setInterval(async function(){
+      var sdk  = new SDK(CHAIN_ID, Multicall)
+      let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
+
+
+            await sdk.initFarms(farms)
+            let onePrice = await sdk.getOnePrice()
+      let oxPrice = await sdk.getOpenXPrice()
+
+      this.setOnePrice(onePrice)
+      this.setOpenXPrice(oxPrice)
+
+          const user = this.getUserAddress()
+          const valData = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
+          this.setValidatorData(valData)
+          await sdk.initBalances(user)
+
+          farms = await sdk.getFarms()
+           soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
+
+          const TVL = sdk.getTVL()
+          const pending = sdk.getTotalPending()
+          const userStake = sdk.getTotalStakedUser()
+
+          const userRewardsPerWeek = sdk.getTotalRewardsPerWeek()
+          const avgAPRTotal = sdk.getTotalAPR()
+          const avgAPRUser =  sdk.getStakedAPR()
+          
+
+          this.setUserRewardsPerWeek(userRewardsPerWeek)
+          this.setUserAPR(avgAPRUser)
+          this.setStakedAPR(avgAPRTotal)
+          
+
+
+
+          this.setTVL(TVL)
+          this.setPendingRewards(pending)
+          this.setUserStakeTotal(userStake)
+          
+          this.setFarms(farms)
+          this.setSoloFarms(soloFarms);
+      }.bind(this), 15000)
+
+
       let theme = localStorage.getItem("oSwap\_theme");
 
       if (theme) {
@@ -41,18 +170,18 @@
       } else {
         localStorage.setItem("oSwap\_theme", 'dark');
       }
-
     },
 
     computed: {
       ...mapGetters('user', ['getIsScrolled', 'getColorTheme']),
+      ...mapGetters("addressConstants", ["hMULTICALL", "hRPC", "oSWAPCHEF", 'getValContracts']),
     },
     
     methods: {
+      ...mapActions('farm/farmData', ['setFarms', '']),
+      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms"]),
       ...mapActions('user', ['setIsScrolled', 'setTheme']),
       ...mapActions('wallet', ['switchWalletType']),
-
-
       handleScroll() {
         this.setIsScrolled(window.scrollY > 0)
       }

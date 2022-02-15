@@ -4,13 +4,15 @@ import SushiMaker from "openswap-v2-core/build/contracts/SushiMaker.json";
 import IERC20 from "openswap-v2-core/build/contracts/IERC20.json";
 import OpenSwapBridge from "openswap-v2-core/build/contracts/OpenSwapBridge.json";
 import OpenSwapToken from "openswap-v2-core/build/contracts/OpenSwapToken.json";
+import StakingPrecompiles from "@/components/farm/Validators/StakingPrecompiles.json";
 import DelegatorContract from "@/components/farm/Validators/delegateContract.json";
+
 import MultiTransfer from "@/components/farm/Validators/MultiTransfer.json";
 
 import { ethers } from "ethers";
 
 import { Harmony } from '@harmony-js/core';
-import { toBech32 } from '@harmony-js/crypto'
+import { toBech32, fromBech32 } from '@harmony-js/crypto'
 
 import { ChainType, numberToHex, Unit } from '@harmony-js/utils'
 import oneWallet from './OneWallet.js'
@@ -33,7 +35,7 @@ import { toastMe } from '@/components/toaster/toaster.js';
 export default {
   created: function () {},
   computed: {
-    ...mapGetters('addressConstants', ['oSWAPMAKER', 'oSWAPCHEF','WONE' , 'UNIROUTERV2', 'OPENSWAPBRIDGE','oSWAPTOKEN', 'bBUSD', 'eBUSD', 'eUSDC', 'bUSDC', 'lockedAddress']),
+    ...mapGetters('addressConstants', ['oSWAPMAKER', 'oSWAPCHEF','WONE' , 'UNIROUTERV2', 'OPENSWAPBRIDGE','oSWAPTOKEN', 'bBUSD', 'eBUSD', 'eUSDC', 'bUSDC', 'lockedAddress','getValContracts']),
     ...mapGetters('wallet', ['getStateProvider'])
   },
   methods: {
@@ -1627,7 +1629,7 @@ export default {
       const masterChef = this.oSWAPCHEF(this.getChainID());
       const pid = parseInt(pool.pid)
       let tempToken = {decimals: 18};
-      amount = this.getUnits(amount, tempToken)
+      
 
       if(this.getWalletType() == 'metamask'){
       
@@ -2220,10 +2222,11 @@ export default {
       const value2 = amount.sub(value);
       return value2;
     },//21.6186
-    setValRewardTo: async function(addr){
+    setValRewardTo: async function(addr, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = MultiTransfer.abi;
-      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2303,10 +2306,11 @@ export default {
       }
 
     },
-      setValCompounding: async function(id, active){
+      setValCompounding: async function(id, active, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = MultiTransfer.abi;
-      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2386,10 +2390,11 @@ export default {
       }
 
     },
-    setRatioValidator: async function(amount){
+    setRatioValidator: async function(amount, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = DelegatorContract.abi;
-      const delContractAddr = "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045"
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].delegateContract;
       if (isDefaultWallet){
         toastMe('error', {
           title: 'ERROR',
@@ -2469,19 +2474,54 @@ export default {
       }
 
     },
-    unDelegateValidator: async function(amountIn, valAddr){
+    unDelegateValidator: async function(amountIn, valAddr, index){
       if(this.getWalletType() == 'metamask'){
-        toastMe('warning', {
-            title: 'Cant unstake with metamask yet.',
-            msg: "Sorry.",
-            link: false,
-            href: ''
+      const abi = StakingPrecompiles.abi;
+      const user = this.getUserAddress()
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].precompiles
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.Undelegate(user, fromBech32(valAddr), this.getUnitsD(amountIn, 18)).catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
           })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Undelegation request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
         return
       }
       hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.undelegate({
@@ -2513,19 +2553,57 @@ export default {
           })
         });
     },
-    delegateValidator: async function(amountIn, valAddr){
+    delegateValidator: async function(amountIn, valAddr, index){
       if(this.getWalletType() == 'metamask'){
-        toastMe('warning', {
-            title: 'Cant stake with metamask yet.',
-            msg: "Sorry.",
-            link: false,
-            href: ''
+      const user = this.getUserAddress()
+      const abi = StakingPrecompiles.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].precompiles
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      console.log(abi)
+      const tx = await contract.Delegate(user, fromBech32(valAddr), this.getUnitsD(amountIn, 18)).catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
           })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Undelegation request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
         return
+      
       }
       hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({
@@ -2560,7 +2638,7 @@ export default {
     delegateValidatorMetamaskTestingStuff: async function(amountIn, valAddr){
         hmy.stakings.setTxParams({
         gasLimit: 25000,
-        gasPrice: numberToHex(new hmy.utils.Unit(1).asGwei().toWei()),
+        gasPrice: numberToHex(new hmy.utils.Unit('30').asGwei().toWei()),
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({

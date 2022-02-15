@@ -19,7 +19,7 @@
               </div>
               <div class="flex flex-col h-full justify-between">
                 <p class="text-xs text-oswapBlue-light">LP Tokens Available</p>
-                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(this.maxAmount)).toFixed(5)}}</p>
+                <p class="text-lg dark:text-gray-400">{{parseFloat(this.getEthUnits(pool.user.lpTokenBalBigString)).toFixed(5)}}</p>
               </div>
             </div>
             <div class="flex items-center justify-end group-scope">
