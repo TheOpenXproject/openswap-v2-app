@@ -4,13 +4,15 @@ import SushiMaker from "openswap-v2-core/build/contracts/SushiMaker.json";
 import IERC20 from "openswap-v2-core/build/contracts/IERC20.json";
 import OpenSwapBridge from "openswap-v2-core/build/contracts/OpenSwapBridge.json";
 import OpenSwapToken from "openswap-v2-core/build/contracts/OpenSwapToken.json";
+import StakingPrecompiles from "@/components/farm/Validators/StakingPrecompiles.json";
 import DelegatorContract from "@/components/farm/Validators/delegateContract.json";
+
 import MultiTransfer from "@/components/farm/Validators/MultiTransfer.json";
 
 import { ethers } from "ethers";
 
 import { Harmony } from '@harmony-js/core';
-import { toBech32 } from '@harmony-js/crypto'
+import { toBech32, fromBech32 } from '@harmony-js/crypto'
 
 import { ChainType, numberToHex, Unit } from '@harmony-js/utils'
 import oneWallet from './OneWallet.js'
@@ -1627,7 +1629,7 @@ export default {
       const masterChef = this.oSWAPCHEF(this.getChainID());
       const pid = parseInt(pool.pid)
       let tempToken = {decimals: 18};
-      amount = this.getUnits(amount, tempToken)
+      
 
       if(this.getWalletType() == 'metamask'){
       
@@ -2472,14 +2474,49 @@ export default {
       }
 
     },
-    unDelegateValidator: async function(amountIn, valAddr){
+    unDelegateValidator: async function(amountIn, valAddr, index){
       if(this.getWalletType() == 'metamask'){
-        toastMe('warning', {
-            title: 'Cant unstake with metamask yet.',
-            msg: "Sorry.",
-            link: false,
-            href: ''
+      const abi = StakingPrecompiles.abi;
+      const user = this.getUserAddress()
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].precompiles
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.Undelegate(user, fromBech32(valAddr), this.getUnitsD(amountIn, 18)).catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
           })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Undelegation request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
         return
       }
       hmy.stakings.setTxParams({
@@ -2516,15 +2553,53 @@ export default {
           })
         });
     },
-    delegateValidator: async function(amountIn, valAddr){
+    delegateValidator: async function(amountIn, valAddr, index){
       if(this.getWalletType() == 'metamask'){
-        toastMe('warning', {
-            title: 'Cant stake with metamask yet.',
-            msg: "Sorry.",
-            link: false,
-            href: ''
+      const user = this.getUserAddress()
+      const abi = StakingPrecompiles.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].precompiles
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      console.log(abi)
+      const tx = await contract.Delegate(user, fromBech32(valAddr), this.getUnitsD(amountIn, 18)).catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
           })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Undelegation request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
         return
+      
       }
       hmy.stakings.setTxParams({
         gasLimit: 25000,

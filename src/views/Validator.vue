@@ -140,7 +140,24 @@
       }
     },
     async mounted() {
-      const requestOptions = {
+      await this.getValidatorData();
+    },
+    methods: {
+      prettify: function(number){
+        return ethers.utils.commify(number)
+      },
+      formatToMillion(string) {
+        let parsed = string.toLocaleString('fullwide', { useGrouping: false });
+        return ethers.utils.commify(parsed)
+                           .match(/^(\d{1,3})?[.,]?(\d{1,3})?[.,]?(\d{1,3})?[.]?(\d{1,2})/g)[0];
+      },
+      toPercent(data, amount) {
+        let total = data.result['total-delegation']
+        let value = amount * 100 / total
+        return value
+      },
+      getValidatorData: async function(){
+              const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -172,20 +189,6 @@
 
       this.chart.series[0].data = this.validator.epochs.apr;
       this.chart.chartOptions.xaxis.categories = this.validator.epochs.id;
-    },
-    methods: {
-      prettify: function(number){
-        return ethers.utils.commify(number)
-      },
-      formatToMillion(string) {
-        let parsed = string.toLocaleString('fullwide', { useGrouping: false });
-        return ethers.utils.commify(parsed)
-                           .match(/^(\d{1,3})?[.,]?(\d{1,3})?[.,]?(\d{1,3})?[.]?(\d{1,2})/g)[0];
-      },
-      toPercent(data, amount) {
-        let total = data.result['total-delegation']
-        let value = amount * 100 / total
-        return value
       }
     }
   }

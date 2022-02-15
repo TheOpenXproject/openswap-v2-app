@@ -97,28 +97,17 @@ export default {
       56:"",
       1666600000: {
           0: {
-            valv4: "",
-            delegateContract: "",
-            registery: ""
-          },
-          1: {
+            validator: "one1j35d0vd4uzwffeawjjfukn8t9wjt8csungj0z0",
             valv4: "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57",
+            farmToken: "0x214B3a82B6fE2910c17597F86f4cD2eaBc39E0f2",
             delegateContract: "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045",
-            registery: "0x41d6eC6451e3e195A6C5AE740C79f3871167D5F8"
+            registery: "0x41d6eC6451e3e195A6C5AE740C79f3871167D5F8",
+            precompiles: "0x00000000000000000000000000000000000000FC",
           }
       },
       1666700000: "https://api.s0.b.hmny.io",
       1337:"http://localhost:7545"
     },
-
-    /* v1
-    lockedAddress: {
-      1:"",
-      56:"",
-      1666600000: "0x8c4245b6096EE6e3C7266f4289233E93B24f0b2d",
-      1666700000: "0x1D32388D509Fe398679B4dEEb873a96348900f2d",
-      1337:"0xc37ea794aB7E82e3fe7465AE7674EeD7e7eE39C3"
-    },*/
   },
   mutations: {},
   getters:{

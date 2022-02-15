@@ -18,8 +18,8 @@
                   <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Total</p>
                 </div>
                 <div class="flex flex-col text-gray-600 dark:text-gray-200">
-                  <p class="text-xl justify-center  md-text-sm font-extrabold">{{ validator.totalAPR }} %</p>
-                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Expected Return</p>
+                  <p class="text-xl justify-center  md-text-sm font-extrabold">{{ getApr() }} %</p>
+                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">APR</p>
                 </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
           </div>
         <div>
         <div class="flex flex-wrap">
-          <StakingInfoTabs v-if="!this.isFifteen()" :validator="validator" />
+          <StakingInfoTabs v-if="!this.isFifteen()" :validator="validator" @updateValData="updateValData" />
           <div class="flex w-full">
             <div class="grid w-full xs:grid-cols-2 ss:grid-cols-2 lg:grid-cols-3 gap-2 lg:ml-8 h-auto p-3 bg-gray-200 dark:bg-oswapDark-gray shadow-lg rounded">
               <div class="flex space-x-1">
@@ -79,16 +79,7 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">Injected APR</p>
-                  <p class="text-lg dark:text-gray-400">% {{ this.validator.injectedAPR }}</p>
-                </div>
-              </div>
-              <div class="flex space-x-1">
-                <div class="flex items-start h-full">
-                  <div class="flex items-start h-full"><i class="las la-percentage text-xl text-oswapGreen"></i></div>
-                </div>
-                <div class="flex flex-col h-full justify-between pt-0.5">
-                  <p class="text-xs text-oswapBlue-light">Total APR</p>
-                  <p class="text-lg dark:text-gray-400">% {{ this.validator.totalAPR }}</p>
+                  <p class="text-lg dark:text-gray-400">% {{ parseFloat(validator.addedAPR).toFixed(2) }}</p>
                 </div>
               </div>
               <div class="flex space-x-1">
@@ -97,7 +88,25 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">Delegated value</p>
-                  <p class="text-lg dark:text-gray-400">$ {{ prettify(this.validator.usdValueDelegated)}}</p>
+                  <p class="text-lg dark:text-gray-400">$ {{ prettify(validator.userDelegations)}}</p>
+                </div>
+              </div>
+              <div class="flex space-x-1">
+                <div class="flex items-start h-full">
+                  <div class="flex items-start h-full"><i class="las la-percentage text-xl text-oswapGreen"></i></div>
+                </div>
+                <div class="flex flex-col h-full justify-between pt-0.5">
+                  <p class="text-xs text-oswapBlue-light">Total APR</p>
+                  <p class="text-lg dark:text-gray-400">% {{ getApr()}}</p>
+                </div>
+              </div>
+              <div class="flex space-x-1">
+                <div class="flex items-start h-full">
+                  <div class="flex items-start h-full"><i class="las la-percentage text-xl text-oswapGreen"></i></div>
+                </div>
+                <div class="flex flex-col h-full justify-between pt-0.5">
+                  <p class="text-xs text-oswapBlue-light">Total APY</p>
+                  <p class="text-lg dark:text-gray-400">% {{ getApy()}}</p>
                 </div>
               </div>
             </div>
@@ -124,6 +133,7 @@
 import openswap from "@/shared/openswap.js";
 import ValidatorChart from "@/components/farm/Validators/ValidatorChart";
 import StakingInfoTabs from "@/components/farm/Validators/StakingInfoTabs";
+  import { mapGetters } from 'vuex';
 
 import { ethers } from "ethers";
 
@@ -141,6 +151,13 @@ export default {
   },
   async mounted() {},
   methods: {
+    getApr : function(){
+        return (parseFloat(this.validator.apr) + this.validator.addedAPR).toFixed(2)
+      },
+        getApy : function(){
+        let totalAPR = parseFloat(this.getApr())
+        return (totalAPR * ((1+0.68/365)**365-1) + totalAPR).toFixed(2)
+      },
     isFifteen: function() {
       if(this.validator.name.includes('15%')){
         return true
@@ -150,6 +167,9 @@ export default {
     },
     selectValidator: function () {
       this.$emit("selectValidator", null);
+    },
+     updateValData: function () {
+      this.$emit("updateValData", null);
     },
     prettify: function(number){
         if(number != "NA"){

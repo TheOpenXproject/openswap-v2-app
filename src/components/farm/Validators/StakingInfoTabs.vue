@@ -2,17 +2,11 @@
   <div class="flex w-full flex-wrap lg:pl-8" v-if="validator ">
     <div class="w-full">
       <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
-        <li v-if="watWallet == 'metamask'" class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(1)" v-bind:class="{ 'bg-gray-500 hover:bg-gray-500 dark:bg-oswapDark-gray-500 dark:hover:bg-gray-500 ': openTab !== 1, 'text-white bg-gray-100': openTab === 1 }"> Staking </a>
-        </li>
-        <li v-if="watWallet == 'metamask'" class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(2)" v-bind:class="{ 'bg-gray-500 hover:bg-gray-500 dark:bg-oswapDark-gray-500 dark:hover:bg-gray-500 ': openTab !== 2, 'text-white bg-gray-100': openTab === 2 }"> Unstaking </a>
-        </li>
-        <!-- ---------------------------  -->
-        <li v-if="watWallet != 'metamask'" class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center">
+
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(1)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 1, 'text-white bg-oswapGreen': openTab === 1 }"> Staking </a>
         </li>
-        <li v-if="watWallet != 'metamask'" class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(2)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 2, 'text-white bg-oswapGreen': openTab === 2 }"> Unstaking </a>
         </li>
         <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
@@ -108,18 +102,18 @@ export default {
     };
   },
   mounted(){
-    let farms = this.getFarmData()
-    let farms0 = this.getFarmPair()
-    console.log(farms0)
+    let farms = this.getFarms()
+    
+
     let compoundableFarms = []
     let compoundableFarms0 = []
     for(let i in farms){
       let n = 0;
       while(n < this.pids.length){
-        if(farms[i].pool.pid == this.pids[n]){
-          this.compoundableFarms.push(farms[i].pool)
-          farms0[i].index = n
-          this.compoundableFarms0.push(farms0[i])
+        if(farms[i].pid == this.pids[n]){
+          this.compoundableFarms.push(farms[i])
+          farms[i].index = n
+          this.compoundableFarms0.push(farms[i])
 
         }
 
@@ -127,35 +121,49 @@ export default {
       }
   
     }
-    console.log(this.compoundableFarms)
-    console.log(this.compoundableFarms0)
-    this.watWallet = this.getWalletType()
-    if(this.watWallet == 'metamask'){
-      this.openTab = 3
-    }
+
   },
   methods: {
      ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
-     ...mapGetters('farm/farmData', ['getFarmData', 'getFarmPair']),
+     ...mapGetters('farm/farmData', ['getFarms', 'getFarmPair']),
     delegateVal:async function(){
-      await this.delegateValidator(this.amount,this.validator.address, this.validator.index)
+      let n = await this.delegateValidator(this.amount,this.validator.address, this.validator.index).catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
+    
     },
     unDelegateVal:async function(){
-      await this.unDelegateValidator(this.amount,this.validator.address , this.validator.index)
+      let n = await this.unDelegateValidator(this.amount,this.validator.address , this.validator.index).catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
     },
     setRatioVal:async function(){
-      await this.setRatioValidator(this.amount, this.validator.index)
+      let n = await this.setRatioValidator(this.amount, this.validator.index).catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
     },
     setRewardTo:async function(){
-      await this.setValRewardTo(this.rewardTo, this.validator.index)
+      let n = await this.setValRewardTo(this.rewardTo, this.validator.index).catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
     },
     resetCompounding:async function(){
-      await this.setValCompounding(0, false , this.validator.index)
+      let n = await this.setValCompounding(0, false , this.validator.index).catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
     },
     toggleTabs: function (tabNumber) {
-      if(this.watWallet == 'oneWallet'){
         this.openTab = tabNumber;
-      }
     },
     isFifteen: function() {
       if(this.validator.name.includes('15%')){

@@ -307,8 +307,8 @@ export const pools = {
 
 };
 export const SoloPools = {
-  oSWAPWONE: {
-    pair: "OPENx",
+  oSWAP: {
+    pair: "OpenX",
     pairaddress: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token1address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",

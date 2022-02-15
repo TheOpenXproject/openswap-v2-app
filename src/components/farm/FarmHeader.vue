@@ -2,18 +2,15 @@
   <div class="flex lg:max-w-none h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
     <div class="flex flex-col ss:w-full xs:w-auto mdd:flex-row bg-gradient-to-l from-slightGray dark:from-slightDark to-transparent p-3 rounded-3xl">
       <div class="flex flex-1 pt-3 pr-5 items-start">
-        <Total :TVL="data.TVL" :TAPR="data.APRs.tAPR" />
-
-        <!--<Chart :data="data" />
-
-   -->   </div>
+        <Total/>
+        </div>
 
       <div class="flex items-center pt-3 pr-3 lg:pl-5">
         <div class="mdd:flex hidden mdd:divide-x mdd:divide-oswapGreen ml-5"></div>
-        <Personal :TVL="data.PVL" :PAPR="data.APRs.pAPR" :REWARDS="data.rewardsPending" />
+        <Personal/>
       </div>
       <div class="flex pt-3 pr-3 flex-2 items-start">
-        <PersonalRewards :rewardsPerTime="rewardsPerTime" :REWARDS="data.rewardsPending" />
+        <PersonalRewards/>
       </div>
     </div>
   </div>
@@ -34,16 +31,8 @@ export default {
     PersonalRewards,
   },
   props: {
-    data: Object,
-    rewardsPerTime: Object,
   },
   mounted: function () {
-    setInterval(
-      async function () {
-        this.$emit("updateData");
-      }.bind(this),
-      5000
-    );
   },
 };
 </script>

@@ -9,13 +9,55 @@ export default {
         soloData: {},
         farmPair:{},
         customData: {},
+        farms: null,
+        soloFarms: null,
         onePrice: 0,
-        OpenXPrice: 0
-      },
-      getters: {
+        OpenXPrice: 0,
+        TVL: 0,
+        userStaked: 0,
+        pendingRewards: 0,
+        userAPR: 0,
+        stakedAPR: 0,
+        userRewardPerWeek: 0,
+        validatorData: [],
+        openxBurnt: 0,
+        openxSupply: 0
+      }, //// "setUserStakeTotal", "setTVL", "setPendingRewards" // 
+      getters: { ///"setStakedAPR", "setUserAPR", "setUserRewardsPerWeek"
         // get current step state
-        getFarmData: (state) => {
-          return state.farmData
+        
+        getFarms: (state) => {
+          return state.farms
+        },
+        getSoloFarms: (state) => {
+          return state.soloFarms
+        },
+        getValidatorData: (state) => {
+          return state.validatorData
+        },
+        getOpenXSupply: (state) => {
+          return state.openxSupply
+        },
+        getOpenXBurnt: (state) => {
+          return state.openxBurnt
+        },
+        getStakedAPR: (state) => {
+          return state.stakedAPR
+        },
+        getUserAPR: (state) => {
+          return state.userAPR
+        },
+        getUserRewardsPerWeek: (state) => {
+          return state.userRewardPerWeek
+        },
+        getUserStake: (state) => {
+          return state.userStaked
+        },
+        getTVL: (state) => {
+          return state.TVL
+        },
+        getPendingRewards: (state) => {
+          return state.pendingRewards
         },
         getPoolData: (state, pid) => {
           return state.farmData[pid]
@@ -33,7 +75,40 @@ export default {
           return state.farmPair
         }
       },
-      actions: {
+      actions: { 
+        setFarms({ commit }, value) {
+          commit('_setFarms', value)
+        },
+        setSoloFarms({ commit }, value) {
+          commit('_setSoloFarms', value)
+        },
+        setValidatorData({ commit }, value) {
+          commit('_setValidatorData', value)
+        },
+         setOpenXSupply({ commit }, value) {
+          commit('_setOpenXSupply', value)
+        },
+         setOpenXBurnt({ commit }, value) {
+          commit('_setOpenXBurnt', value)
+        },
+        setStakedAPR({ commit }, value) {
+          commit('_setStakedAPR', value)
+        },
+        setUserAPR({ commit }, value) {
+          commit('_setUserAPR', value)
+        },
+        setUserRewardsPerWeek({ commit }, value) {
+          commit('_setUserRewardsPerWeek', value)
+        },
+        setUserStakeTotal({ commit }, value) {
+          commit('_setUserStakeTotal', value)
+        },
+        setTVL({ commit }, value) {
+          commit('_setTVL', value)
+        },
+        setPendingRewards({ commit }, value) {
+          commit('_setPendingRewards', value)
+        },
         setFarmDataState({ commit }, value) {
           commit('_setFarmDataState', value)
         },
@@ -58,8 +133,41 @@ export default {
         setFarmPair({ commit }, value) {
           commit('_setFarmPair', value)
         }
-      },
+      }, 
       mutations: {
+        _setFarms: (state, value) => {
+          state.farms = value
+        },
+        _setSoloFarms: (state, value) => {
+          state.soloFarms = value
+        },
+        _setOpenXSupply: (state, value) => {
+          state.openxSupply = value
+        },
+        _setOpenXBurnt: (state, value) => {
+          state.openxBurnt = value
+        },
+        _setValidatorData: (state, value) => {
+          state.validatorData = value
+        },
+        _setStakedAPR: (state, value) => {
+          state.stakedAPR = value
+        },
+        _setUserAPR: (state, value) => {
+          state.userAPR = value
+        },
+        _setUserRewardsPerWeek: (state, value) => {
+          state.userRewardPerWeek = value
+        },
+        _setUserStakeTotal: (state, value) => {
+          state.userStaked = value
+        },
+        _setTVL: (state, value) => {
+          state.TVL = value
+        },
+        _setPendingRewards: (state, value) => {
+          state.pendingRewards = value
+        },
         _setFarmDataState: (state, value) => {
           state.farmData = value
         },

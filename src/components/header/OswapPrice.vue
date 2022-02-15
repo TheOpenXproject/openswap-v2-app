@@ -1,17 +1,30 @@
 <template>
   <!-- Oswap token info -->
-  <tooltip-me>
-    <div class="flex rounded-lg focus:outline-none focus:ring-1 focus:ring-black space-x-2 p-2 px-1 md:px-3 items-center">
+  <tooltip-me v-if="this.getFarms() != null">
+    <div  class="flex rounded-lg focus:outline-none focus:ring-1 focus:ring-black space-x-1 p-2 px-1 md:px-3 items-center">
       <img alt="oSwap" src="@/assets/oswap_asset.png" class="ss:h-5 xs:h-6">
-      <p class="ss:hidden xs:block text-xs dark:text-oswapGreen">${{oswapPrice}}</p>
+      <p class="ss:hidden xs:block text-xs pr-3 dark:text-oswapGreen">${{parseFloat(this.getStateOpenXPrice()).toFixed(5)}}</p>
+      <img alt="oSwap" src="@/assets/one_logo.png" class="ss:hidden xs:block ss:h-5 xs:h-6">
+      <p class="ss:hidden xs:block text-xs pr-3  dark:text-oswapGreen">${{parseFloat(this.getStateOnePrice()).toFixed(5)}}</p>
     </div>
+ 
 
     <tooltip-me-content :options="tooltip" class="flex text-xs flex-col divide-y-2 divide-oswapGreen w-72 p-0.5 rounded-lg shadow-xl">
       <div class="flex flex-col p-3 bg-gray-100 dark:bg-slightDark rounded-md text-gray-500 dark:text-gray-300">
-        <div class="ss:flex ss:mb-3 xs:hidden ss:space-x-2 ss:items-center">
-          <img alt="oSwap" src="@/assets/oswap_asset.png" class="h-5">
-          <p>OpenX Price: ${{oswapPrice}}</p>
+        <p class="text-sm mb-3">Token Prices</p>
+        <div class="flex space-x-2 mb-3 items-center">
+          <img alt="oSwap" src="@/assets/one_logo.png" class="h-5 ">
+          <p class="w-half pr-4">One Price:</p>
+          <p>${{parseFloat(this.getStateOnePrice()).toFixed(8)}}</p>
         </div>
+        <div class="flex space-x-2 mb-3 items-center">
+          <img alt="oSwap" src="@/assets/oswap_asset.png" class="h-5">
+          <p class="w-half">OpenX Price: </p>
+          <p class="text-center">${{parseFloat(this.getStateOpenXPrice()).toFixed(8)}}</p>
+        </div>
+       
+      </div>
+      <div class="flex flex-col p-3 bg-gray-100 dark:bg-slightDark rounded-md text-gray-500 dark:text-gray-300">
         <div class="flex space-x-2 mb-3 items-center">
           <i class="las la-coins text-xl text-yellow-500"></i>
           <p>Circ. Market Cap: ${{marketCap}} USD</p>
@@ -28,12 +41,8 @@
       <div class="flex flex-col p-3 bg-gray-100 dark:bg-slightDark rounded-md text-gray-500 dark:text-gray-300">
         <p class="text-sm mb-3">Token Supply</p>
         <div class="flex space-x-2 mb-3 items-center">
-          <i class="las la-hand-holding-usd text-xl text-green-500"></i>
-          <p>Circ: {{balances.circSupply}} OpenX</p>
-        </div>
-        <div class="flex space-x-2 mb-3 items-center">
           <i class="las la-globe-europe text-xl text-oswapBlue-light"></i>
-          <p>Total: {{balances.totalSupply}} OpenX</p>
+          <p>Total: {{balances.circSupply}} OpenX</p>
         </div>
         <div class="flex space-x-2 items-center">
           <i class="las la-hourglass-end text-xl"></i>
@@ -49,6 +58,7 @@
 <script>
   import openswap from "@/shared/openswap.js"
   import { commify } from '@ethersproject/units';
+  import { ethers } from 'ethers';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -66,7 +76,7 @@
         },
         ttpObj: null,
         ttpRec: null,
-        oswapPrice: 0.00,
+        oswapPrice: 0,
         balances: {
           totalSupply: 0.00,
           circSupply: 0.00,
@@ -78,7 +88,7 @@
 
       }
     },
-    mixins: [openswap],
+ 
     mounted: async function() {
       this.$nextTick(async function() {
         // Grabs the tooltip element
@@ -93,27 +103,16 @@
         
       })
 
-      let timeout
-
-      if(this.getUserSignedIn()){
-        timeout = 1
-      } else {
-        timeout = 1000
-      }
-
-      await setTimeout(async function (){
+     
       await this.loadData()
-      }.bind(this), timeout);
+   
 
 
-
-      await setInterval(async function(){
-        await this.loadData()
-      }.bind(this), 15000)
       
     },
     methods: {
       ...mapGetters('wallet', ['getUserSignedIn']),
+      ...mapGetters('farm/farmData', ['getStateOpenXPrice','getStateOnePrice','getOpenXSupply','getOpenXBurnt' , 'getFarms']),
       getWindowSize() {
         return {
           height: window.innerHeight,
@@ -121,13 +120,14 @@
         }
       },
       loadData: async function(){
-      this.oswapPrice = await this.getOpenXPrice();
-      let tempBalances = await this.getBurnAndTotalSupply();
-      this.marketCap = commify((tempBalances.circSupply * this.oswapPrice).toFixed(2));
-      this.balances.circSupply = commify(tempBalances.circSupply);
-      this.balances.totalSupply = commify(tempBalances.totalSupply);
-      this.balances.burnedAmount = commify(tempBalances.burnedAmount);
-      this.balances.totalBurnedAmount = commify(parseFloat(tempBalances.burnedAmount) + 1220000)
+      this.oswapPrice = await this.getStateOpenXPrice();
+      const supply = parseFloat(ethers.utils.formatEther(this.getOpenXSupply())).toFixed(2)
+      const burnt = parseFloat(ethers.utils.formatEther(this.getOpenXBurnt())).toFixed(2)
+
+      this.marketCap = commify((supply * this.oswapPrice).toFixed(2));
+      this.balances.circSupply = commify(supply);
+      this.balances.burnedAmount = commify(burnt);
+      this.balances.totalBurnedAmount = commify(parseFloat(burnt) + 1220000)
       },
       adjustTooltip() {
         // gets the tooltip location bounduary

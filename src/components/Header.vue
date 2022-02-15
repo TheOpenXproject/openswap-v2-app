@@ -33,7 +33,7 @@
       <MoreButton />
       
       <!-- display oswap price -->
-      <Oswap />
+      <Oswap v-if="this.getFarms() != null" />
       
       <!-- Wallet Button  -->
       <WalletButton/>
@@ -47,6 +47,8 @@
   import WalletButton from '@/components/header/WalletButton'
   import Oswap from '@/components/header/OswapPrice'
   import MoreButton from '@/components/header/MoreButton'
+    import { mapGetters } from "vuex";
+
 
   export default {
     name: 'Header',
@@ -54,6 +56,10 @@
       WalletButton,
       MoreButton,
       Oswap
+    },
+    methods: {
+      ...mapGetters('farm/farmData', ['getFarms']),
+
     }
   }
 </script>

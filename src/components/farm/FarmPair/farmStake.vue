@@ -74,9 +74,9 @@
       
       stake:async function() {
         this.buttonState = 'executing'
-        await this.stakeLP(this.pool, this.amount);
-        this.buttonState = 'finished'
-        this.$emit('updateData')
+        await this.stakeLP(this.pool, this.getUnitsD(this.amount.toString(), 18).toString());
+        this.buttonState = 'active'
+        
       }
     }
   }
