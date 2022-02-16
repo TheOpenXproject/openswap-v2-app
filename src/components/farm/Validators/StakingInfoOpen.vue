@@ -88,7 +88,7 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">Delegated value</p>
-                  <p class="text-lg dark:text-gray-400">$ {{ prettify(validator.userDelegations)}}</p>
+                  <p class="text-lg dark:text-gray-400">$ {{ prettify((parseFloat(validator.userDelegations) * parseFloat(this.getStateOnePrice())).toFixed(2))}}</p>
                 </div>
               </div>
               <div class="flex space-x-1">

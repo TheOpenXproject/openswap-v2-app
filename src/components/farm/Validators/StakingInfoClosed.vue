@@ -29,8 +29,8 @@
                 <i class="las la-dollar-sign text-oswapGreen text-2xl"></i>
               </div>
               <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
-                <p class="ss:text-md xs:text-lg font-extrabold">{{ prettify((parseFloat(validator.stakedValue) * parseFloat(this.getStateOnePrice())).toFixed(2))}}</p>
-                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">USD Staked</p>
+                <p class="ss:text-md xs:text-lg font-extrabold">{{ prettify((parseFloat(validator.userDelegations) * parseFloat(this.getStateOnePrice())).toFixed(2))}}</p>
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Staked Value</p>
               </div>
             </div>
             <div class="flex flex-1 items-center align-middle py-2 space-x-3 lg:w-auto w-1/2">
