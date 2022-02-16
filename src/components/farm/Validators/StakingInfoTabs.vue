@@ -3,13 +3,13 @@
     <div class="w-full">
       <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
 
-        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center">
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center cursor-pointer">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(1)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 1, 'text-white bg-oswapGreen': openTab === 1 }"> Staking </a>
         </li>
-        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center cursor-pointer">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(2)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 2, 'text-white bg-oswapGreen': openTab === 2 }"> Unstaking </a>
         </li>
-        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center">
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto ml-1 lg:w-max text-center cursor-pointer">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(3)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 3, 'text-white bg-oswapGreen': openTab === 3 }">Settings</a>
         </li>
       </ul>
@@ -42,10 +42,13 @@
               </button>
             </div>
               </div>
-              <h5 class="flex ">Set Compounding farm</h5>
-              <button @click="resetCompounding()" :class="isFifteen()">
-                <p class="text-sm p-1 px-3">Reset!</p>
-              </button> 
+              <div class="flex flex-1 items-center justify-between">
+                <h5 class="flex ">Set Compounding farm</h5>
+                <button @click="resetCompounding()" :class="isFifteen()">
+                  <p class="text-sm p-1 px-3">Reset!</p>
+                </button> 
+              </div>
+             
                <div class="w-full"  v-for="(pool, index) in this.compoundableFarms">
               
                 <PoolHeader :pool="pool" :farmPair="this.validator.farmPair" :compActive="this.validator.isCompounding" :index="this.validator.index" :poolData="this.compoundableFarms0[index]" />
