@@ -16,7 +16,9 @@
       :class="{ 'translate-x-12' : !getDarkMode }"
     > 
       <transition name="fade-in-and-rotate" appear>
-        <i class="las la-sun text-lg text-gray-300 dark:text-gray-700"></i>
+        <i class="las text-lg text-gray-300 dark:text-gray-700"
+           :class="!getDarkMode? 'la-sun': 'la-moon'"
+        ></i>
       </transition>
     </div>
   </div>

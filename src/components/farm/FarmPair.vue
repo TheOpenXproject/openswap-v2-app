@@ -3,7 +3,7 @@
     <!-- Header -->
     <PoolHeader  :pool="pool" />
     <!-- Body -->
-    <div class="flex flex-col h-full relative">
+    <div class="flex flex-col h-full mt-2 pb-3 relative">
       <!-- Show this when pool details is closed -->
       <PoolStatsClosed @setPool="setPool" :isOpen="poolStatsOff" :pool="pool" />
 

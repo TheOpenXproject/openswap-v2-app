@@ -1,25 +1,25 @@
 <template>
-  <div class="flex flex-wrap w-full">
+  <div class="flex flex-wrap w-full lg:mb-6 lg:my-0 my-3 space-y-3">
   
-    <div class="flex space-x-3 items-center mb-6">
+    <div class="flex space-x-3 items-center ">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
       <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Personal:</p>
     </div>
 
-    <div class="grid grid-cols-2 gap-3 w-full">
+    <div class="grid grid-cols-2 gap-5 w-full">
 
-      <div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-percent text-3xl dark:text-oswapGreen"></i>
+      <div class="flex flex-1 items-center space-x-3 w-full">
+        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
+          <i class="las la-percent text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-md font-extrabold">{{this.getUserAPR().toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
         </div>
       </div>
-<div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-percent text-3xl dark:text-oswapGreen"></i>
+      <div class="flex flex-1 items-center space-x-3 w-full">
+        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
+          <i class="las la-percent text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-md font-extrabold">{{parseFloat(this.getPendingRewards()).toFixed(2)}} / $ {{pendingValue}}</p>
@@ -28,20 +28,18 @@
       </div>
 
 
-    <div class="grid grid-cols-2 gap-3 w-full">
-<div class="flex items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark">
-          <i class="las la-dollar-sign text-3xl dark:text-oswapGreen"></i>
+      <div class="flex flex-1 items-center space-x-3 w-full">
+        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
+          <i class="las la-dollar-sign text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(this.getUserStake().toFixed(2))}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
         </div>
       </div>
-</div>
       
 
-<div class="flex items-center space-x-3 w-full">
+<div class="flex flex-1 items-center space-x-3 w-full">
         
         <button @click="collectAllButton" class="flex mt-2 h-8 items-center justify-center rounded-md  w-48 bg-oswapGreen text-slightGray dark:text-slightDark dark:bg-oswapGreen">
             <p class="text-sm">Claim All</p>

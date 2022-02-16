@@ -24,8 +24,6 @@
               </div>
               <div class="flex flex-1 flex-col space-y-2">
                 <p class="text-sm mt-1">Earn {{pool.name[0]}} and {{pool.name[1]}} from One Rewards which get compounded daily earning you your share of fees from the Exchange's transaction. You earn OpenX from the farm at the same rate as the selected farm's APR from the liquidity added. LP can be unstaked in Farms and withdrawn from Liquidity page.. Refer to Docs for more details.</p>
-          
-                
               </div>
             </div>
           </tooltip-me-content>
@@ -33,28 +31,20 @@
       </div>
     </div>
     <!-- Header right side -->
-    <div class="flex h-10 w-20 items-center justify-end pr-2">
-      <div v-if="!this.rewards" class="flex flex-1 items-center justify-end">
+    <div class="flex items-center justify-center ">
+      <template v-if="!this.rewards">
         <svg class="animate-spin h-7 w-7 text-oswapGreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-      </div>
-      <div v-else>
-        <div v-if="this.isActive" class="flex pt-2">
-        <button @click="setCompounding()" class="flex mt-2 items-right justify-center rounded-xl border border-oswapGreen st5 bg-oswapGreen text-gray-200 dark:text-slightDark">
-                <p class="text-sm p-1 px-3">Active!</p>
-              </button> 
-
-              </div>
-              <div v-if="!this.isActive"  class="flex pt-2">
-        <button  @click="setCompounding()" class="flex mt-2 items-right justify-center rounded-xl border border-oswapGreen st5 text-oswapGreen hover:bg-oswapGreen hover:text-gray-200 dark:hover:text-slightDark">
-                <p class="text-sm p-1 px-3">Select!</p>
-              </button> 
-              
-              </div>
-       
-            </div>
+      </template>
+      <template v-else>
+          <button @click="setCompounding()" 
+            :class="this.isActive? 'bg-oswapGreen text-slightDark pointer-events-none':''"
+            class="flex items-center justify-center rounded-xl border border-oswapGreen st5 text-oswapGreen hover:bg-oswapGreen hover:text-gray-200 dark:hover:text-slightDark">
+            <p class="text-sm p-1 px-3">{{this.isActive? 'Active!':'Select!'}}</p>
+          </button>
+      </template>
     </div>
   </div>
 </template>

@@ -1,15 +1,15 @@
 <template>
-  <div class="flex lg:max-w-none h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
-    <div class="flex flex-col ss:w-full xs:w-auto mdd:flex-row bg-gradient-to-l from-slightGray dark:from-slightDark to-transparent p-3 rounded-3xl">
-      <div class="flex flex-1 pt-3 pr-5 items-start">
+  <div class="flex w-full lg:max-w-none h-auto ss:mt-3 ss:mb-6 xs:mt-8 xs:mb-12">
+    <div class="flex w-full flex-1 flex-col ss:w-full xs:w-auto mdd:flex-row bg-gradient-to-l pt-6 from-slightGray dark:from-slightDark to-transparent p-3 rounded-3xl">
+      <div class="flex pr-5 items-start">
         <Total/>
         </div>
 
-      <div class="flex items-center pt-3 pr-3 lg:pl-5">
+      <div class="flex flex-1 items-start  pr-3 lg:pl-5">
         <div class="mdd:flex hidden mdd:divide-x mdd:divide-oswapGreen ml-5"></div>
         <Personal/>
       </div>
-      <div class="flex pt-3 pr-3 flex-2 items-start">
+      <div class="flex  pr-3 flex-2 items-start">
         <PersonalRewards/>
       </div>
     </div>

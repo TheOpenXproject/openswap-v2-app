@@ -3,23 +3,26 @@
   <div class="flex flex-wrap xs:w-full lg:w-half">
     <div v-if="validator" class="flex min-w-0 w-full text-gray-400 dark:text-gray-300">
       <div class="flex w-full flex-wrap rounded-lg py-3 px-4 items-center dark:from-slightDark from-slightGray to-transparent border border-oswapGreen">
-        <div class="flex w-full bg-gray-200 dark:bg-oswapDark-gray bg-slightGray rounded-lg mb-2">
-          <div class="grid grid-cols-3 gap-3 w-full h-auto items-center p-4">
+        <div class="flex w-full dark:bg-oswapDark-gray bg-slightGray rounded-lg mb-2">
+
+          <div class="flex flex-1 flex-col">
                 <div class="flex items-center">
                   <i class="las la-sitemap pl-2 text-lg dark:text-oswapGreen"></i>
                   <p class="lg-text-2xl md-text-sm pl-2">{{ validator.name }}</p>
                 </div>
-                <div class="flex flex-col text-gray-400 dark:text-gray-300">
-                  <p class="text-xl md-text-sm justify-center font-extrabold">{{ prettify(validator.userDelegations) }}</p>
-                  <p class="text-xs md-text-sm justify-center font-bold text-gray-500 dark:text-gray-400">Staked</p>
-                </div>
-                <div class="flex  flex-col xs:hidden ss:hidden sm:hidden text-gray-400 dark:text-gray-300">
-                  <p class="text-xl justify-center md-text-sm font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
-                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-                <div class="flex flex-col text-gray-600 dark:text-gray-200">
-                  <p class="text-xl justify-center  md-text-sm font-extrabold">{{ getApr() }} %</p>
-                  <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">APR</p>
+                <div class="flex flex-wrap flex-1 justify-evenly my-2 text-center">
+                  <div class="flex flex-col text-gray-400 dark:text-gray-300">
+                      <p class="text-xl md-text-sm justify-center font-extrabold">{{ prettify(validator.userDelegations) }}</p>
+                      <p class="text-xs md-text-sm justify-center font-bold text-gray-500 dark:text-gray-400">Staked</p>
+                    </div>
+                    <div class="flex flex-col text-gray-600 dark:text-gray-200">
+                      <p class="text-xl justify-center  md-text-sm font-extrabold">{{ getApr() }} %</p>
+                      <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">APR</p>
+                    </div>
+                    <div class="flex  flex-col  text-gray-400 dark:text-gray-300">
+                      <p class="text-xl justify-center md-text-sm font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
+                      <p class="text-xs justify-center md-text-sm font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
+                    </div>
                 </div>
           </div>
         </div>
@@ -88,7 +91,7 @@
                 </div>
                 <div class="flex flex-col h-full justify-between pt-0.5">
                   <p class="text-xs text-oswapBlue-light">Delegated value</p>
-                  <p class="text-lg dark:text-gray-400">$ {{ prettify(validator.userDelegations)}}</p>
+                  <p class="text-lg dark:text-gray-400">$ {{ prettify((parseFloat(validator.userDelegations) * parseFloat(this.getStateOnePrice())).toFixed(2))}}</p>
                 </div>
               </div>
               <div class="flex space-x-1">

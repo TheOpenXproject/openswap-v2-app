@@ -77,11 +77,7 @@
       SwitchLabel 
     },
     mounted: async function () {
-
-
-
-
-
+      this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'true' ? true : false;
     },
     data() {
       return {
@@ -121,7 +117,6 @@
       ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek"]),
       setEnabled: function (value) {
         localStorage.setItem("oSwap\_enable_farms", value);
-        console.log(value)
       },
       updateFarms: async function(){
         this.Pools = this.getFarms();

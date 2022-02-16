@@ -38,6 +38,10 @@ module.exports = {
         libre: ["'Libre Franklin'"],
         nunito: ["Nunito"],
         montserrat: ["Montserrat"]
+      },
+      boxShadow: {
+        'dark-depth': 'inset .2rem .2rem .5rem #17151f',
+        'light-depth': 'inset .2rem .2rem .5rem rgba(16,157,187,0.4)',
       }
     },
     screens: {
@@ -884,7 +888,7 @@ module.exports = {
     borderRadius: ['responsive'],
     borderStyle: ['responsive'],
     borderWidth: ['responsive'],
-    boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
+    boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'dark'],
     boxSizing: ['responsive'],
     clear: ['responsive'],
     container: ['responsive'],

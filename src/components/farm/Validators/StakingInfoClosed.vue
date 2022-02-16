@@ -1,6 +1,77 @@
 <template>
   <transition name="fall" appear>
-  <div v-if="validator" class="flex grid lg:grid-cols-7 lg:grid-rows-1 sm:grid-cols-4 sm:grid-rows-2 md:grid-cols-7 md:grid-rows-1 mb-1 pl-4 py-2 dark:from-slightDark items-center from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray rounded-lg border-l border-oswapGreen" >
+    <div v-if="validator" class="flex flex-1 flex-col items-center rounded-lg border-l border-oswapGreen mb-1 pl-4 py-2 space-y-2">
+      <div class="flex flex-1 w-full justify-start">
+        <p class="text-oswapBlue-light font-semibold">{{ validator.name }}</p>
+      </div>
+      <div class="flex flex-1 w-full space-x-0 lg:space-x-4 lg:flex-row flex-col">
+        <div class="flex flex-1 flex-row space-x-0 lg:space-x-4 justify-between">
+          <div class="flex flex-1 items-center align-middle py-2 space-x-3 ">
+            <div class="flex flex-none p-3 rounded-full bg-slightGray dark:bg-slightDark   ">
+              <img alt="oSwap" src="@/assets/one_logo.png" class="h-6 w-6 ">
+            </div>
+            <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
+              <p class="ss:text-md xs:text-lg font-extrabold">{{ prettify(validator.totalDelegated) }}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
+            </div>
+          </div>
+          <div class="flex  flex-1 items-center align-middle py-2 space-x-3  lg:pl-4">
+            <div class="flex flex-none p-3 rounded-full bg-slightGray dark:bg-slightDark ">
+              <img alt="oSwap" src="@/assets/one_logo.png" class="h-6">
+            </div>
+            <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
+              <p class="ss:text-md xs:text-lg font-extrabold">{{ prettify(validator.userDelegations) }}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Staked</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-1 flex-row space-x-0 lg:space-x-4 justify-between">
+            <div class="flex flex-1 items-center align-middle py-2 space-x-3 ">
+              <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-dollar-sign text-oswapGreen text-2xl"></i>
+              </div>
+              <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
+                <p class="ss:text-md xs:text-lg font-extrabold">{{ prettify((parseFloat(validator.userDelegations) * parseFloat(this.getStateOnePrice())).toFixed(2))}}</p>
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Staked Value</p>
+              </div>
+            </div>
+            <div class="flex flex-1 items-center align-middle py-2 space-x-3 ">
+              <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-percent text-oswapGreen text-2xl"></i>
+              </div>
+              <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
+                <p class="ss:text-md xs:text-lg font-extrabold">{{ this.getApr() }}%</p>
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">APR</p>
+              </div>
+            </div>
+        </div>
+        <div class="flex flex-1 flex-row space-x-0 lg:space-x-4 justify-between">
+          <div class="flex flex-1 items-center align-middle py-2 space-x-3 ">
+            <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+              <i class="las la-percent text-oswapGreen text-2xl"></i>
+            </div>
+            <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
+              <p class="ss:text-md xs:text-lg font-extrabold">{{ this.getApy() }}%</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">APY</p>
+            </div>
+          </div>
+          <div class="flex flex-none justify-start items-center ">
+            <div @click="selectValidator()" class="flex h-9 items-center space-x-2 rounded-full group bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 pl-3 cursor-pointer">
+              <p class="text-sm text-gray-500 dark:text-oswapBlue-light">details</p>
+              <i class="las la-arrow-down text-lg p-2 text-gray-500 dark:text-oswapBlue-light rounded-full bg-gray-100 dark:bg-oswapDark-gray group-hover:bg-oswapGreen dark:group-hover:text-oswapDark-gray group-hover:text-gray-100 border-2 border-gray-200 dark:border-gray-700"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- <div  class="grid lg:grid-cols-7 lg:grid-rows-1 sm:grid-cols-4 sm:grid-rows-2 md:grid-cols-7 md:grid-rows-1 mb-1 pl-4 py-2 dark:from-slightDark items-center from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray rounded-lg border-l border-oswapGreen" >
+    
+    
+    
+    
+    
     <div class="text-oswapBlue-light space-x-6 pr-2 xs:pb-3">{{ validator.name }}</div>
     <div class="rounded-md align-middle xl:visible ">
       <div class="flex items-center align-middle space-x-3">
@@ -62,7 +133,7 @@
 
 
 
-  </div>
+  </div> -->
 </transition>
 </template>
 
@@ -98,4 +169,5 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

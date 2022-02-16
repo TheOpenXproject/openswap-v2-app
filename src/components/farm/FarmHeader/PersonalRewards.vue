@@ -1,36 +1,36 @@
 <template>
-  <div class="flex flex-wrap w-full">
+  <div class="flex flex-wrap w-full lg:mb-6 lg:my-0 my-3  space-y-3">
   
-    <div class="flex space-x-3 items-center mb-6">
+    <div class="flex space-x-3 items-center">
       <i class="las la-user text-lg dark:text-oswapGreen"></i>
       <p class="text-oswapGreen-dark dark:text-oswapBlue-light text-sm uppercase">Income:</p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 w-full">
+    <div class="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5 w-full pl-2">
 
       <div class="flex space-x-1 w-full">
-        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-lg font-extrabold">${{(this.getUserRewardsPerWeek()/7).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Daily</p>
         </div>
       </div>
 
       <div class="flex  space-x-3 w-full">
-        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-md font-extrabold">${{this.getUserRewardsPerWeek().toFixed(1)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
-        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-lg text font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
-        <div class="flex flex-col pl-2 text-gray-600 dark:text-gray-300">
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
           <p class="ss:text-md xs:text-md font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34 * 12).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Yearly</p>
         </div>
