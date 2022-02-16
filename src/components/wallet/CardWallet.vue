@@ -4,27 +4,31 @@
       <div class="flex h-10 space-x-2 items-center">
         <!-- Card Icon -->
         <slot></slot>
-        <p class="text-sm font-bold">{{balanceData.networkName}}</p>
+        <p class="text-sm font-bold">{{balanceData.balanceName}}</p>
       </div>
       <div class="flex space-x-3 items-center">
-        <ProgressCircle :amount="balanceData.valuePercentage" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
+        <ProgressCircle v-if="balanceData.type == 'Available'" :amount="this.getAvailablePercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
+        <ProgressCircle v-if="balanceData.type == 'Staked'" :amount="this.getStakedPercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
+        <ProgressCircle v-if="balanceData.type == 'Total'" :amount="99" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
         <div class="flex flex-col">
           <p class="text-base">Balance</p>
-          <p class="text-2xl font-bold">$ {{balanceData.value}}</p>
+          <p v-if="balanceData.type == 'Available'" class="text-2xl font-bold">$ {{prettify(this.getAvailableBalance().toFixed(2))}}</p>
+          <p v-if="balanceData.type == 'Staked'" class="text-2xl font-bold">$ {{prettify(this.getUserStake().toFixed(2))}}</p>
+          <p v-if="balanceData.type == 'Total'" class="text-2xl font-bold">$ {{this.getTotalBalance}}  </p>
         </div>
       </div>
       <div class="flex space-x-3 ml-1">
         <div class="flex flex-col">
           <p class="text-base">Assets</p>
           <div class="flex space-x-2 items-center">
-            <p class="text-2xl font-bold">{{balanceData.assets.length}}</p>
+            <p class="text-2xl font-bold">{{tokens.length}}</p>
             <div class="flex flex-row-reverse -space-x-2 space-x-reverse">
 
-              <div v-for="(asset, index) in balanceData.assets.slice(0, 9).reverse()" :key="index" class="flex h-6 w-6 rounded-full bg-slightGray shadow items-center justify-center overflow-hidden border-2 border-slightGray">
-                <img :src="asset.icon" class="h-6" alt="">
+              <div v-for="(asset, index) in tokens.slice(0, 9).reverse()" :key="index" class="flex h-6 w-6 rounded-full bg-slightGray shadow items-center justify-center overflow-hidden border-2 border-slightGray">
+                <img :src="asset.image" class="h-6" alt="">
               </div>              
             </div>
-            <p v-if="balanceData.assets.length > 10">+</p>
+            <p v-if="tokens.length > 10">+</p>
           </div>
         </div>
       </div>
@@ -34,6 +38,8 @@
 
 <script>
   import ProgressCircle from '@/components/wallet/ProgressCircle'
+  import {mapGetters } from 'vuex';
+    import { ethers } from "ethers";
 
   export default {
     name: 'CardWallet',
@@ -42,7 +48,36 @@
     },
     props: {
       balanceData: Object,
-      styleData: Object
+      styleData: Object,
+      tokens: Array,
+    },
+    computed: {
+    getTotalBalance: function(){
+      let ret = (parseFloat(this.getAvailableBalance())+parseFloat(this.getUserStake())).toFixed(2)
+        return ret
+      },
+      getStakedPercent: function(){
+        let ret = (parseFloat(parseFloat(this.getUserStake())/ parseFloat(this.getTotalBalance) *100)).toFixed(2) 
+        return ret
+      },
+      getAvailablePercent: function(){
+        let ret = (parseFloat(this.getAvailableBalance())/ parseFloat(this.getTotalBalance) *100).toFixed(2) 
+        return ret
+      }
+    },
+    methods: {
+      ...mapGetters("farm/farmData", ["getUserStake"]),
+
+      prettify: function(number){
+        return ethers.utils.commify(number)
+      },
+      getAvailableBalance: function(){
+        let bal = 0;
+        for(var i in this.tokens){
+          bal += (this.tokens[i].balance * this.tokens[i].tokenPriceUsd )
+        }
+        return bal
+      }
     }
   }
 </script>

@@ -21,13 +21,17 @@ export default {
         userRewardPerWeek: 0,
         validatorData: [],
         openxBurnt: 0,
-        openxSupply: 0
+        openxSupply: 0,
+        tokens: [],
       }, //// "setUserStakeTotal", "setTVL", "setPendingRewards" // 
       getters: { ///"setStakedAPR", "setUserAPR", "setUserRewardsPerWeek"
         // get current step state
         
         getFarms: (state) => {
           return state.farms
+        },
+        getTokens: (state) => {
+          return state.tokens
         },
         getSoloFarms: (state) => {
           return state.soloFarms
@@ -78,6 +82,9 @@ export default {
       actions: { 
         setFarms({ commit }, value) {
           commit('_setFarms', value)
+        },
+        setTokensState({ commit }, value) {
+          commit('_setTokensState', value)
         },
         setSoloFarms({ commit }, value) {
           commit('_setSoloFarms', value)
@@ -137,6 +144,9 @@ export default {
       mutations: {
         _setFarms: (state, value) => {
           state.farms = value
+        },
+        _setTokensState: (state, value) => {
+          state.tokens = value
         },
         _setSoloFarms: (state, value) => {
           state.soloFarms = value

@@ -89,7 +89,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           let vals = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
           this.setValidatorData(vals)
           await sdk.initBalances(user)
-
+          var tokens = await sdk.getTokens()
           farms = await sdk.getFarms()
           soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
           console.log( "kjskjskjskjksj " )
@@ -110,7 +110,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           this.setTVL(TVL)
           this.setPendingRewards(pending)
           this.setUserStakeTotal(userStake)
-
+          this.setTokensState(tokens)
 
 
           this.setSoloFarms(soloFarms)
@@ -134,6 +134,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           const valData = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
           this.setValidatorData(valData)
           await sdk.initBalances(user)
+          tokens = await sdk.getTokens()
 
           farms = await sdk.getFarms()
            soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
@@ -150,6 +151,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           this.setUserRewardsPerWeek(userRewardsPerWeek)
           this.setUserAPR(avgAPRUser)
           this.setStakedAPR(avgAPRTotal)
+          this.setTokensState(tokens)
           
 
 
@@ -179,7 +181,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
     
     methods: {
       ...mapActions('farm/farmData', ['setFarms', '']),
-      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms"]),
+      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms", "setTokensState"]),
       ...mapActions('user', ['setIsScrolled', 'setTheme']),
       ...mapActions('wallet', ['switchWalletType']),
       handleScroll() {

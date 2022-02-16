@@ -11,7 +11,7 @@
       </div>
       
       <div class="flex w-full">
-        <!-- Menu -->
+        <!-- Menu 
         <div class="flex mr-4">
           <div class="flex h-60 p-1 flex-col rounded-full shadow-xl bg-slightGray dark:bg-slightDark text-gray-500 dark:text-gray-200">
             <button @click="setActive('home')" :class="btnActive == 'home' ? 'text-oswapGreen' : '' "  class="flex h-12 w-12 items-center justify-center rounded-full hover:bg-gray-700 hover:bg-opacity-10">
@@ -31,6 +31,7 @@
             </button>
           </div>
         </div>
+        -->
         <!-- Info -->
         <div class="flex w-full font-nunito">
           <WalletHome v-if="btnActive == 'home'"/>
@@ -62,6 +63,7 @@
       }
     },
     methods: {
+     ...mapGetters("farm/farmData", ["getUserStake", "getFarms"]),
       setActive(state) {
         this.btnActive = state
       }
