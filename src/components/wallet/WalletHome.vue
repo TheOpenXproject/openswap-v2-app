@@ -1,10 +1,10 @@
 <template>
   <transition as="template" name="vertical" appear>
-    <div v-if="this.getFarms() != null" class=" col w-full ">
-      <div class=" w-full space-x-4 h-60  mb-12">
-        <div class="grid xs-grid-cols-1 md:grid-cols-2 mdd:grid-cols-3 gap-4 w-full">
+    <div v-if="this.getFarms() != null" class="flex flex-col w-full ">
+      <div class="flex flex-none w-full space-x-4  mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 mdd:grid-cols-3 gap-4 w-full">
           <!-- Cards -->
-          <div v-for="card in cards">
+          <div  v-for="card in cards">
         
           <CardWallet :class="card.class" :tokens="this.getTokens()" :styleData="card.style" :balanceData="card.balance">
             <svg class="h-10 w-10 fill-current" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0zm5.143 7c-2.124 0-3.857 1.738-3.913 3.869v4.317c-.392 0-.783.056-1.23.056-.447 0-.839 0-1.23.056v-4.43c0-2.13-1.789-3.868-3.969-3.812-2.068 0-3.745 1.738-3.801 3.813v10.317c.056 2.13 1.789 3.869 3.969 3.813 2.124-.056 3.801-1.738 3.801-3.813v-4.318c.391 0 .783-.056 1.23-.056.447 0 .838 0 1.23-.056v4.374c.056 2.13 1.789 3.869 3.969 3.813C23.323 24.887 25 23.204 25 21.13V10.869C25 8.739 23.267 7 21.143 7zM13.26 17.093l-.056 4.093a2.27 2.27 0 01-2.292 2.299 2.27 2.27 0 01-2.292-2.3v-1.008c0-.897.727-1.795 1.957-2.3.838-.392 1.733-.616 2.683-.784zm10.174-2.187v6.28a2.306 2.306 0 01-2.292 2.299 2.27 2.27 0 01-2.292-2.3v-4.54a13.844 13.844 0 003.298-.954c.447-.224.894-.449 1.286-.785zM10.913 8.57a2.27 2.27 0 012.292 2.299v4.542a13.845 13.845 0 00-3.298.953c-.447.224-.895.448-1.286.785v-6.28c0-1.234 1.006-2.299 2.292-2.299zm10.174 0a2.27 2.27 0 012.292 2.299v1.01c.056.952-.671 1.793-1.9 2.354-.84.393-1.734.617-2.684.785v-4.15a2.27 2.27 0 012.292-2.298z"/></svg>
@@ -14,42 +14,42 @@
         </div>
       </div>
 
-      <div class="flex w-full pt-8 mb-8">
+      <div class="flex w-full pt-8 mb-4">
         <div class="grid grid-cols-8 mdd:grid-cols-8 ss:grid-cols-4 gap-4 w-full">
-          <div class="flex items-center col-span-2">
-            <div class="flex w-14 h-14 rounded-xl mr-3 items-center justify-center dark:text-slightGray text-slightDark bg-slightGray dark:bg-slightDark">
-              <i class="las la-dollar-sign text-4xl"></i>
+          <div class="flex items-center space-x-3 col-span-2">
+            <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-dollar-sign text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
-              <p class="text-2xl font-bold">$ {{this.getAvailableBalance().toFixed(2)}}</p>
-              <p class="text-base text-gray-400">Available balance</p>
+              <p class="ss:text-md xs:text-lg font-extrabold">${{this.getAvailableBalance().toFixed(2)}}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Available balance</p>
             </div>
           </div>
-          <div class="flex items-center col-span-2">
-            <div class="flex w-14 h-14 rounded-xl mr-3 items-center justify-center text-slightDark dark:text-slightGray dark:bg-slightDark bg-slightGray">
-              <i class="las la-layer-group text-4xl"></i>
+          <div class="flex items-center space-x-3 col-span-2">
+            <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-layer-group text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
-              <p class="text-2xl font-bold">$ {{this.prettify(this.getUserStake().toFixed(2))}}</p>
-              <p class="text-base text-gray-400">Staked Balance</p>
+              <p class="ss:text-md xs:text-lg font-extrabold">${{this.prettify(this.getUserStake().toFixed(2))}}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Staked Balance</p>
             </div>
           </div>
-           <div class="flex items-center col-span-2">
-            <div class="flex w-14 h-14 rounded-xl mr-3 items-center justify-center text-slightDark dark:text-slightGray dark:bg-slightDark bg-slightGray">
-              <i class="las la-layer-group text-4xl"></i>
+           <div class="flex items-center space-x-3 col-span-2">
+            <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-layer-group text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
-              <p class="text-2xl font-bold">$ {{this.prettify(this.getTotalBalance)}}</p>
-              <p class="text-base text-gray-400">Total Balance</p>
+              <p class="ss:text-md xs:text-lg font-extrabold">${{this.prettify(this.getTotalBalance)}}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Balance</p>
             </div>
           </div>
-          <div class="flex items-center col-span-2">
-            <div class="flex w-14 h-14 rounded-xl mr-3 items-center justify-center text-slightDark dark:text-slightGray dark:bg-slightDark bg-slightGray">
-              <i class="las la-coins text-4xl"></i>
+          <div class="flex items-center space-x-3 col-span-2">
+            <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
+                <i class="las la-coins text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
-              <p class="text-2xl font-bold">{{this.getTokens().length}}</p>
-              <p class="text-base text-gray-400">Total Assets</p>
+              <p class="ss:text-md xs:text-lg font-extrabold">{{this.getTokens().length}}</p>
+              <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Assets</p>
             </div>
           </div>
         </div>
@@ -60,6 +60,12 @@
     </div>
   </transition>
 </template>
+
+
+
+
+
+
 
 <script>
   import TokenList from '@/components/TokenList'

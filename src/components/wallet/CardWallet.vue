@@ -1,6 +1,6 @@
 <template>
-  <div class="flex col-span-2 rounded-3xl bg-gradient-to-br">
-    <div class="flex card-pattern flex-col text-slightGray justify-between w-full rounded-3xl shadow-2xl p-3">
+  <div class="flex flex-1 lg:col-span-2 col-span-1 rounded-3xl bg-gradient-to-br">
+    <div class="flex card-pattern flex-col text-slightGray w-full rounded-3xl shadow-2xl p-3">
       <div class="flex h-10 space-x-2 items-center">
         <!-- Card Icon -->
         <slot></slot>

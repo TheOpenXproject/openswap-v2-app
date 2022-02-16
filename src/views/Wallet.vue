@@ -6,7 +6,10 @@
         <i class="las la-wallet text-3xl dark:text-oswapGreen text-gray-600"></i>
         <div class="flex flex-col pt-1">
           <p class="text-xl">Wallet Dashboard</p>
-          <p class="text-xs pl-1 text-gray-400">{{this.getUserAddress}}</p>
+          <p class="text-xs pl-1 text-gray-400">
+             <span class="lg:hidden flex">{{this.getUserAddress && this.getUserAddress.slice(0, 12) + '...' + this.getUserAddress.slice(34, 42)}}</span>
+             <span class="lg:flex hidden">{{this.getUserAddress}}</span>
+          </p>
         </div>
       </div>
       
