@@ -1362,6 +1362,20 @@ export default {
 
 
     },
+    getAmountsLiquidityCalc: async function(pair, token0, token1, amount){
+      
+      const Token0 = pair.token0
+      const route = new Route([pair], Token0);
+      const price = Price.fromRoute(route);
+      const amountin = ethers.BigNumber.from(this.getUnits(amount, token0))
+
+      const amountOut = price
+        .quote(new TokenAmount(Token0, amountin.toString()))
+        .toFixed(token1.decimals);
+        return amountOut
+
+
+    },
     //----------------------------------------Swap-------------------------------------------
     swapETHForExactTokens: async function(amountIn, amountOutMin, path, token1){
       let isDefaultWallet = this.checkSignedIn()

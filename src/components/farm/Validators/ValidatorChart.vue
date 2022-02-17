@@ -56,16 +56,17 @@ export default {
             data: [],
           },
         ],
+                  
         chartOptions: {
           chart: {
             height: 250,
             
             type: "line",
             sparkline: {
-              enabled: true,
+              enabled: false,
             },
             dropShadow: {
-              enabled: true,
+              enabled: false,
               top: 2,
               left: 3,
               blur: 7,
@@ -74,6 +75,39 @@ export default {
           },
           stroke: {
             curve: "smooth",
+          },
+          xaxis: {
+            type: "epochs",
+            categories: this.epochs,
+            labels:{
+              style :{
+                colors: [ 
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#1bf2ba', '#18d5bb', '#13b4ba', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',]
+              }
+            }
+          },
+          yaxis: {
+            labels:{
+              style :{
+                colors: [ 
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',
+            '#109dbb', '#109dbb', '#109dbb', '#109dbb',]
+              }
+            }
           },
           markers: {
             size: 0,

@@ -1,39 +1,38 @@
 <template>
   <div id="calculator" class="max-w-screen-xl mx-auto flex flex-1 flex-col items-center oswap-layout xl:px-0 px-3 text-gray-500 pb-16" style="margin-top: 98px">
-      <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-        <div v-for="(pair, idx) in this.Pools" :key="idx" class="flex flex-none flex-col h-a p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray border-l border-oswapGreen rounded-3xl">
-          <div class="flex flex-none space-x-2 items-center">
-            <div class="relative w-20">
-              <div class="absolute top-0 bottom-0 my-auto items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-                <img :src="pair.imgtoken0" class="h-8 w-8">
-              </div>
-              <div class="absolute top-0 bottom-0 my-auto left-8 items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-                <img :src="pair.imgtoken1" class="h-8 w-8">
-              </div>
-            </div>
-            <div class="flex flex-1 flex-col md:space-y-2 lg:space-y-2 space-y-4">
-                <span>{{pair.pair}}</span>
-                <CalculateTokensLp v-on:calculate="loadRewards(pair, $event)" :pair='pair' />
-            </div>
-          </div>
-          <div class="flex flex-none items-center justify-center mt-6 pl-24" v-if="loading === pair.pid || loaded[pair.pid]?.loaded">
-            <Rewards 
-              :loaded="loaded[pair.pid]?.loaded" 
-              :daily="loaded[pair.pid]?.daily?.toFixed(2)" 
-              :weekly="loaded[pair.pid]?.weekly?.toFixed(2)" 
-              :monthly="loaded[pair.pid]?.monthly?.toFixed(2)" 
-              :yearly="loaded[pair.pid]?.yearly?.toFixed(2)" 
-            />
+    <div  class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3 w-full">
+      <div v-if="this.getFarms() != null" v-for="(pair, idx) in this.Pools" :key="idx" class="flex flex-none flex-col cols-3 h-a p-3 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray border-l border-oswapGreen rounded-3xl">
+       <div>{{pair.pair}}</div>
+       <div class="grid overflow-hidden grid-cols-2 auto-rows-auto gap-3 w-auto h-2/12">
+        <div class="box">
+         <div class="flex flex-col-2 space-x-2 items-center">
+          <div class="flex flex-1 flex-col w-50">
+            <CalculateTokensLp v-on:calculate="loadRewards(pair, $event)" @amountInput="amountInput" :pair='pair' />
           </div>
         </div>
+        <div class="flex flex-none items-center justify-center mt-6 pl-24">
+        </div>
       </div>
+      <div class="box">   <Rewards 
+        :loaded="loaded[pair.pid]?.loaded" 
+        :daily="loaded[pair.pid]?.daily?.toFixed(2)" 
+        :weekly="loaded[pair.pid]?.weekly?.toFixed(2)" 
+        :monthly="loaded[pair.pid]?.monthly?.toFixed(2)" 
+        :yearly="loaded[pair.pid]?.yearly?.toFixed(2)" 
+        /></div>
+      </div>
+      <Chart v-if="loaded[pair.pid]?.loaded" :amount="usdAmount" :rewardPerWeek="loaded[pair.pid]?.weekly?.toFixed(10)"/>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
 import openswap from "@/shared/openswap.js";
 import { createWatcher } from "@makerdao/multicall";
 import CalculateTokensLp from '@/components/utility/CalculateTokensLp'
+import Chart from '@/components/utility/Chart'
+
 import Rewards from '@/components/utility/Rewards'
 import InputWithValidationLiquidity from '@/components/InputWithValidationLiquidity';
 import { mapGetters } from "vuex";
@@ -44,26 +43,29 @@ export default {
   components: { 
       CalculateTokensLp,
       Rewards,
-      InputWithValidationLiquidity
+      InputWithValidationLiquidity,
+      Chart
    },
   computed: {
     ...mapGetters("addressConstants", ["oSWAPCHEF", "UNIROUTERV2", "hMULTICALL", "hRPC"]),
   },
   methods: {
+    ...mapGetters("farm/farmData", ["getFarms"]),
     ...mapGetters("wallet", ["getChainID"]),
     async loadRewards(pair, amounts) {
       try {
         this.loaded[pair.pid] = {};
         this.loading = pair.pid;
-        const total = await this.getLpStaked(pair.pairaddress)
-        const totalLP = await this.getLpTokens(amounts.pair, total.supply, amounts.amount0, pair.decimals[0], amounts.amount1, pair.decimals[1])
+        const total = pair.totalStaked
+        const lpSupply = pair.lpSupply
+        const personalLP = await this.getLpTokens(pair.uniPair, lpSupply, amounts.amount0, pair.decimals[0], amounts.amount1, pair.decimals[1])
         console.log("0hello")
-        console.log(totalLP)
-        const stakeWeight = ((totalLP.toFixed(3)) / (((parseFloat(this.getEthUnits(total.supply.add(this.getBN(totalLP.raw.toString())))).toFixed(3)))) * 100).toFixed(15)
-        let rewards = await this.getRewardValue(pair, stakeWeight);
-        const weekly = parseFloat(rewards[0])
+       // console.log(totalLP)
+        const stakeWeight = ((personalLP.toFixed(10)) / (((parseFloat(this.getEthUnits(total.add(this.getBN(personalLP.raw.toString())))).toFixed(10))))).toFixed(10)
+        const rewardsPerWeek = pair.usdPerWeek * stakeWeight
+        const weekly = parseFloat(rewardsPerWeek)
         const daily = weekly / 7
-        const monthly = parseFloat(rewards[1])
+        const monthly = parseFloat(rewardsPerWeek * 4.3)
         const yearly = monthly * 12
         this.loaded[pair.pid] = {
             loaded: true,
@@ -82,39 +84,13 @@ export default {
           }, 1000); // 1 sec delay
       }
     },
-    async getLpStaked(poolAddress) {
-        const MULTICALL = this.hMULTICALL(this.getChainID());
-        const RPC = this.hRPC(this.getChainID());
-         const MASTERCHEF = this.oSWAPCHEF(this.getChainID());
-        const CALL =  [{
-          target: poolAddress,
-          call: ["totalSupply()(uint256)"],
-          returns: [["supply", (val) => val]],
-        },{
-          target: poolAddress,
-          call: ["balanceOf(address)(uint256)", MASTERCHEF],
-          returns: [["staked" , (val) => val]],
-        }]
-        let totalStaked = {};
-        const config = {
-            rpcUrl: RPC,
-            multicallAddress: MULTICALL,
-        };
-
-        const watcher = createWatcher(CALL, config);
-        watcher.subscribe((update) => {
-            totalStaked[update.type] = update.value
-        });
-        watcher.start();
-        await watcher.awaitInitialFetch();
-        watcher.stop();
-        console.log(totalStaked)
-        return totalStaked;
+    amountInput: function(amount){
+      this.usdAmount = amount
     }
   },
   mounted: async function () {
-      this.Pools = pools[this.getChainID()].pools;
-      await this.getTokenPrices();
+      this.Pools = this.getFarms()
+      //await this.getTokenPrices();
   },
   data() {
     return {
@@ -123,7 +99,8 @@ export default {
       errors: 0,
       token0: '0',
       token1: '0',
-      loaded: []
+      loaded: [],
+      usdAmount: 0,
     };
   },
 };

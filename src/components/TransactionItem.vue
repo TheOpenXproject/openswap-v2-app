@@ -40,6 +40,7 @@
         <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Token Address</p>
       </div>
     </div>
+    
 
   </div>
 </template>

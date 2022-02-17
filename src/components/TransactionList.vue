@@ -16,7 +16,9 @@
     
     <!-- transaction item -->
     <transition-group as="template" name="vertical" appear>
-      <TransactionItem v-for="(token, index) in tokens" :token="token" />
+      <TransactionItem v-for="(token, index) in tokens" :token="token" > 
+        <Divider class="w-full md:hidden text-lg text-oswapGreen " />
+      </TransactionItem>
     </transition-group>
 
     <!-- observer for infinite scroll -->

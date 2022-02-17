@@ -1,21 +1,27 @@
 <template>
-    <InputWithValidationLiquidity :input="amount0" :errors="errors0" @catchInput="inputAmount0" :rounded="'rounded-xl'" :placeholder="pair.name[0]" :errorTop="'mt-10 z-90'">
 
-    </InputWithValidationLiquidity>
-    <span v-if="price !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{price}}</span>
-    <InputWithValidationLiquidity :input="amount1" :errors="errors1" @catchInput="inputAmount1" :rounded="'rounded-xl'" :placeholder="pair.name[1]" :errorTop="'mt-10 z-90'" >
+    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
+    <div class="box"> USD to invest:</div>
+    <div class="box"><InputWithValidationLiquidity :input="amount" :errors="errors" @catchInput="inputAmount" :rounded="'rounded-xl'" :placeholder="USD" :errorTop="'mt-10 z-90'">
 
-    </InputWithValidationLiquidity>
-    <span  v-if="price !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{price}}</span>
-    <div @click="calculateRewards()" :class="!fetching? '':'cursor-not-allowed'" class="flex h-10 items-center bg-gray-100 dark:bg-oswapDark-gray group-scope-hover:bg-oswapGreen text-oswapGreen-dark dark:text-oswapGreen border-l border-black border-opacity-10 cursor-pointer px-3 rounded-xl">
-        <transition name="fall" appear>
-            <p v-if="!fetching" class="text-sm dark:group-scope-hover:text-oswapDark-gray group-scope-hover:text-gray-100">Calculate Rewards</p>
-            <div v-else class="flex flex-1 justify-start items-center space-x-2">
-                <p class="text-oswapGreen-dark">Fetching</p>
-                <i class="las la-sync text-xl animate-spin text-oswapGreen-dark dark:text-oswapGreen"></i>
-            </div>
-        </transition>
+    </InputWithValidationLiquidity></div>
     </div>
+
+
+    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
+    <div class="box"> <img :src="pair.imgtoken0" class="h-8 w-8"></div>
+    <div class="box">{{amount0}}</div>
+    </div>
+     <span v-if="tokenValue !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{tokenValue}}</span>
+    
+    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
+    <div class="box"> <img :src="pair.imgtoken1" class="h-8 w-8"></div>
+    <div class="box">    {{amount1}}
+    </div>
+    </div>
+
+   
+    <span  v-if="tokenValue !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{tokenValue}}</span>
 </template>
 
 <script>
@@ -27,30 +33,45 @@ export default {
     components: { 
         InputWithValidationLiquidity
      },
+     props: {
+        pair: Object
+     },
     computed: {
     },
     methods: {
         calculateRewards() {
-            this.$emit('calculate', {amount0: this.amount0, amount1: this.amount1, pair: this.pairObject})
+            this.$emit('calculate', {amount0: this.amount0, amount1: this.amount1, pair: this.pairObject, amount: this.amount})
         },
         async getPair() {
             if (!this.pairObject) {
-                this.pairObject = await this.getPairByAddressFarm(this.pair.token0address, this.pair.token1address)
+                this.pairObject = this.pair.uniPair
             }
         },
-        async updatePrice() {
-            [this.price] = await this.getLiquidityValue(
-                this.pair, 
-                this.getEthers(this.amount0),
-                this.getEthers(this.amount1),
-            );
+        async updatePrice(n) {
+            if(n){
+              this.tokenValue = this.pair.token1PriceUsd * this.amount1
+            }
+            if(!n){
+              this.tokenValue = this.pair.token0PriceUsd * this.amount0
+            }
+        },
+        inputAmount: async function(value){
+            this.$emit('amountInput', value)
+            this.setErrors(value, 'errors0')
+            if (this.errors !== {} && value !== this.amount) {
+                this.amount0 = (value/2 / this.pair.token0PriceUsd)
+                this.amount1 = (value/2 / this.pair.token1PriceUsd)
+               this.calculateRewards()
+
+            }   
+
         },
         inputAmount0: async function(value){
             this.setErrors(value, 'errors0')
             if (this.errors0 !== {} && value !== this.amount0) {
                 this.fetching = true;
                 await this.getPair();
-                const liquidity = await this.getAmountsLiquidity(
+                const liquidity = await this.getAmountsLiquidityCalc(
                     this.pairObject,
                     { oneZeroxAddress:this.pair.token0address, decimals: this.pair.decimals[0]},
                     { oneZeroxAddress:this.pair.token1address, decimals: this.pair.decimals[1]},
@@ -58,9 +79,9 @@ export default {
                 )
                 this.amount0 = value;
                 this.amount1 = (liquidity).toString();
-                await this.updatePrice();
+                await this.updatePrice(false);
                 this.fetching = false;
-            }
+            }   this.calculateRewards()
 
         },
         inputAmount1: async function(value){
@@ -68,16 +89,19 @@ export default {
             if (this.errors1 !== {} && value !== this.amount1) {
                 this.fetching = true;
                 await this.getPair();
-                const liquidity = await this.getAmountsLiquidity(
+                const liquidity = 
+
+                await this.getAmountsLiquidityCalc(
                     this.pairObject,
-                    { oneZeroxAddress:this.pair.token0address, decimals: this.pair.decimals[0]},
                     { oneZeroxAddress:this.pair.token1address, decimals: this.pair.decimals[1]},
+                    { oneZeroxAddress:this.pair.token0address, decimals: this.pair.decimals[0]},
                     value
                 )
-                this.amount1 = value;
-                this.amount0 = (liquidity).toString();
-                await this.updatePrice();
+                this.amount0 = value;
+                this.amount1 = (liquidity).toString();
+                await this.updatePrice(true);
                 this.fetching = false;
+                this.calculateRewards()
             }
         },
         setErrors(value, setup) {
@@ -100,9 +124,11 @@ export default {
         return {
         pairObject: null,
         fetching: false,
+        amount:    "0",
         amount0: '0',
         amount1: '0',
-        price: '0',
+        tokenValue: '0',
+        errors:{},
         errors0: {},
         errors1: {},
         };
