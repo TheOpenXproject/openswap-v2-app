@@ -10,30 +10,37 @@
 
       <div class="flex space-x-1 w-full">
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">${{(this.getUserRewardsPerWeek()/7).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{showOpenx? '': '$'}}{{(this.getRewards/7).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Daily</p>
         </div>
       </div>
 
       <div class="flex  space-x-3 w-full">
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">${{this.getUserRewardsPerWeek().toFixed(1)}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{showOpenx? '': '$'}}{{(this.getRewards)?.toFixed(1)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Weekly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg text font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{showOpenx? '': '$'}}{{(this.getRewards * 4.34).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Monthly</p>
         </div>
       </div>
 
       <div class="flex space-x-3 w-full">
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">${{(this.getUserRewardsPerWeek() * 4.34 * 12).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-lg font-extrabold">{{showOpenx? '': '$'}}{{(this.getRewards * 4.34 * 12).toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Yearly</p>
         </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
+      <div class="flex flex-none col-span-1 lg:col-span-2">
+        <button @click="showOpenx = !showOpenx" class="flex mt-2 h-8 px-4 items-center justify-center rounded-md  bg-oswapGreen text-slightGray dark:text-slightDark dark:bg-oswapGreen">
+            <p class="text-sm">{{showOpenx? 'Show USD': 'Show OpenX'}}</p>
+        </button>
       </div>
     </div>
   </div>
@@ -43,9 +50,7 @@
 <script>
   import { ethers } from 'ethers';
   import openswap from "@/shared/openswap.js";
-  import { toastMe } from '@/components/toaster/toaster.js';
   import { mapGetters } from 'vuex';
-
 
   export default {
     name: 'Personal',
@@ -57,51 +62,33 @@
         oswapPrice: 0,
         usdValue: 0.00,
         weekly: 0,
-        monthly: 0
+        monthly: 0,
+        showOpenx: false,
+        oswapPrice:0,
       }
     },
     mounted: async function(){
       let timeout
-
       if(this.getUserSignedIn()){
         timeout = 1
       } else {
         timeout = 1000
       }
-      
+      this.oswapPrice = await this.getOswapPrice();
       await setTimeout(async function (){
-
       }.bind(this), timeout);
-
       await setInterval(async function(){
-       // this.oswapPrice = await this.getOswapPrice();
-
+       this.oswapPrice = await this.getOswapPrice();
       }.bind(this), 10000)
-
-      
-      
     },
     computed: {
-      pendingValue: function() {
-        return this.prettify(String(parseFloat(this.REWARDS * this.oswapPrice).toFixed(2)))
-      },
-      getMonthly: function(){
-        let n;
-        let monthlyIncome = 0
-        for(n in this.rewardsPerTime.monthly){
-          monthlyIncome = monthlyIncome +  parseFloat(this.rewardsPerTime.monthly[n])
+      getRewards: function() {
+        let price = 1;
+        if (this.showOpenx) {
+          price = this.oswapPrice
         }
-        return monthlyIncome.toFixed(2)
+        return this.getUserRewardsPerWeek() / price
       },
-      getWeekly: function() {
-        let n;
-        let weeklyIncome = 0
-        for(n in this.rewardsPerTime.weekly){
-          weeklyIncome = weeklyIncome +  parseFloat(this.rewardsPerTime.weekly[n])
-        }
-        return weeklyIncome.toFixed(2)
-      }
-      
     },
     methods: {
       ...mapGetters('wallet', ['getUserSignedIn']),//getUserRewardsPerWeek

@@ -24,7 +24,7 @@
   import openswap from "@/shared/openswap.js";
 
   import PoolHeader from "@/components/farm/FarmPair/PoolHeader";
-  import PoolStatsClosed from "@/components/farm/FarmPair/PoolStatsClosed";
+  import PoolStatsClosed from "@/components/farm/PoolStatsClosed";
   import PoolStatsInfo from "@/components/farm/FarmPair/PoolStatsInfo";
   import PoolStake from "@/components/farm/FarmPair/PoolStake";
   import PoolUnstake from "@/components/farm/FarmPair/PoolUnstake";

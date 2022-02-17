@@ -3,7 +3,7 @@
     <div class="absolute xl:left-0 left-3 flex items-center ss:pt-4 ns:pt-0">
       <ColorMode />
     </div>
-    <div class="absolute left-28 flex items-center ss:pt-4 ns:pt-0">
+    <div class="absolute left-24 flex items-center ss:pt-4 ns:pt-0">
       <WalletMode />
     </div>
     <div class="flex flex-col ss:items-end sm:items-center ss:pt-4 ns:pt-0 ss:space-y-1 xs:space-y-2">

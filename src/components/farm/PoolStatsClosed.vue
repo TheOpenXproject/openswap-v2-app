@@ -15,7 +15,7 @@
           </svg>
         </div>
 
-        <p v-else class="text-sm  font-extralight pl-1 dark:text-gray-300 text-el">{{ this.prettify(this.pool.user.pendingRewardsBal.toFixed(2))}}</p>
+        <p v-else class="text-sm  font-extralight dark:text-gray-300 text-el">{{ this.prettify(this.pool.user.pendingRewardsBal.toFixed(2))}}</p>
       </div>
       <!-- Liquidity Info -->
       <div class="sm:flex ss:hidden min-w-0 w-full flex-col h-full justify-between">
@@ -30,7 +30,7 @@
           </svg>
         </div>
 
-        <p v-else class="text-sm  font-extralight pl-1 dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.getLiquidityValue.toFixed(2))}}</p>
+        <p v-else class="text-sm  font-extralight  dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.getLiquidityValue.toFixed(2))}}</p>
       </div>
       <div class="flex min-w-0 w-full flex-col h-full justify-between">
         <div class="flex space-x-2 items-center">
@@ -44,7 +44,7 @@
           </svg>
         </div>
         
-        <p v-else class="text-sm font-extralight pl-1 dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.user.stakeValue.toFixed(2))}}</p>
+        <p v-else class="text-sm font-extralight dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.user.stakeValue.toFixed(2))}}</p>
       </div>
     </div>
     <!-- Open Details Button -->
