@@ -30,11 +30,11 @@
           </svg>
         </div>
 
-        <p v-else class="text-sm  font-extralight pl-1 dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.getLiquidityValue.toFixed(2))}}</p>
+        <p v-else class="text-sm  font-extralight pl-1  dark:text-gray-300 text-el">$ {{ this.prettify(this.pool.getLiquidityValue.toFixed(2))}}</p>
       </div>
       <div class="flex min-w-0 w-full flex-col h-full justify-between">
         <div class="flex space-x-2 items-center">
-          <i class="las la-money-bill text-oswapGreen"></i>
+          <i class="las la-money-bill  text-oswapGreen"></i>
           <p class="text-xs font-extralight text-oswapBlue-light">Staked</p>
         </div>
         <div v-if="!this.totalLiquidityValue" class="flex items-center pb-2 h-4">
