@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:grid lg:grid-cols-12 flex flex-col gap-4 mt-8">
+  <div v-if="token.balance > 0" class="lg:grid lg:grid-cols-12 flex flex-col gap-4 mt-8">
     <div class="flex col-span-2 space-x-0 space-y-2 lg:space-y-0 lg:space-x-2 items-center justify-center lg:justify-start lg:flex-row flex-col">
       <div class="flex w-12 h-12 rounded-full shadow-xl bg-slightGray dark:bg-slightDark items-center justify-center">
         <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark   ">
@@ -11,16 +11,23 @@
       </div>
     </div>
 
-    <div class="flex col-span-3 justify-center lg:justify-start">
+    <div class="flex col-span-2 justify-center lg:justify-start">
       <div class="flex flex-col text-gray-600 dark:text-gray-300 items-center lg:items-start">
-        <p class="ss:text-md xs:text-md font-extrabold">{{token.balance}}</p>
+        <p class="ss:text-md xs:text-md font-extrabold">{{token.balance.toFixed(8)}}</p>
         <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Balance</p>
       </div>
     </div>
 
-    <div class="flex col-span-3 justify-center lg:justify-start">
+    <div class="flex col-span-2 justify-center lg:justify-start">
       <div class="flex flex-col text-gray-600 dark:text-gray-300 items-center lg:items-start">
-        <p class="ss:text-md xs:text-md font-extrabold">{{token.tokenPriceUsd}}</p>
+        <p class="ss:text-md xs:text-md font-extrabold">{{( token.balance * token.tokenPriceUsd).toFixed(8)}}</p>
+        <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Value Usd</p>
+      </div>
+    </div>
+
+    <div class="flex col-span-2 justify-center lg:justify-start">
+      <div class="flex flex-col text-gray-600 dark:text-gray-300 items-center lg:items-start">
+        <p class="ss:text-md xs:text-md font-extrabold">{{token.tokenPriceUsd.toFixed(8)}}</p>
         <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Price</p>
       </div>
     </div>

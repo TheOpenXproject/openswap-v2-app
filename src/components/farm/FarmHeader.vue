@@ -5,6 +5,7 @@
         <Total/>
         </div>
 
+
       <div class="flex flex-1 items-start  pr-3 lg:pl-5">
         <div class="mdd:flex hidden mdd:divide-x mdd:divide-oswapGreen ml-5"></div>
         <Personal/>

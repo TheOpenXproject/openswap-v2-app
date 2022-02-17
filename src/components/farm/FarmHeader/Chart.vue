@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-none items-center relative">
-    <div class="flex z-30">
-      <apexchart type="donut" width="250" height="275" :options="chartOptions" :series="data.chartData.liquidity"></apexchart>
+  <div class="flex items-center">
+    <div class="flex">
+      <apexchart type="donut" width="250" height="300" :options="chartOptions" :series="this.series"></apexchart>
     </div>
     <div class="flex flex-col z-20 items-center text-gray-500 dark:text-gray-300 center-component">
       <p class="ss:text-5xl xs:text-7xl">{{totalPools}}</p>
@@ -13,6 +13,7 @@
 <script>
   import VueApexCharts from "vue3-apexcharts";
   import { ethers } from 'ethers'; 
+  import {mapGetters } from 'vuex';
 
   export default {
     name: 'Chart',
@@ -20,22 +21,42 @@
       apexchart: VueApexCharts
     },
     props: {
-      data: Object,
     },
-    mounted() {    
-        this.series = this.data.chartData.liquidity
-        this.chartOptions.labels = this.data.chartData.name
-        this.totalPools = this.data.chartData.length
+    mounted() {
+
+        const data = this.getData()
+        this.series = data.value
+        //console.log(amounts)
+        this.chartOptions.labels = data.tokens
+        this.totalPools = data.value.length
     },
     methods: {
+      ...mapGetters("farm/farmData", ["getTokens"]),
       prettify: function(number){
         return  ethers.utils.commify(number)
+      },
+      getData: function(){
+        var data = {
+          tokens: [],
+          value: []
+        }
+        var tokens = this.getTokens()
+        var usdValue = []
+        var names = []
+        for(var n in tokens){
+          if(tokens[n].stakedBal > 0){
+          data.value.push((tokens[n].stakedBal.toFixed(5) * tokens[n].tokenPriceUsd.toFixed(5)).toFixed(2))
+          data.tokens.push(tokens[n].symbol)
+          }
+        }
+
+        return data
       }
     },
     data() {
       return {
-        totalPools: 22,
-        series: ["0"],
+        totalPools: 0 ,
+        series: [],
         chartOptions: {
           chart: {
             type: 'donut'
@@ -54,7 +75,7 @@
             pie: {
               expandOnClick: false,
               donut: {
-                size: '85%'
+                size: '100%'
               }
             }
           },
@@ -93,7 +114,7 @@
               }
             },
             active: {
-              allowMultipleDataPointsSelection: false,
+              allowMultipleDataPointsSelection: true,
               filter: {
                 type: 'none',
                 value: 0.45,

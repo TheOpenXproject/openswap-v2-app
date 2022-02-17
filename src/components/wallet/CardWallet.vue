@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-1 lg:col-span-2 col-span-1 rounded-3xl bg-gradient-to-br">
-    <div class="flex card-pattern flex-col text-slightGray w-full rounded-3xl shadow-2xl p-3">
+    <div class="flex card-pattern flex-col text-slightGray w-full rounded-3xl shadow-2xl p-3 pb-10">
       <div class="flex h-10 space-x-2 items-center">
         <!-- Card Icon -->
         <slot></slot>
@@ -9,7 +9,7 @@
       <div class="flex space-x-3 items-center">
         <ProgressCircle v-if="balanceData.type == 'Available'" :amount="this.getAvailablePercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
         <ProgressCircle v-if="balanceData.type == 'Staked'" :amount="this.getStakedPercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
-        <ProgressCircle v-if="balanceData.type == 'Total'" :amount="99" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
+        <ProgressCircle v-if="balanceData.type == 'Total'" :amount="100" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="100" />
         <div class="flex flex-col">
           <p class="text-base">Balance</p>
           <p v-if="balanceData.type == 'Available'" class="text-2xl font-bold">$ {{prettify(this.getAvailableBalance().toFixed(2))}}</p>
@@ -17,6 +17,7 @@
           <p v-if="balanceData.type == 'Total'" class="text-2xl font-bold">$ {{this.getTotalBalance}}  </p>
         </div>
       </div>
+      <!--
       <div class="flex space-x-3 ml-1">
         <div class="flex flex-col">
           <p class="text-base">Assets</p>
@@ -32,6 +33,7 @@
           </div>
         </div>
       </div>
+    -->
     </div>
   </div>
 </template>

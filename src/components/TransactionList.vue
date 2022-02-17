@@ -16,7 +16,7 @@
     
     <!-- transaction item -->
     <transition-group as="template" name="vertical" appear>
-      <TransactionItem v-for="(token, index) in tokens" :key="index" :token="token" />
+      <TransactionItem v-for="(token, index) in tokens" :token="token" />
     </transition-group>
 
     <!-- observer for infinite scroll -->
@@ -51,182 +51,11 @@
       return {
         find: '',
         loadingChunk: false,
-        items: [],
-        // Dummy data
-        txs: [
-          {
-            Symbol: 'eMATIC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '4097.12345',
-            totalWorth: '6,499.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'bADA',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1112.34567',
-            totalWorth: '3,132.45',
-            type: 'Received'
-          },
-          {
-            Symbol: 'eWBTC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1.09712345',
-            totalWorth: '42,300.12',
-            type: 'Received'
-          },
-          {
-            Symbol: 'bUSDC/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '2097.12345',
-            totalWorth: '2,097.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'ONE',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '10097.12345',
-            totalWorth: '1,599.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'ONE/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '23097.12345678',
-            totalWorth: '1,400.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'eMATIC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '4097.12345',
-            totalWorth: '6,499.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'bADA',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1112.34567',
-            totalWorth: '3,132.45',
-            type: 'Received'
-          },
-          {
-            Symbol: 'eWBTC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1.09712345',
-            totalWorth: '42,300.12',
-            type: 'Received'
-          },
-          {
-            Symbol: 'bUSDC/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '2097.12345',
-            totalWorth: '2,097.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'ONE',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '10097.12345',
-            totalWorth: '1,599.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'ONE/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '23097.12345678',
-            totalWorth: '1,400.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'eMATIC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '4097.12345',
-            totalWorth: '6,499.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'bADA',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1112.34567',
-            totalWorth: '3,132.45',
-            type: 'Received'
-          },
-          {
-            Symbol: 'eWBTC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1.09712345',
-            totalWorth: '42,300.12',
-            type: 'Received'
-          },
-          {
-            Symbol: 'bUSDC/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '2097.12345',
-            totalWorth: '2,097.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'ONE',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '10097.12345',
-            totalWorth: '1,599.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'ONE/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '23097.12345678',
-            totalWorth: '1,400.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'eMATIC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '4097.12345',
-            totalWorth: '6,499.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'bADA',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1112.34567',
-            totalWorth: '3,132.45',
-            type: 'Received'
-          },
-          {
-            Symbol: 'eWBTC',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '1.09712345',
-            totalWorth: '42,300.12',
-            type: 'Received'
-          },
-          {
-            Symbol: 'bUSDC/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '2097.12345',
-            totalWorth: '2,097.12',
-            type: 'Swapped'
-          },
-          {
-            Symbol: 'ONE',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '10097.12345',
-            totalWorth: '1,599.12',
-            type: 'Sent'
-          },
-          {
-            Symbol: 'ONE/oSWAP',
-            tx: '0xe874d185e7c49a89887ac382de87daa9d78b97774d8b26223fdba978dac73285',
-            total: '23097.12345678',
-            totalWorth: '1,400.12',
-            type: 'Swapped'
-          }
-        ]
+        items: []
       }
     },
     mounted() {
-      this.items = this.txs.slice(0, 6)
+  
     },
     methods: {
       async intersected() { 
@@ -240,6 +69,20 @@
           this.items = [...this.items, ...newChunk];
         }
 
+      },
+      dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+              /* next line works with strings and numbers, 
+               * and you may want to customize it to your needs
+               */
+              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              return result * sortOrder;
+          }
       },
       sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));

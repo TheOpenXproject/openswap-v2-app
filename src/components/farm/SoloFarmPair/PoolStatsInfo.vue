@@ -29,7 +29,7 @@
             </div>
             <div class="flex flex-col h-full justify-between">
               <p class="text-xs text-oswapBlue-light">Stake Weight</p>
-              <p class="text-lg dark:text-gray-400">{{this.pool.user.stakeWeight.toFixed(5)}} %</p>
+              <p class="text-lg dark:text-gray-400">{{(this.pool.user.stakeWeight).toFixed(5)}} %</p>
             </div>
           </div>
           <div class="flex h-12 space-x-2">

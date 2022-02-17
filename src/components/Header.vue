@@ -6,12 +6,13 @@
     <div class="ss:flex xs:hidden flex-none">
       <img alt="OpenSwap" src="@/assets/oswap_logo_icon.png" class="ss:h-6">
     </div>
-    <!-- Navigation Start -->
-    <div class="flex items-center space-x-2 text-gray-500 dark:text-oswapGreen st5">
+   
+    <div class="flex items-center space-x-2 text-gray-500 dark:text-oswapGreen st5">   
        <router-link to="/wallet" class="flex items-center space-x-2 p-2 px-1 md:px-3 rounded-lg group focus:outline-none focus:ring-1 focus:ring-black focus:ring-opacity-20">
         <i class="las la-wallet text-xl group-hover:text-oswapGreen "></i>
         <p class="text-sm hidden md:block group-hover:text-oswapBlue-light">Portfolio</p>
       </router-link>
+      
       <router-link to="/" class="flex items-center space-x-2 p-2 px-1 md:px-3 rounded-lg group focus:outline-none focus:ring-1 focus:ring-black focus:ring-opacity-20">
         <i class="las la-random text-xl group-hover:text-oswapGreen "></i>
         <p class="text-sm hidden md:block group-hover:text-oswapBlue-light">Exchange</p>

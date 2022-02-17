@@ -174,7 +174,7 @@ export const pools = {
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     imgtoken1: "https://s2.coinmarketcap.com/static/img/coins/128x128/2010.png",
     imgtoken0: "https://openfi.dev/tokens/default/oSWAP.png",
-    name: ["bADA","OpenX"],
+    name: ["OpenX","bADA"],
     decimals: [18, 18],
     pid: "12",
     rewards: "3X",
