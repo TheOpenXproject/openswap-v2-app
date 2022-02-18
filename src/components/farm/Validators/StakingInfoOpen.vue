@@ -32,8 +32,12 @@
             <ValidatorChart :validator="validator" />
             <p class="text-oswapGreen my-1">Info: Harmony validators have an undelegation period of approx. 6 days. however, this is the safest form of earning interest as funds never leave your wallet.</p>
             <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
-              <li class="w-full text-oswapGreen my-1">Delegation and undelegation are only supported by Chrome One Wallet extension.</li>
-              <li class="w-full text-oswapGreen my-1">15% Validator node currently doesnt support token ratio. Will be replaced shortly.</li>
+              <li class="w-full text-oswapGreen my-1">Rewards for this validators default to 100% OpenX.</li>
+              <li class="w-full text-oswapGreen my-1">
+               <a href="https://docs.openswap.one/harmony-validator/20-apy-goal" target="_blank">
+                For guides and additional information regarding our validator, please visit our official docs. (Click here)
+               </a>
+              </li>
               <li class="w-full text-oswapGreen my-1">Thank you for securing Harmony.</li>
             </ul>
           </div>

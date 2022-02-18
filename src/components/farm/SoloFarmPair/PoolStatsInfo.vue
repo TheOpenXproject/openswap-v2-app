@@ -1,7 +1,7 @@
 <template>
   <transition name="horizontal">
-    <div v-if="isOpen" class="flex flex-col h-full w-full pb-3 justify-between absolute">
-      <div class="flex flex-col dark:bg-oswapDark-gray bg-gray-100 rounded-2xl">
+    <div v-if="isOpen" class="flex flex-col h-full w-full justify-between absolute">
+      <div class="flex flex-col dark:bg-oswapDark-gray py-2 bg-gray-100 rounded-2xl">
         <div class="flex shadow-lg dark:bg-oswapDark-gray bg-gray-100 p-3 rounded-2xl">
           <div class="flex flex-1 items-center justify-between relative">
             <div class="flex h-full flex-col justify-between">
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="flex flex-col ml-2 mt-2 mb-1 pb-3 space-y-2 justify-between">
+      <div class="flex flex-col ml-2 mt-2 mb-1 py-2 space-y-2 justify-between">
         <div class="flex space-x-2 h-5 items-center">
           <i class="las la-calendar-day dark:text-oswapGreen"></i>
           <p class="text-sm font-thin dark:text-gray-400">Expected Weekly Rewards: $ {{ pool.user.rewardsPerWeek.toFixed(5) }}</p>
@@ -89,20 +89,7 @@
         </div>
       </div>
 
-      <div class="flex items-center h-12 pt-2 pb-5 justify-between">
-      
-        <tooltip-me class="invisible">
-          <div @click="this.burnPool(this.pool)" class="flex items-center justify-center ss:space-x-1 ss:pl-0 ss:pr-0 ss:w-12 xs:space-x-2 xs:pl-3 xs:pr-1 xs:w-full md:space-x-0 md:pl-0 md:pr-0 md:w-9 xl:space-x-2 xl:pl-3 xl:pr-1 xl:w-full rounded-full h-9 border border-oswapGreen-dark dark:border-oswapGreen group-scope hover:bg-red-400 dark:hover:bg-red-400 hover:border-red-400 dark:hover:border-red-400 cursor-pointer">
-            <p class="ss:hidden xs:block md:hidden xl:block text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Burn Fees</p>
-            <i class="las la-burn text-2xl text-oswapGreen-dark dark:text-oswapGreen group-scope-hover:text-gray-50 dark:group-scope-hover:text-oswapDark-gray"></i>
-          </div>  
-          <tooltip-me-content :options="tooltip" class="flex w-24 rounded-lg shadow-xl p-0.5">
-            <div class="flex w-full text-xs items-center justify-center bg-gray-100 dark:bg-slightDark text-gray-500 dark:text-gray-300 rounded-md p-3">
-              <p>Burn Fees !</p>
-            </div>
-          </tooltip-me-content>
-        </tooltip-me>
-
+      <div class="flex flex-none items-center py-2 justify-end space-x-2">
         <!-- Unstake Button -->
         <div @click="this.$emit('setPool', 'unstake')" class="flex items-center space-x-2 pl-3 pr-1 rounded-full h-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
           <p class="text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Unstake</p>
@@ -113,17 +100,6 @@
           <p class="text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Stake</p>
           <i class="las la-sign-in-alt text-2xl text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray"></i>
         </div>
-        <!-- Refresh Button -->
-        <tooltip-me>
-          <div class="flex items-center justify-center rounded-full h-9 w-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
-            <i class="las la-undo-alt text-lg text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray"></i>
-          </div>
-          <tooltip-me-content :options="tooltip" class="flex w-24 rounded-lg shadow-xl p-0.5">
-            <div class="flex w-full text-xs items-center justify-center bg-gray-100 dark:bg-slightDark text-gray-500 dark:text-gray-300 rounded-md p-3">
-              <p>Refresh</p>
-            </div>
-          </tooltip-me-content>
-        </tooltip-me>
         <!-- Close Button -->
         <div @click="closeStats()" class="flex items-center justify-center rounded-full h-9 w-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
           <i class="las la-times text-xl text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray"></i>

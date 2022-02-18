@@ -1,5 +1,5 @@
 <template >
-  <div id="walletState" class="pl-1 lg:pl-3">
+  <div id="walletState" >
     <!-- Wallet disconnected state styling -->
     <div v-if="getUserSignedIn === false"  @click="connect()" class="flex st5 lg:w-44 items-center text-gray-500 space-x-1 lg:pr-2 p-1 rounded-full dark:bg-gray-700 dark:hover:bg-gray-600 bg-gray-200 hover:bg-gray-100 cursor-pointer ring-1 ring-black ring-opacity-5">
       <div class="flex flex-none relative h-8 w-8 items-center justify-center st5 bg-gray-200 dark:bg-oswapDark-gray rounded-full">
