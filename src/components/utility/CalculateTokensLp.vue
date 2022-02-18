@@ -1,27 +1,22 @@
 <template>
+    <div class="flex flex-col space-y-2">
+        <div class="flex flex-row items-center space-x-2">
+            <span class="whitespace-nowrap">USD to invest:</span>
+            <InputWithValidationLiquidity :input="amount" :errors="errors" @catchInput="inputAmount" :rounded="'rounded-xl'" :placeholder="USD" :errorTop="'mt-10 z-90'">
 
-    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
-    <div class="box"> USD to invest:</div>
-    <div class="box"><InputWithValidationLiquidity :input="amount" :errors="errors" @catchInput="inputAmount" :rounded="'rounded-xl'" :placeholder="USD" :errorTop="'mt-10 z-90'">
-
-    </InputWithValidationLiquidity></div>
+            </InputWithValidationLiquidity>
+        </div>
+        <div class="flex flex-none space-x-4 flex-row justify-end  text-right" >
+            <div class="flex flex-col text-gray-600 dark:text-gray-300">
+                <p class="ss:text-md xs:text-lg font-extrabold">{{parseFloat(amount0).toFixed(2)}}</p>
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">{{pair.name[0]}}</p>
+            </div>
+            <div class="flex flex-col text-gray-600 dark:text-gray-300">
+                <p class="ss:text-md xs:text-lg font-extrabold">{{parseFloat(amount1).toFixed(2)}}</p>
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-400">{{pair.name[1]}}</p>
+            </div>
+        </div>
     </div>
-
-
-    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
-    <div class="box"> <img :src="pair.imgtoken0" class="h-8 w-8"></div>
-    <div class="box">{{amount0}}</div>
-    </div>
-     <span v-if="tokenValue !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{tokenValue}}</span>
-    
-    <div class="flex flex-grid overflow-hidden grid-cols-2 gap-3 w-auto h-2/12">
-    <div class="box"> <img :src="pair.imgtoken1" class="h-8 w-8"></div>
-    <div class="box">    {{amount1}}
-    </div>
-    </div>
-
-   
-    <span  v-if="tokenValue !== '0'" class="ml-2 text-xs text-oswapGreen-dark">${{tokenValue}}</span>
 </template>
 
 <script>

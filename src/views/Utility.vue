@@ -1,33 +1,33 @@
 <template>
   <div id="utility" class="relative max-w-screen-xl mx-auto items-center flex flex-1 flex-col justify-start xl:px-0 px-3 pt-8 text-gray-500">
     <TabGroup :defaultIndex="activatedTab" v-if="activatedTab !== null">
-      <TabList class="space-x-2 pb-4" :selectedIndex="activatedTab">
+      <TabList class="space-x-2 pb-4 justify-center items-center flex flex-wrap" :selectedIndex="activatedTab">
         <Tab  v-slot="{ selected }" as="template">
           <router-link :to="{path: '/utility', query: {utility:'networks'}}">
             <button 
-              :class="selected ? 'bg-slightDark':''"
-              class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Networks Setup</button>
+              :class="selected ? 'dark:bg-slightDark bg-gray-300':''"
+              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Networks Setup</button>
           </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
           <router-link :to="{path: '/utility', query: {utility:'revoker'}}">
             <button 
-              :class="selected ? 'bg-slightDark':''"
-              class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Revoker</button>
+              :class="selected ? 'dark:bg-slightDark bg-gray-300':''"
+              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Revoker</button>
           </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
           <router-link :to="{path: '/utility', query: {utility:'calculator'}}">
             <button 
-              :class="selected ? 'bg-slightDark':''"
-              class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Calculator</button>
+              :class="selected ? 'dark:bg-slightDark bg-gray-300':''"
+              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Calculator</button>
           </router-link>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
           <router-link :to="{path: '/utility', query: {utility:'counter'}}">
             <button 
-              :class="selected ? 'bg-slightDark':''"
-              class="p-3 bg-oswapDark-gray text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Counter</button>
+              :class="selected ? 'dark:bg-slightDark bg-gray-300':''"
+              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Rewards Counter</button>
           </router-link>
         </Tab>
       </TabList>
