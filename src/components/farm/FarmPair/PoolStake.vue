@@ -69,7 +69,7 @@
     props: {
       pool: Object,
       isOpen: Boolean,
-      maxAmount: Number
+      maxAmount: String
     },
     data() {
       return {

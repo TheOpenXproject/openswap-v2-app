@@ -109,6 +109,11 @@
       </div>
 
       <div class="flex items-center h-12  pb-2 justify-end space-x-2">
+        <!-- Simulation Button -->
+        <div @click="this.$emit('setPool', 'chart')" class="flex items-center space-x-2 pl-3 pr-1 rounded-full h-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
+          <p class="text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Simulation</p>
+          <i class="las la-sign-out-alt text-2xl text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray"></i>
+        </div>
         <!-- Unstake Button -->
         <div @click="this.$emit('setPool', 'unstake')" class="flex items-center space-x-2 pl-3 pr-1 rounded-full h-9 group-scope hover:bg-oswapGreen dark:hover:bg-oswapGreen border border-oswapGreen-dark dark:border-oswapGreen cursor-pointer">
           <p class="text-sm text-oswapGreen-dark group-scope-hover:text-gray-50 dark:text-oswapGreen dark:group-scope-hover:text-oswapDark-gray">Unstake</p>

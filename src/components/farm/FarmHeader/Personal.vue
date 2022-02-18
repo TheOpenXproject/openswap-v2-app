@@ -13,12 +13,24 @@
           <i class="las la-piggy-bank text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-lg font-extrabold">{{prettify(this.getUserStake().toFixed(2))}}</p>
+          <p class="ss:text-md xs:text-xl md: md:text-xl font-extrabold">{{prettify(this.getUserStake().toFixed(2))}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked</p>
         </div>
       </div>
 
       <div class="flex flex-1 items-center space-x-3 w-full">
+        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
+          <i class="las la-coins text-2xl dark:text-oswapGreen"></i>
+        </div>
+        <div class="flex flex-col text-gray-600 dark:text-gray-300">
+          <p class="">${{pendingValue}}</p>
+          <p class="ss:text-md xs:text-md  font-extrabold">{{parseFloat(this.getPendingRewards()).toFixed(2)}}</p>
+
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
+        </div>
+      </div>
+
+      <div class="flex flex-1 items-center space-x-2 w-full">
         <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
           <i class="las la-percent text-2xl dark:text-oswapGreen"></i>
         </div>
@@ -27,16 +39,6 @@
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
         </div>
       </div>
-      <div class="flex flex-1 items-center space-x-3 w-full">
-        <div class="flex w-12 h-12 items-center justify-center rounded-full bg-slightGray dark:bg-slightDark ">
-          <i class="las la-coins text-2xl dark:text-oswapGreen"></i>
-        </div>
-        <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">{{parseFloat(this.getPendingRewards()).toFixed(2)}} / $ {{pendingValue}}</p>
-          <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
-        </div>
-      </div>
-
 
      
       

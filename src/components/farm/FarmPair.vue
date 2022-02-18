@@ -16,6 +16,7 @@
 
       <!-- Show this when the pool is opened and clicked on Unstake -->
       <PoolUnstake :isOpen="poolUnstakeOn" :maxAmount="pool.user.lpStakedBalBigString" :pool="pool" @setPool="setPool"  />
+      <PoolChart :isOpen="poolChartOn" :pool="pool" @setPool="setPool"  />
     </div>
   </div>
 </template>
@@ -28,6 +29,7 @@
   import PoolStatsInfo from "@/components/farm/FarmPair/PoolStatsInfo";
   import PoolStake from "@/components/farm/FarmPair/PoolStake";
   import PoolUnstake from "@/components/farm/FarmPair/PoolUnstake";
+    import PoolChart from "@/components/farm/FarmPair/PoolChart";
 
   export default {
     name: 'FarmPair',
@@ -39,7 +41,8 @@
       PoolStatsClosed,
       PoolStatsInfo,
       PoolStake,
-      PoolUnstake
+      PoolUnstake,
+      PoolChart
     },
     mixins: [openswap],
     mounted: async function() {},
@@ -49,9 +52,11 @@
         poolStatsOn: false,
         poolStakeOn: false,
         poolUnstakeOn: false,
+        poolChartOn: false,
       }
     },
     methods: {
+
       setPool(value) {
         if (value == 'open') {
           this.$el.classList.add('row-span-3', 'ensure-height', 'ring-1', 'ring-inset', 'ring-oswapGreen');
@@ -74,11 +79,16 @@
           this.poolStakeOn = false
           this.poolUnstakeOn = false
           this.poolStatsOn = true
+          this.poolChartOn = false
         }
 
         if (value == 'unstake') {
           this.poolStatsOn = false
           this.poolUnstakeOn = true
+        }
+        if (value == 'chart') {
+          this.poolStatsOn = false
+          this.poolChartOn = true
         }
       }
     }

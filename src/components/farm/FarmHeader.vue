@@ -6,11 +6,11 @@
         </div>
 
 
-      <div class="flex flex-1 items-start  pr-3 lg:pl-5">
+      <div class="flex flex-2 items-start  pr-3 lg:pl-5">
         <div class="mdd:flex hidden mdd:divide-x mdd:divide-oswapGreen ml-5"></div>
         <Personal/>
       </div>
-      <div class="flex  pr-3 flex-2 items-start">
+      <div class="flex pl-3 flex-1 items-start">
         <PersonalRewards/>
       </div>
     </div>

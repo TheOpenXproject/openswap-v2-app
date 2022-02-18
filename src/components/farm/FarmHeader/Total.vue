@@ -7,13 +7,13 @@
     </div>
 
     <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
-      <p class="md:text-4xl ss:text-2xl inline xs:text-5xl font-extrabold">${{prettify((this.getTVL()).toFixed(2))}}</p>
+      <p class="md:text-2xl ss:text-2xl inline xs:text-2xl font-extrabold">${{prettify((this.getTVL()).toFixed(2))}}</p>
       <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Staked Value</p>
     </div>
 
 
     <div class="flex flex-col space-y-1 text-gray-600 dark:text-gray-300 lg:pl-0 pl-2">
-      <p class="md:text-xl ss:text-2xl xs:text-5xl font-extrabold">{{this.getStakedAPR().toFixed(2)}} %</p>
+      <p class="md:text-xl ss:text-xl xs:text-xl font-extrabold">{{this.getStakedAPR().toFixed(2)}} %</p>
       <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
     </div>
 

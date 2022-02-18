@@ -2,10 +2,10 @@
   <!-- Oswap token info -->
   <tooltip-me v-if="this.getFarms() != null">
     <div  class="flex rounded-lg focus:outline-none focus:ring-1 focus:ring-black space-x-1 p-2 px-1 md:px-3 items-center">
-      <img alt="oSwap" src="@/assets/oswap_asset.png" class="ss:h-5 xs:h-6">
-      <p class="ss:hidden xs:block text-xs pr-3 dark:text-oswapGreen">${{parseFloat(this.getStateOpenXPrice()).toFixed(5)}}</p>
-      <img alt="oSwap" src="@/assets/one_logo.png" class="ss:hidden xs:block ss:h-5 xs:h-6">
-      <p class="ss:hidden xs:block text-xs pr-3  dark:text-oswapGreen">${{parseFloat(this.getStateOnePrice()).toFixed(5)}}</p>
+      <img alt="OpenX" src="@/assets/oswap_asset.png" class="ss:h-5 xs:h-6">
+      <p class="hidden lg:block text-xs pr-3 dark:text-oswapGreen">${{parseFloat(this.getStateOpenXPrice()).toFixed(5)}}</p>
+      <img alt="One" src="@/assets/one_logo.png" class="ss:hidden lg:block ss:h-5 xs:h-6">
+      <p class="hidden lg:block text-xs pr-3  dark:text-oswapGreen">${{parseFloat(this.getStateOnePrice()).toFixed(5)}}</p>
     </div>
  
 

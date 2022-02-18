@@ -66,6 +66,7 @@ export default {
        // console.log(totalLP)
         const stakeWeight = ((personalLP.toFixed(10)) / (((parseFloat(this.getEthUnits(total.add(this.getBN(personalLP.raw.toString())))).toFixed(10))))).toFixed(10)
         const rewardsPerWeek = pair.usdPerWeek * stakeWeight
+        console.log(pair)
         const weekly = parseFloat(rewardsPerWeek)
         const daily = weekly / 7
         const monthly = parseFloat(rewardsPerWeek * 4.3)

@@ -1299,8 +1299,8 @@ export default {
       return monthly;
     },
     getLpTokens: async function(pair, totalSupply, amount0, decimals0, amount1, decimals1) {
-      const t0 = this.getBN(this.getUnitsD(amount0, decimals0))
-      const t1 = this.getBN(this.getUnitsD(amount1, decimals1))
+      const t0 = this.getBN(this.getUnitsD(amount0.toFixed(8), decimals0))
+      const t1 = this.getBN(this.getUnitsD(amount1.toFixed(8), decimals1))
       const total = await pair.getLiquidityMinted(
         new TokenAmount(pair.liquidityToken,totalSupply), 
         new TokenAmount(pair.token0,t0), 

@@ -36,14 +36,7 @@
       <!-- Menu 'More' (dropdown) -->
 
       <MoreButton />
-      <template v-if="this.getFarms() != null">
-        <div class="lg:flex hidden  flex-none h-8  justify-center px-4 ">
-          <div class="h-full border border-oswapGreen-dark dark:border-oswapGreen">
-          </div>
-        </div>
-        <!-- display oswap price -->
-        <Oswap  />
-      </template>
+      <Oswap v-if="this.getFarms() != null" />
       <!-- Wallet Button  -->
       <WalletButton/>
     </div>

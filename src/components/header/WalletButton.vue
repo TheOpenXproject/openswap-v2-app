@@ -6,7 +6,7 @@
         <i class="absolute las la-wallet text-xl st5"></i>
       </div>
       <div class="flex st5 w-full items-center p-1 text-sm justify-center">
-        <p class="lg:flex hidden">Connect Wallet</p>
+        <p class="mdd:flex hidden">Connect Wallet</p>
         <i class="las la-unlink text-xl flex lg:hidden pr-1"></i>
       </div>
     </div>
