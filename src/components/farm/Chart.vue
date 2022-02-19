@@ -181,7 +181,7 @@
             theme: false,
             custom: ({ series, seriesIndex, dataPointIndex, w }) => {
               return (
-                '<div class="flex p-3 rounded-md bg-gray-100 dark:bg-slightDark text-xs text-gray-500 dark:text-gray-200 border-l border-oswapGreen">' + "<span>" + "Stake Value : $ " + (series[seriesIndex][dataPointIndex]) + "</span>" + "</div>"
+                '<div class="flex p-3 rounded-md bg-gray-100 dark:bg-slightDark text-xs text-gray-500 dark:text-gray-200 border-l border-oswapGreen">' + "<span>" + "$ " + (series[seriesIndex][dataPointIndex]) + "</span>" + "</div>"
               );
             },
           },

@@ -43,7 +43,7 @@ export default {
     ...mapGetters('farm/farmData', ['getStateOpenXPrice', 'getStateOnePrice']),
     ...mapActions('farm/farmData', ['setOpenXPrice', 'setOnePrice']),
     ...mapActions('exchange/swapper', ['setBtnState']),
-    ...mapGetters('farm/farmData', ['getFarmPairs']),
+    ...mapGetters('farm/farmData', ['getFarmPairs', 'getFarms']),
     ...mapActions('liquidity/buttons', ['setBtnState']),
     getProvider: function(call){
        let networks = {
@@ -1001,7 +1001,7 @@ export default {
       }
     },
     getBestRoute: async function(parsedAmount, token0, token1) {
-
+/*
       const [
       Token0,
       Token1,
@@ -1088,9 +1088,26 @@ export default {
               Fetcher.fetchPairData(EUSDC, BUSDC).catch(() => {
                       return pairTHATEXISTS
               })
-            ]);
+            ]);*/
+            const Token0 = new Token(
+                this.getChainID(),
+                token0.oneZeroxAddress,
+                token0.decimals
+                )
+             const Token1 = new Token(
+                this.getChainID(),
+                token1.oneZeroxAddress,
+                token1.decimals
+                )
 
-      const bestRoute = await Trade.bestTradeExactIn([paira,pairab,pairc,paircd,paire,pairef, pairgh, pairij,pairfg,pair01, pairTHATEXISTS],new TokenAmount(Token0, parsedAmount), Token1)
+
+            var pairs = []
+            const farms = this.getFarms()
+            for(var w in farms){
+              pairs.push(farms[w].uniPair)
+            }
+
+      const bestRoute = await Trade.bestTradeExactIn(pairs,new TokenAmount(Token0, parsedAmount), Token1)
 
       return bestRoute[0]
     },
@@ -2732,7 +2749,7 @@ export default {
       let slippageTolerence = new Percent(String(parseFloat(slippageRate)*10), "1000");
       let amountOut = trade
                       .minimumAmountOut(slippageTolerence)
-                      .toFixed(token2.Decimals);
+                      .toFixed(parseFloat(token2.decimals));
       
       return amountOut;
 

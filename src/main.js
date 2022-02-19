@@ -40,6 +40,9 @@ app.use(VueApexCharts);
 app.use(VueGtag, { 
   property: { 
     id: "G-HYPSP2E5Q0" 
-  } 
+  },
+  property: { 
+    id: "AW-1020864225" 
+  }
 })
 app.mount('#oswapApp')

@@ -52,35 +52,10 @@
         'setLastSelected'
       ]),
 
-      setInput(event) {
-        this.setInputAmount({0: event.target.value});
-
-        this.setInputForToken1();
-      },
-
-      setInputForToken1: async function() {
-        let token0 = this.getToken()['token1']
-        let token1 = this.getToken()['token2']
-        this.setBtnState({swap: 'loading'});
-        let units = this.getUnits(this.getInputAmount(0), token0)
-        let bestRoute = await this.getBestRoute(units, token0, token1)
+      setInput: async function(event) {
+     
+        this.$emit('input0', event.target.value)
         
-        this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
-
-        // Validation
-        if (this.getPriceImpact > 3) { 
-          this.setWarning({
-            'impact': 'Price impact high. Check reserves. Continue only if you know what you are doing.'
-          })
-        } else {
-          this.deleteWarning('impact')
-        }
-        this.setLastSelected(0)
-        this.setInputAmount({
-          1: await this.getAmountOutWithSlippage(this.getInputAmount(0), bestRoute, this.getSlippageRate, token0, token1)
-        })
-        this.setBtnState({swap: 'swap'});
-        this.setThePath(this.getPath(bestRoute));
       }
     }
   }

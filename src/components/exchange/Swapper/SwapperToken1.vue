@@ -18,7 +18,7 @@
     <!-- Right side -->
     <div class="flex flex-col space-y-1 flex-1 w-2/3 min-w-0">
       <div class="flex h-10">
-        <Input1 :errors="errors" :rounded="'rounded-xl'" :placeholder="'Amount...'" :errorTop="'pt-10'">
+        <Input1 :errors="errors" :rounded="'rounded-xl'" @input1="input1" :placeholder="'Amount...'" :errorTop="'pt-10'">
           <div class="flex flex-1 st5-all items-center justify-end group-scope z-30 absolute right-0">
             <div @click="setMax()" class="flex h-10 items-center bg-gray-100 dark:bg-oswapDark-gray group-scope-hover:bg-oswapGreen text-oswapGreen-dark dark:text-oswapGreen border-l border-black border-opacity-10 cursor-pointer px-3 rounded-xl">
               <p class="text-sm dark:group-scope-hover:text-oswapDark-gray group-scope-hover:text-gray-100">MAX</p>
@@ -69,36 +69,12 @@
         'setWarning', 
         'deleteWarning'
       ]),
+      input1: async function(amount1) {
+        this.$emit('input1', amount1)
 
-      setMax: async function(){
-        this.setInputAmount({
-          1: await this.getTokenBalance(this.getToken()['token2'])
-        })
-
-        this.setInputForToken0();
       },
-      setInputForToken0: async function() {
-        let token0 = this.getToken()['token1']
-        let token1 = this.getToken()['token2']
-        this.setBtnState({swap: 'loading'});
-        let units = this.getUnits(this.getInputAmount(1), token1)
-        let bestRoute = await this.getBestRoute(units, token1, token0)
-        
-        this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
-
-        // Validation
-        if (this.getPriceImpact > 3) { 
-          this.setWarning({
-            'impact': 'Price impact high. Check reserves. Continue only if you know what you are doing.'
-          })
-        } else {
-          this.deleteWarning('impact')
-        }
-
-        this.setInputAmount({
-          0: await this.getAmountInWithSlippage(this.getInputAmount(1), bestRoute, this.getSlippageRate, token1, token0)
-        })
-        this.setBtnState({swap: 'swap'});
+      setMax: async function(){
+          this.$emit('input1', await this.getTokenBalance(this.getToken()['token2']))
       }
     }
   }

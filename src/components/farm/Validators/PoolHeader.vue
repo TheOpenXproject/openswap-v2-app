@@ -62,7 +62,7 @@ import { ethers } from "ethers";
       pool: Object,
       poolData: Object,
       farmPair: String,
-      compActive: Boolean,
+      compActive: String,
       index: Number
     },
     data() {
@@ -86,7 +86,7 @@ import { ethers } from "ethers";
       } 
     },
     mounted: async function() {
-      if(this.pool.pairaddress == this.farmPair && this.compActive){
+      if(this.pool.pairaddress == this.farmPair && this.compActive == 'true'){
         this.isActive = true
       }
       console.log(this.pool.pairaddress)
@@ -129,6 +129,7 @@ import { ethers } from "ethers";
       setCompounding: async function(){
         console.log(this.poolData.index)
         this.setValCompounding(this.poolData.index, true , this.index)
+        this.isActive = true
       },
       updatePoolState: function(pool){
       var farmData = this.getFarmData()

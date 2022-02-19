@@ -8,8 +8,8 @@
       <div class="flex flex-col st5 dark:bg-oswapDark-gray bg-gray-100 rounded-2xl">
         <div class="flex flex-col st5 dark:bg-oswapDark-gray bg-gray-100 rounded-2xl">
           <div class="flex shadow-lg flex-col space-y-3 st5 dark:bg-oswapDark-gray bg-gray-100 p-3 rounded-2xl">
-            <SwapperToken0 />
-            <SwapperToken1 />
+            <SwapperToken0 @input0="input0" />
+            <SwapperToken1 @input1="input1" />
           </div>
           <SwapperReserves />
         </div>
@@ -47,9 +47,12 @@
   import SwapperSwap from '@/components/exchange/Swapper/SwapperSwap'
   import Warning from '@/components/exchange/Warning'
   import { mapGetters, mapActions } from 'vuex'
+  import openswap from "@/shared/openswap.js";
+const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
 
   export default {
     name: 'Swapper',
+    mixins: [openswap],
     components: {
       SwapperToken0,
       SwapperToken1,
@@ -71,14 +74,89 @@
       this.resetAll();
     },
     computed: {
+     
       ...mapGetters('exchange/swapper/buttons', ['getBtnState']),
-      ...mapGetters('exchange/swapper', ['getWarnings']),
+      ...mapGetters('exchange/swapper', ['getWarnings','getSlippageRate']),
       ...mapGetters('wallet', ['getUserSignedIn']),
     },
     methods: {
+       ...mapGetters('exchange', ['getToken']),
       ...mapActions('exchange/swapper/buttons', ['setBtnState']),
-      ...mapActions('exchange/swapper', ['resetAll']),
+      ...mapActions('exchange/swapper', [
+        'setInputAmount', 
+        'setPriceImpact', 
+        'setThePath',
+        'setWarning', 
+        'deleteWarning',
+        'setLastSelected',
+        'resetAll'
+      ]),
 
+      input0: async function(amount0){
+        console.log("ksjkd")
+        const token0 = this.getToken()['token1']
+        const token1 = this.getToken()['token2']
+        console.log(amount0)
+
+        let units = this.getUnits(amount0, token0)
+        let bestRoute = await this.getBestRoute(units, token0, token1)
+        console.log(bestRoute)
+        const trade = new Trade(
+        bestRoute.route,
+        new TokenAmount(bestRoute.inputAmount.token, units),
+        TradeType.EXACT_INPUT
+      );
+
+        this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
+        this.setThePath(this.getPath(bestRoute));
+        console.log(bestRoute.outputAmount.raw.toString())
+        let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
+        let amountOut = trade
+                      .minimumAmountOut(slippageTolerence)
+                      
+
+
+        this.setInputAmount({
+          1: this.getFormatedUnitsDecimals(amountOut.raw.toString(), token1.decimals)
+        })
+        this.setInputAmount({
+          0: this.getFormatedUnitsDecimals(units, token0.decimals)
+        })
+        console.log(bestRoute)
+        console.log(trade)
+      },
+      input1: async function(amount0){
+        console.log("ksjkd")
+        const token0 = this.getToken()['token1']
+        const token1 = this.getToken()['token2']
+        console.log(amount0)
+
+        let units = this.getUnits(amount0, token1)
+        let bestRoute = await this.getBestRoute(units, token0, token1)
+        const trade = new Trade(
+        bestRoute.route,
+        new TokenAmount(bestRoute.outputAmount.token, units),
+        TradeType.EXACT_OUTPUT
+      );
+        
+        this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
+        this.setThePath(this.getPath(bestRoute));
+
+         let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
+        let amountOut = trade
+                      .maximumAmountIn(slippageTolerence)
+                      
+
+        console.log(bestRoute.outputAmount.raw.toString())
+        this.setInputAmount({
+          0: this.getFormatedUnitsDecimals(amountOut.raw.toString(), token0.decimals)
+        })
+        this.setInputAmount({
+          1: this.getFormatedUnitsDecimals(units, token1.decimals)
+        })
+        console.log(bestRoute)
+        console.log(trade)
+      },
       reload(value) {
         this.$emit('reload', true)
       },

@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <TransactionList :tokens="this.getTokens()"/>
+      <TransactionList :tokens="this.getTokensComp"/>
 
     </div>
   </transition>
@@ -102,7 +102,9 @@
 
     },
     computed: {
-
+    getTokensComp: function(){
+       return this.getTokens()
+    },
     getTotalBalance: function(){
       let ret = (parseFloat(this.getAvailableBalance())+parseFloat(this.getUserStake())).toFixed(2)
         return ret

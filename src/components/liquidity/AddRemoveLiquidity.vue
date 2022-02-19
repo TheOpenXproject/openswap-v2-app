@@ -73,6 +73,7 @@
   import openswap from "@/shared/openswap.js";
   import { ethers } from 'ethers'
   import { createWatcher } from '@makerdao/multicall';
+  const { SDK } = require("openswap-app-sdk")
 
   export default {
     name: 'AddRemoveLiquidity',
@@ -108,17 +109,32 @@
       }
     },
     mounted: async function(){
+      const CHAIN_ID = 1666600000
+      const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
+      var sdk  = new SDK(CHAIN_ID, Multicall)
+      const allPairs = await sdk.initPairs()
+      var currentPair = null;
+      for(var n in allPairs){
+        if(this.getToken()['token1'].oneZeroxAddress == allPairs[n].tokenAmounts[0].token.address && this.getToken()['token2'].oneZeroxAddress == allPairs[n].tokenAmounts[1].token.address)
+          currentPair = allPairs[n]
+        if(this.getToken()['token2'].oneZeroxAddress == allPairs[n].tokenAmounts[0].token.address && this.getToken()['token1'].oneZeroxAddress == allPairs[n].tokenAmounts[1].token.address)
+          currentPair = allPairs[n]
+        
+      }
+      if(currentPair == null){
+        this.createNewPair = true
+      }
       this.setInputAmount( {0: 0})
       this.setInputAmount({1: 0})
      
-      this.pair = await this.getPair(this.getToken()['token1'],this.getToken()['token2'])
-      .catch((err) => {
-        console.log(err)
-        this.createNewPair = true
-      })
+      this.pair = currentPair
       if(!this.createNewPair){
+        var token = {}
+          token.oneZeroxAddress = this.pair["liquidityToken"].address
+          token.decimals = 18
+          
         this.pairAddress = this.pair["liquidityToken"].address;
-        this.pairToken = await this.getPairAsToken(this.getToken()['token1'],this.getToken()['token2'])
+        this.pairToken = token
         await this.initMulticall()
 
       }
@@ -204,6 +220,7 @@
         watcher.start();
         await watcher.awaitInitialFetch();
         var res = await this.parseResults(results);
+        watcher.stop()
         return res;
       },
       generateCalls: function(){
