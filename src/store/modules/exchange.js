@@ -194,7 +194,11 @@ export default {
         },
         getWarnings: (state) => {
           return state.warnings;
+        },
+        getLastSelected: (state) => {
+          return state.lastSelected;
         }
+
       },
       actions: {
         setLastSelected({commit}, value) {

@@ -1000,95 +1000,7 @@ export default {
           parseFloat(route.route.midPrice.toFixed(8)  * tt0s).toFixed(8) * 2]
       }
     },
-    getBestRoute: async function(parsedAmount, token0, token1) {
-/*
-      const [
-      Token0,
-      Token1,
-      TokenX,
-      TokenY,
-      TokenZ,
-      EUSDC,
-      BUSDC] = await Promise.all([
-        Fetcher.fetchTokenData(
-                this.getChainID(),
-                token0.oneZeroxAddress
-                ),
-        Fetcher.fetchTokenData(
-                this.getChainID(),
-                token1.oneZeroxAddress
-                ),
-        new Token(
-                this.getChainID(),
-                this.WONE(this.getChainID()),
-                18
-                ),
-        new Token(
-                this.getChainID(),
-                this.oSWAPTOKEN(this.getChainID()),
-                18
-                ),
-        new Token(
-                this.getChainID(),
-                this.bBUSD(this.getChainID()),
-                18
-                ),
-        new Token(
-                this.getChainID(),
-                this.eUSDC(this.getChainID()), //eusdc
-                6
-                ),
-        new Token(
-                this.getChainID(),
-                this.bUSDC(this.getChainID()), //busdc
-                18
-                )
-      ]);
-
-      const pairTHATEXISTS = await Fetcher.fetchPairData(TokenZ, TokenY)
-
-      const [
-             pair01,
-             paira,
-             pairab,
-             pairc,
-             paircd,
-             paire,
-             pairef,
-             pairfg,
-             pairgh,pairij
-            ] = await Promise.all([
-              Fetcher.fetchPairData(Token0, Token1).catch(() => {
-                      return pairTHATEXISTS
-              }), 
-              Fetcher.fetchPairData(Token0, TokenX).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(TokenX, Token1).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(Token0, TokenY).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(TokenY, Token1).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(Token0, TokenZ).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(TokenZ, Token1).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(Token1, EUSDC).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(BUSDC, EUSDC).catch(() => {
-                      return pairTHATEXISTS
-              }),
-              Fetcher.fetchPairData(EUSDC, BUSDC).catch(() => {
-                      return pairTHATEXISTS
-              })
-            ]);*/
+    getBestRouteIn: async function(parsedAmount, token0, token1) {
             const Token0 = new Token(
                 this.getChainID(),
                 token0.oneZeroxAddress,
@@ -1105,10 +1017,37 @@ export default {
             const farms = this.getFarms()
             for(var w in farms){
               pairs.push(farms[w].uniPair)
+              console.log(pairs)
             }
 
-      const bestRoute = await Trade.bestTradeExactIn(pairs,new TokenAmount(Token0, parsedAmount), Token1)
 
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount))
+      console.log(bestRoute)
+      return bestRoute[0]
+    },
+    getBestRoute: async function(parsedAmount, token0, token1) {
+            const Token0 = new Token(
+                this.getChainID(),
+                token0.oneZeroxAddress,
+                token0.decimals
+                )
+             const Token1 = new Token(
+                this.getChainID(),
+                token1.oneZeroxAddress,
+                token1.decimals
+                )
+
+
+            var pairs = []
+            const farms = this.getFarms()
+            for(var w in farms){
+              pairs.push(farms[w].uniPair)
+              console.log(pairs)
+            }
+
+
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount))
+      console.log(bestRoute)
       return bestRoute[0]
     },
     getBestRouteFarms: async function(parsedAmount, token0, token1) {

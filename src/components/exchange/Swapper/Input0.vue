@@ -52,10 +52,17 @@
         'setLastSelected'
       ]),
 
-      setInput: async function(event) {
-     
+        setInput:async function(event) {
+        this.setLastSelected(0) 
+        this.inputValue = event.target.value
         this.$emit('input0', event.target.value)
-        
+      },
+      getInpunt: function(){
+        if(this.getLastSelected != 0 ){
+          return getInputAmount(0)
+        }else{
+          return this.inputValue
+        }
       }
     }
   }

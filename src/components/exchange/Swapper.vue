@@ -13,7 +13,7 @@
           </div>
           <SwapperReserves />
         </div>
-        <SwapperRateInpact />
+        <SwapperRateInpact :nextMidPrice="nextMidPrice" :rate="rate"  />
       </div>
       <SwapperRate />
       
@@ -73,6 +73,12 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
     unmounted() {
       this.resetAll();
     },
+    data() {
+      return {
+        rate: 0,
+        nextMidPrice: 0,
+      }
+    },
     computed: {
      
       ...mapGetters('exchange/swapper/buttons', ['getBtnState']),
@@ -93,13 +99,13 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
       ]),
 
       input0: async function(amount0){
-        console.log("ksjkd")
+        await setTimeout(()=>{}, 400)
         const token0 = this.getToken()['token1']
         const token1 = this.getToken()['token2']
         console.log(amount0)
 
         let units = this.getUnits(amount0, token0)
-        let bestRoute = await this.getBestRoute(units, token0, token1)
+        let bestRoute = await this.getBestRoute(units, token1, token0)
         console.log(bestRoute)
         const trade = new Trade(
         bestRoute.route,
@@ -114,8 +120,9 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
         let amountOut = trade
                       .minimumAmountOut(slippageTolerence)
                       
-
-
+        console.log(typeof trade.executionPrice.raw.toFixed(token0.decimals))
+        this.rate = parseFloat(trade.executionPrice.raw.toFixed(token0.decimals)).toFixed(6)
+        this.nextMidPrice = parseFloat(trade.nextMidPrice.raw.toFixed(token0.decimals)).toFixed(6)
         this.setInputAmount({
           1: this.getFormatedUnitsDecimals(amountOut.raw.toString(), token1.decimals)
         })
@@ -126,21 +133,28 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
         console.log(trade)
       },
       input1: async function(amount0){
+        await setTimeout(()=>{}, 400)
         console.log("ksjkd")
         const token0 = this.getToken()['token1']
         const token1 = this.getToken()['token2']
         console.log(amount0)
 
         let units = this.getUnits(amount0, token1)
-        let bestRoute = await this.getBestRoute(units, token0, token1)
+        let bestRoute = await this.getBestRoute(units, token1, token0)
         const trade = new Trade(
         bestRoute.route,
         new TokenAmount(bestRoute.outputAmount.token, units),
         TradeType.EXACT_OUTPUT
-      );
+      ); 
+        console.log(bestRoute)
+
+        this.rate = parseFloat(trade.executionPrice.raw.toFixed(token0.decimals)).toFixed(6)
+        this.nextMidPrice = parseFloat(trade.nextMidPrice.raw.toFixed(token0.decimals)).toFixed(6)
         
-        this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
+        this.setPriceImpact(trade.priceImpact.toFixed(2))
         this.setThePath(this.getPath(bestRoute));
+        console.log(this.getPath(bestRoute))
+
 
          let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
         let amountOut = trade

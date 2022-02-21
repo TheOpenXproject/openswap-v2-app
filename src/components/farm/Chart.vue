@@ -88,7 +88,7 @@
         while(x < 12){
 
         	usdValue.push(parseFloat((parseFloat(this.amount) + parseFloat(this.rewardPerWeek * 4 * x)).toFixed(2) ))
-        	weeks.push("Month " + x)
+        	//weeks.push("Month " + x)
        
         	x++
         }
@@ -113,7 +113,7 @@
             }
           },
           xaxis: {
-          	categories: this.getCategories(),
+          	categories: [],//this.getCategories(),
           	labels:{
           		style :{
           			colors: [ 
@@ -141,8 +141,8 @@
             breakpoint: 540,
             options: {
               chart: {
-                width: 200,
-                height: 218
+                width: 325,
+                height: 225
               }
             }
           }],

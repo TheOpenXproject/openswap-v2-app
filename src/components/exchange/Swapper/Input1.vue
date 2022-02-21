@@ -29,9 +29,14 @@
       placeholder: String,
       errorTop: String
     },
+    data(){
+        return{
+          inputValue: 0
+        }
+      }, 
     computed: {
       ...mapGetters('exchange/swapper', ['getInputAmount', 'getSlippageRate', 'getPriceImpact']),
-
+           
       invalidInput() {
         if (Object.keys(this.errors).length > 0) {
           return true
@@ -53,8 +58,17 @@
       ]),
 
       setInput:async function(event) {
+        this.setLastSelected(1) 
+        this.inputValue = event.target.value
         this.$emit('input1', event.target.value)
       },
+      getInpunt: function(){
+        if(this.getLastSelected == 0 ){
+          return getInputAmount(1)
+        }else{
+          return this.inputValue
+        }
+      }
     }
   }
 </script>
