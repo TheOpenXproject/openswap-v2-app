@@ -27,7 +27,7 @@
           </div>
           <div class="flex items-center space-x-3 col-span-2">
             <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
-                <i class="las la-layer-group text-oswapGreen text-2xl"></i>
+                <i class="las la-piggy-bank text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
               <p class="ss:text-md xs:text-lg font-extrabold">${{this.prettify(this.getUserStake().toFixed(2))}}</p>

@@ -3,10 +3,6 @@
     <div class="flex">
       <apexchart class="text-grey-400" v-if="this.series.data != []" type="bar" width="500" height="300" :options="chartOptions" :series="series"></apexchart>
     </div>
-    <div class="flex flex-col z-20 items-center text-white gray-500 dark:text-gray-300 center-component">
-      <p class="ss:text-5xl xs:text-7xl">{{totalPools}}</p>
-      <p class="text-xs">Weight Distribution</p>
-    </div>
   </div>
 </template>
 
