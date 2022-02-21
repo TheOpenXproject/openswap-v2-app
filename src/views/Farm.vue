@@ -12,32 +12,28 @@
 
     <transition name="fall" appear>
       <div class="w-full" v-if="this.getFarms() != null && this.getSoloFarms() != null">
-        <div class="flex flex-none p-2 my-2">
-          <SwitchGroup>
-            <div class="flex items-center">
-              <SwitchLabel class="mr-4">Show only staked pools</SwitchLabel>
-              <Switch
-              v-model="enabled"
-              @click="setEnabled(enabled)"
-              :class='enabled ? "bg-oswapGreen-dark" : "bg-gray-500"'
-              class="relative inline-flex items-center h-4 transition-colors rounded-full w-10 focus:outline-none"
-              >
-              <span
-              :class='enabled ? "translate-x-6 bg-opaqueDark-light" : "translate-x-1 bg-white dark:bg-oswapDark-dark"'
-              class="inline-block w-4 h-4 transition-transform transform rounded-full"
-              />
-            </Switch>
-          </div>
-        </SwitchGroup>
+        <div class="flex flex-none p-2 my-2 space-x-3 text-xs text-gray-500">
+          <button 
+            :class='enabled ? "shadow-light-depth dark:shadow-dark-depth dark:text-oswapBlue-light" : "shadow-light-level dark:shadow-dark-level dark:text-gray-400"'
+            class="px-3 py-2 rounded-lg"
+            @click="setEnabled(!enabled)"
+          >
+            Show only staked pools
+          </button>
+          <button 
+            :class='archived ? "shadow-light-depth dark:shadow-dark-depth dark:text-oswapBlue-light" : "shadow-light-level dark:shadow-dark-level dark:text-gray-400"'
+            class="px-3 py-2 rounded-lg"
+            @click="setArchived(!archived)"
+          >
+            Show archived pools
+          </button>
       </div>
       <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-1 gap-3 w-full">
-          
-          <template v-for="(solopool, index) in this.getSoloFarms()"  :key="index">
-            <SoloFarmPair :class="parseFloat(solopool.user.lpStakedBal).toFixed(5) > 0 || !enabled ? '':'hidden'" :pool="solopool" />
-          </template>
-        
+        <template v-for="(solopool, index) in this.getSoloFarms()"  :key="index">
+            <SoloFarmPair v-if="(!enabled || (parseFloat(solopool.user.lpStakedBal).toFixed(5) > 0)) && (!solopool.archived || archived )" :pool="solopool" />
+        </template>
         <template  v-for="(pool, index) in this.getFarms()"  :key="index">
-          <FarmPair :class="parseFloat(pool.user.lpStakedBal).toFixed(5) > 0 || !enabled ? '':'hidden'" :pool="pool" />
+            <FarmPair v-if="(!enabled || (parseFloat(pool.user.lpStakedBal).toFixed(5) > 0)) && (!pool.archived || archived ) " :pool="pool" />
         </template>
       </div>
     </div>
@@ -62,8 +58,6 @@
 
   import { createWatcher } from "@makerdao/multicall";
   import { mapGetters, mapActions } from "vuex";
-
-  const { pools } = require("@/store/modules/farm/pools.js");
   export default {
     name: "Farm",
     mixins: [openswap],
@@ -78,10 +72,12 @@
     },
     mounted: async function () {
       this.enabled = localStorage.getItem("oSwap\_enable_farms") === 'true' ? true : false;
+      this.archived = localStorage.getItem("oSwap\_archived_farms") === 'true' ? true : false;
     },
     data() {
       return {
         enabled: false,
+        archived: false,
         loaded:false,
         Pools: null,
         SoloPools: null,
@@ -116,7 +112,12 @@
       ...mapGetters("wallet", [ "getUserAddress"]),
       ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek"]),
       setEnabled: function (value) {
+        this.enabled = value;
         localStorage.setItem("oSwap\_enable_farms", value);
+      },
+      setArchived: function (value) {
+        this.archived = value;
+        localStorage.setItem("oSwap\_archived_farms", value);
       },
       updateFarms: async function(){
         this.Pools = this.getFarms();
