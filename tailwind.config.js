@@ -40,8 +40,10 @@ module.exports = {
         montserrat: ["Montserrat"]
       },
       boxShadow: {
-        'dark-depth': 'inset .2rem .2rem .5rem #17151f',
-        'light-depth': 'inset .2rem .2rem .5rem rgba(16,157,187,0.4)',
+        'dark-depth': 'inset .2rem .2rem .5rem #0b0a0f, inset -.2rem -.2rem .5rem #38344c',
+        'light-depth': 'inset .2rem .2rem .5rem #b8bec7, inset -.2rem -.2rem .5rem #e2e5e9',
+        'dark-level': '.3rem .3rem .6rem #0b0a0f, -.2rem -.2rem .5rem #38344c',
+        'light-level': '.3rem .3rem .6rem #b8bec7, -.2rem -.2rem .5rem #e2e5e9',
       }
     },
     screens: {

@@ -112,10 +112,9 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           this.setUserStakeTotal(userStake)
           this.setTokensState(tokens)
 
-
+          const sortedFarms = this.sortFarms(farms);
+          this.setFarms(sortedFarms)
           this.setSoloFarms(soloFarms)
-          this.setFarms(farms)
-
 
 
             await setInterval(async function(){
@@ -159,8 +158,8 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
           this.setTVL(TVL)
           this.setPendingRewards(pending)
           this.setUserStakeTotal(userStake)
-          
-          this.setFarms(farms)
+          const sortedFarms = this.sortFarms(farms);
+          this.setFarms(sortedFarms)
           this.setSoloFarms(soloFarms);
       }.bind(this), 15000)
 
@@ -186,6 +185,25 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       ...mapActions('wallet', ['switchWalletType']),
       handleScroll() {
         this.setIsScrolled(window.scrollY > 0)
+      },
+      /// This should go inside the sdk to make sure everything has the same order imo
+      /// if you can would be good to copy this and use it there
+      /// Also you need to add a category field to the farm
+      /// 1 is for OpenX / ONE
+      /// 2 is for OpenX related pairs
+      /// 3 is for ONE pairs
+      /// 4 is for Stable pairs
+      /// 5 is for the rest
+      sortFarms(farms) {
+        return farms.sort((elemA,elemB) =>{
+              if (elemA?.category < elemB?.category) {
+                  return -1
+              } 
+              if (elemA?.category > elemB?.category) {
+                  return 1
+              } 
+              return 0
+          })
       }
     },
   };

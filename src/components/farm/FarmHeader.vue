@@ -4,29 +4,25 @@
       <div class="flex pr-5 items-start">
         <Total/>
         </div>
-
-
-      <div class="flex flex-2 items-start  pr-3 lg:pl-5">
+      <div class="flex flex-1 items-start  pr-3 lg:pl-5">
         <div class="mdd:flex hidden mdd:divide-x mdd:divide-oswapGreen ml-5"></div>
         <Personal/>
       </div>
-      <div class="flex pl-3 flex-1 items-start">
+      <div class="flex lg:pl-3 flex-none items-start">
         <PersonalRewards/>
       </div>
+ 
     </div>
   </div>
 </template>
 
 <script>
-import Chart from "@/components/farm/FarmHeader/Chart";
 import Total from "@/components/farm/FarmHeader/Total";
 import Personal from "@/components/farm/FarmHeader/Personal";
 import PersonalRewards from "@/components/farm/FarmHeader/PersonalRewards";
-
 export default {
   name: "FarmHeader",
   components: {
-    Chart,
     Total,
     Personal,
     PersonalRewards,

@@ -23,8 +23,7 @@
           <i class="las la-coins text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="">${{pendingValue}}</p>
-          <p class="ss:text-md xs:text-md  font-extrabold">{{parseFloat(this.getPendingRewards()).toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-xl md: md:text-xl font-extrabold">${{pendingValue}} / {{parseFloat(this.getPendingRewards()).toFixed(2)}}</p>
 
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Total Rewards</p>
         </div>
@@ -35,7 +34,7 @@
           <i class="las la-percent text-2xl dark:text-oswapGreen"></i>
         </div>
         <div class="flex flex-col text-gray-600 dark:text-gray-300">
-          <p class="ss:text-md xs:text-md font-extrabold">{{this.getUserAPR().toFixed(2)}}</p>
+          <p class="ss:text-md xs:text-xl md: md:text-xl font-extrabold">{{this.getUserAPR().toFixed(2)}}</p>
           <p class="text-xs font-bold text-gray-500 dark:text-gray-400">Average APR</p>
         </div>
       </div>
