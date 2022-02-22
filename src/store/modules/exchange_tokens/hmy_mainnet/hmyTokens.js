@@ -62,7 +62,7 @@ export const hmytokens = {
     oneAddress: "one1nd5t7jlcnsg4cus3qh40d023vjhuc50yhu7n08",
     oneZeroxAddress: "0x9b68BF4bF89c115c721105eaf6BD5164aFcc51E4",
     decimals: 18,
-    imgSrc: "https://freyala.com/images/logo.png"
+    imgSrc: "https://storageapi.fleek.co/ed2319ff-1320-4572-a9c4-278c4d80b634-bucket/logo_gfx.png"
   },/*
   SEED: {
     Symbol: "SEED",
