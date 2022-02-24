@@ -664,7 +664,7 @@ export default {
           }
 
     },
-    approveSpending: async function(token1, contractAddr){
+    changeSpending: async function(token1, contractAddr, amount){
       let isDefaultWallet = this.checkSignedIn()
       if (isDefaultWallet){
         toastMe('error', {
@@ -677,7 +677,7 @@ export default {
       }
       //biggest wei denomination
       const wei =
-          ethers.BigNumber.from("115792089237316195423570985008687907853269984665640564039457584007913129639935");
+          ethers.BigNumber.from(amount);
       const abi = IERC20.abi;
       if(this.getWalletType() == 'metamask'){
         
@@ -735,6 +735,12 @@ export default {
             }
           
       }
+    },
+    revokeSpending: async function(token1, contractAddr){
+      await this.changeSpending(token1, contractAddr, "0")
+    },
+    approveSpending: async function(token1, contractAddr){
+      await this.changeSpending(token1, contractAddr, "115792089237316195423570985008687907853269984665640564039457584007913129639935")
     },
     checkAllowance: async function(token1, contractAddr){
       const provider = this.getProvider(true)
