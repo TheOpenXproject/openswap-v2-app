@@ -44,6 +44,14 @@
             </div>
           </tooltip-me-content>
         </tooltip-me>
+        <tooltip-me v-if="this.pool.archived">
+          <i class="las la-archive text-xl transform rotate-180 hover:text-oswapGreen"></i>
+          <tooltip-me-content :options="tooltip"
+            class="flex flex-none text-center bg-gray-100 dark:bg-slightDark text-gray-500 dark:text-gray-300 rounded-md p-3"
+          >
+            Archived Pool 
+          </tooltip-me-content>
+        </tooltip-me>
       </div>
     </div>
     <!-- Header right side -->
