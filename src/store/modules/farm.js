@@ -8,6 +8,8 @@ export default {
         farmData: {},
         soloData: {},
         farmPair:{},
+        oneBalance: 0,
+        userDelegatedTotal: 0,
         customData: {},
         farms: null,
         soloFarms: null,
@@ -29,6 +31,12 @@ export default {
         
         getFarms: (state) => {
           return state.farms
+        },
+        getUserDelegatedTotal: (state) => {
+          return state.userDelegatedTotal
+        },
+        getOneBalance: (state) => {
+          return state.oneBalance
         },
         getTokens: (state) => {
           return state.tokens
@@ -82,6 +90,12 @@ export default {
       actions: { 
         setFarms({ commit }, value) {
           commit('_setFarms', value)
+        },
+        setOneBalance({ commit }, value) {
+          commit('_setOneBalance', value)
+        },
+        setUserDelegatedTotal({ commit }, value) {
+          commit('_setUserDelegatedTotal', value)
         },
         setTokensState({ commit }, value) {
           commit('_setTokensState', value)
@@ -144,6 +158,12 @@ export default {
       mutations: {
         _setFarms: (state, value) => {
           state.farms = value
+        },
+        _setUserDelegatedTotal: (state, value) => {
+          state.userDelegatedTotal = value
+        },
+        _setOneBalance: (state, value) => {
+          state.oneBalance = value
         },
         _setTokensState: (state, value) => {
           state.tokens = value

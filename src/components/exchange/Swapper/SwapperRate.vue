@@ -44,7 +44,7 @@
         this.setSlippageRate(
           Number((rate == '' || parseFloat(rate) < 0.1 ) ? '0.1' : rate).toString()
         )
-        this.updateData();
+        //this.updateData();
       },
 
       updateData: async function() {

@@ -35,7 +35,14 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       window.addEventListener('scroll', this.handleScroll);
     },
     mounted: async function() {
+      
+      let theme = localStorage.getItem("oSwap\_theme");
 
+      if (theme) {
+        this.setTheme(theme);
+      } else {
+        localStorage.setItem("oSwap\_theme", 'dark');
+      }
    const CHAIN_ID = 1666600000
       const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
       console.log(pools)
@@ -72,7 +79,9 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       this.setOpenXBurnt(burnt)
       this.setOpenXSupply(supply)
       await sdk.initFarms(farms)
+      let oneBalance = await this.getOneBalance()
 
+      this.setOneBalance(oneBalance)
 
       let onePrice = await sdk.getOnePrice()
       let oxPrice = await sdk.getOpenXPrice()
@@ -119,19 +128,24 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
 
 
             await setInterval(async function(){
-      var sdk  = new SDK(CHAIN_ID, Multicall)
-      let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
+            var sdk  = new SDK(CHAIN_ID, Multicall)
+            let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
 
 
             await sdk.initFarms(farms)
             let onePrice = await sdk.getOnePrice()
-      let oxPrice = await sdk.getOpenXPrice()
+            let oxPrice = await sdk.getOpenXPrice()
 
       this.setOnePrice(onePrice)
       this.setOpenXPrice(oxPrice)
 
           const user = this.getUserAddress()
           const valData = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
+          let userDelegationTotal = 0
+          for(var x in valData.userDelegatedTotal){
+            userDelegatedTotal += valData.userDelegatedTotal[x]
+          }
+
           this.setValidatorData(valData)
           await sdk.initBalances(user)
           tokens = await sdk.getTokens()
@@ -165,13 +179,6 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       }.bind(this), 15000)
 
 
-      let theme = localStorage.getItem("oSwap\_theme");
-
-      if (theme) {
-        this.setTheme(theme);
-      } else {
-        localStorage.setItem("oSwap\_theme", 'dark');
-      }
     },
 
     computed: {
@@ -181,7 +188,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
     
     methods: {
       ...mapActions('farm/farmData', ['setFarms', '']),
-      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms", "setTokensState"]),
+      ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms", "setTokensState", "setOneBalance"]),
       ...mapActions('user', ['setIsScrolled', 'setTheme']),
       ...mapActions('wallet', ['switchWalletType']),
       handleScroll() {

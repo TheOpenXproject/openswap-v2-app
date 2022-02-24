@@ -997,8 +997,33 @@ export default {
         
         
         return  [ethers.utils.commify(parseFloat(route.route.midPrice.toFixed(8)  * tt0s * 2).toFixed(2)) ,
-          parseFloat(route.route.midPrice.toFixed(8)  * tt0s).toFixed(8) * 2]
+          parseFloat(route.route.midPrice.toFixed(8) * tt0s).toFixed(8) * 2]
       }
+    },
+    getBestRouteOut: async function(parsedAmount, token0, token1) {
+            const Token0 = new Token(
+                this.getChainID(),
+                token0.oneZeroxAddress,
+                token0.decimals
+                )
+             const Token1 = new Token(
+                this.getChainID(),
+                token1.oneZeroxAddress,
+                token1.decimals
+                )
+
+
+            var pairs = []
+            const farms = this.getFarms()
+            for(var w in farms){
+              pairs.push(farms[w].uniPair)
+              console.log(pairs)
+            }
+
+
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1, new TokenAmount(Token0, parsedAmount), { maxNumResults : 6, maxHops : 3 })
+      console.log(bestRoute)
+      return bestRoute[0]
     },
     getBestRouteIn: async function(parsedAmount, token0, token1) {
             const Token0 = new Token(
@@ -1021,7 +1046,7 @@ export default {
             }
 
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount))
+      const bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1)
       console.log(bestRoute)
       return bestRoute[0]
     },
@@ -1041,13 +1066,15 @@ export default {
             var pairs = []
             const farms = this.getFarms()
             for(var w in farms){
+            if(farms[w].uniPair.involvesToken(Token0) || farms[w].uniPair.involvesToken(Token1))
               pairs.push(farms[w].uniPair)
               console.log(pairs)
             }
 
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount))
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 6, maxHops : 3 })
       console.log(bestRoute)
+      
       return bestRoute[0]
     },
     getBestRouteFarms: async function(parsedAmount, token0, token1) {

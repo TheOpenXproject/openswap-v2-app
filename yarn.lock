@@ -11180,10 +11180,10 @@
   "resolved" "https://registry.npmjs.org/opener/-/opener-1.5.2.tgz"
   "version" "1.5.2"
 
-"openswap-app-sdk@^0.0.18":
-  "integrity" "sha512-HyCmNv5ydGOY5Gc8oS/jPQ5X1HzKS9nlqXTPCusZE0alwx44jJDQeBDmlucFUekrwM9jf1XNDru3FtuJfxMMZg=="
-  "resolved" "https://registry.npmjs.org/openswap-app-sdk/-/openswap-app-sdk-0.0.18.tgz"
-  "version" "0.0.18"
+"openswap-app-sdk@^0.0.22":
+  "integrity" "sha512-gd3aqSWWqgGfwCQNUXXOH9fWu6yFXNyuvyOVxL9GrOaiXfuG8e7FdYHey1CntK90LmPcIxlGOQBuNF8S0urGaA=="
+  "resolved" "https://registry.npmjs.org/openswap-app-sdk/-/openswap-app-sdk-0.0.22.tgz"
+  "version" "0.0.22"
   dependencies:
     "@harmony-js/crypto" "^0.1.56"
     "@makerdao/multicall" "^0.12.0"

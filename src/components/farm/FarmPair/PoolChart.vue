@@ -58,19 +58,13 @@
       }
     },
      mounted() {
-
       this.rewardsPerWeek = this.pool.usdPerWeek * this.pool.user.stakeWeight / 100
-      console.log(this.rewardsPerWeek)
       this.amount = this.pool.user.stakeValue.toString()
-      console.log(this.amount)
     },
     methods: {
       inputAmount: async function(value){
         //if (this.errors !== {} && value !== this.amount) {
-            this.amount = value
-
-           
-
+            this.amount = value  
       },
       unstake: async function() {
         this.buttonState = 'executing';

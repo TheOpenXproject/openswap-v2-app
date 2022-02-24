@@ -68,6 +68,7 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
       if(!this.getUserSignedIn){
         this.setBtnState({swap: 'swapped'})
       }
+      this.input0('1');
 
     },
     unmounted() {
@@ -99,14 +100,12 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
       ]),
 
       input0: async function(amount0){
-        await setTimeout(()=>{}, 400)
         const token0 = this.getToken()['token1']
         const token1 = this.getToken()['token2']
-        console.log(amount0)
 
         let units = this.getUnits(amount0, token0)
-        let bestRoute = await this.getBestRoute(units, token1, token0)
-        console.log(bestRoute)
+        let bestRoute = await this.getBestRouteIn(units, token0, token1)
+
         const trade = new Trade(
         bestRoute.route,
         new TokenAmount(bestRoute.inputAmount.token, units),
@@ -115,45 +114,39 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
 
         this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
         this.setThePath(this.getPath(bestRoute));
-        console.log(bestRoute.outputAmount.raw.toString())
         let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
         let amountOut = trade
                       .minimumAmountOut(slippageTolerence)
-                      
-        console.log(typeof trade.executionPrice.raw.toFixed(token0.decimals))
         this.rate = parseFloat(trade.executionPrice.raw.toFixed(token0.decimals)).toFixed(6)
         this.nextMidPrice = parseFloat(trade.nextMidPrice.raw.toFixed(token0.decimals)).toFixed(6)
         this.setInputAmount({
-          1: this.getFormatedUnitsDecimals(amountOut.raw.toString(), token1.decimals)
+          1: String(this.getFormatedUnitsDecimals(amountOut.raw.toString(), token1.decimals))
         })
         this.setInputAmount({
-          0: this.getFormatedUnitsDecimals(units, token0.decimals)
+          0: String(this.getFormatedUnitsDecimals(units, token0.decimals))
         })
         console.log(bestRoute)
         console.log(trade)
       },
       input1: async function(amount0){
-        await setTimeout(()=>{}, 400)
-        console.log("ksjkd")
+
         const token0 = this.getToken()['token1']
         const token1 = this.getToken()['token2']
-        console.log(amount0)
+
 
         let units = this.getUnits(amount0, token1)
-        let bestRoute = await this.getBestRoute(units, token1, token0)
+        let bestRoute = await this.getBestRouteOut(units, token1, token0)
         const trade = new Trade(
         bestRoute.route,
         new TokenAmount(bestRoute.outputAmount.token, units),
         TradeType.EXACT_OUTPUT
       ); 
-        console.log(bestRoute)
 
         this.rate = parseFloat(trade.executionPrice.raw.toFixed(token0.decimals)).toFixed(6)
         this.nextMidPrice = parseFloat(trade.nextMidPrice.raw.toFixed(token0.decimals)).toFixed(6)
         
         this.setPriceImpact(trade.priceImpact.toFixed(2))
         this.setThePath(this.getPath(bestRoute));
-        console.log(this.getPath(bestRoute))
 
 
          let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
@@ -168,8 +161,6 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
         this.setInputAmount({
           1: this.getFormatedUnitsDecimals(units, token1.decimals)
         })
-        console.log(bestRoute)
-        console.log(trade)
       },
       reload(value) {
         this.$emit('reload', true)

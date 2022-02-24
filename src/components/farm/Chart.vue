@@ -141,8 +141,8 @@
             breakpoint: 540,
             options: {
               chart: {
-                width: 325,
-                height: 225
+                width: 315,
+                height: 190.
               }
             }
           }],
