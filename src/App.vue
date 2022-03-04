@@ -35,9 +35,17 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       window.addEventListener('scroll', this.handleScroll);
     },
     mounted: async function() {
-      
-      let theme = localStorage.getItem("oSwap\_theme");
-
+      let walletType = localStorage.getItem("oSwap\_theme");
+      if(walletType !== null){
+        if (walletType == '0') {
+          this.setWalletType('metamask');
+        }else{
+          this.setWalletType('oneWallet');
+        }
+      }else{
+        this.setWalletType('metamask');
+      }
+      let theme = localStorage.getItem("walletmode");
       if (theme) {
         this.setTheme(theme);
       } else {
@@ -189,7 +197,7 @@ const { pools } = require("@/store/modules/farm/pools.js");const { toBech32 } = 
       ...mapActions('farm/farmData', ['setFarms', '']),
       ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms", "setTokensState", "setOneBalance"]),
       ...mapActions('user', ['setIsScrolled', 'setTheme']),
-      ...mapActions('wallet', ['switchWalletType']),
+      ...mapActions('wallet', ['setWalletType']),
       handleScroll() {
         this.setIsScrolled(window.scrollY > 0)
       },
