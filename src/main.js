@@ -14,7 +14,7 @@ const options = {
 };
 
 import VueGtag from "vue-gtag-next";
-
+import dayjs from 'dayjs'
 import PerfectScrollbar from 'vue3-perfect-scrollbar'
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
 
@@ -30,7 +30,7 @@ import 'animate.css';
 const app = createApp(App)
 const emitter = mitt();
 app.config.globalProperties.oswapEmit = emitter;
-
+app.config.globalProperties.$dayjs = dayjs
 app.use(router);
 app.use(store);
 app.use(PerfectScrollbar);

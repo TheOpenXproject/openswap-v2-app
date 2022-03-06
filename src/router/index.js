@@ -194,6 +194,26 @@ const routes = [
     name: 'Listings',
     component: () => import('../views/Listings.vue')
   },
+  {
+    path: '/contacts',
+    name: 'Contacts',
+    component: () => import('../views/Contacts.vue')
+  },
+  {
+    path: '/assets',
+    name: 'Assets',
+    component: () => import('../views/Assets.vue')
+  },
+  {
+    path: '/proposals',
+    name: 'Proposals',
+    component: () => import('../views/Proposals.vue')
+  },
+  {
+    path: '/proposal-details/:address',
+    name: 'Details of Proposal',
+    component: () => import('../views/ProposalDetails.vue')
+  },
 ]
 
 const router = createRouter({
