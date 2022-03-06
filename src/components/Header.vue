@@ -8,12 +8,12 @@
     </div>
    
     <div class="flex items-center lg:space-x-0 space-x-1 text-gray-500 dark:text-oswapGreen st5"> 
-    <!--  
+    
        <router-link to="/wallet" class="flex items-center space-x-2 p-2 px-1 md:px-3 rounded-lg group focus:outline-none focus:ring-1 focus:ring-black focus:ring-opacity-20">
         <i class="las la-wallet text-xl group-hover:text-oswapGreen "></i>
         <p class="text-sm hidden md:block group-hover:text-oswapBlue-light">Portfolio</p>
       </router-link>
-      -->
+      
       <router-link to="/" class="flex items-center space-x-2 p-2 px-1 md:px-3 rounded-lg group focus:outline-none focus:ring-1 focus:ring-black focus:ring-opacity-20">
         <i class="las la-random text-xl group-hover:text-oswapGreen "></i>
         <p class="text-sm hidden md:block group-hover:text-oswapBlue-light">Exchange</p>

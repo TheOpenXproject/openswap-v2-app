@@ -15,7 +15,12 @@
     <div v-if="getUserSignedIn" class="flex st5 lg:w-44 items-center space-x-1 lg:pr-2 p-1 rounded-full bg-opacity-20 hover:bg-opacity-50 cursor-pointer border-oswapGreen-dark border glow-oswapGreen-light-md hover:bg-white dark:hover:bg-gray-700">
       <div class="flex flex-none relative h-8 w-8 items-center justify-center st5 bg-oswapGreen rounded-full hover:bg-yellow-400">
         <transition name="fade-in-and-rotate" appear>
-          <i class="absolute las la-wallet text-xl st5 text-white dark:text-oswapDark-gray"></i>
+        <router-link to="/wallet" class="flex items-center space-x-2 p-2 px-1 md:px-3 rounded-lg group focus:outline-none focus:ring-1 focus:ring-black focus:ring-opacity-20">
+        <i class="las la-wallet text-xl text-white dark:text-oswapDark-gray "></i>
+   
+      </router-link>
+
+         
         </transition>
       </div>
       <div @click="disconnect()" class="flex w-full items-center p-1 text-sm justify-center dark:text-oswapGreen">

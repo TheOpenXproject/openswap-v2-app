@@ -1,4 +1,12 @@
 export const hmytokens = {
+    BTC: {
+    Symbol: "BTC",
+    name: "Bitcoin",
+    oneAddress: "one1m32qgmqy28ujd8lwrpq2ajqg6dsp26ta2r4rlz",
+    oneZeroxAddress: "0xdc54046c0451f9269FEe1840aeC808D36015697d",
+    decimals: 8,
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+  },
   ONE: {
     Symbol: "ONE",
     name: "Harmony One",
@@ -15,15 +23,15 @@ export const hmytokens = {
     decimals: 18,
     imgSrc: "https://openfi.dev/tokens/default/oSWAP.png"
   },
-  VIPER: {
-    Symbol: "VIPER",
-    name: "Viper Token",
-    oneAddress: "one1afvfayllrzc6ru0fhtr7705x4d32mhrewz4c77",
-    oneZeroxAddress: "0xEa589E93Ff18b1a1F1e9BaC7EF3E86Ab62addc79",
+  FRAX: {
+    Symbol: "FRAX",
+    name: "FRAX",
+    oneAddress: "one1lfcer55j643n7uptp0t78caues8xxvsq4nwurm",
+    oneZeroxAddress: "0xFa7191D292d5633f702B0bd7E3E3BcCC0e633200",
     decimals: 18,
-    imgSrc: "https://assets.coingecko.com/coins/images/15305/large/0c4b902b40f14db918f4500956386414ab7ebcfe.jpeg?1620371961"
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/6952.png"
   },
-  VIPER: {
+    VIPER: {
     Symbol: "VIPER",
     name: "Viper Token",
     oneAddress: "one1afvfayllrzc6ru0fhtr7705x4d32mhrewz4c77",
@@ -39,6 +47,30 @@ export const hmytokens = {
     imgSrc:
       "https://s3-us-west-1.amazonaws.com/tokens.mochiswap.io/images/hMOCHI-token-logo.png"
   },
+    FUZZ: {
+    Symbol: "FUZZ",
+    name: "Fuzz Finance",
+    oneAddress: "one1np9edx5wst6uuyfpe6crl9hltwelw8lwpagctd",
+    oneZeroxAddress: "0x984b969a8E82F5cE1121CeB03f96fF5bB3f71FEe",
+    decimals: 18,
+    imgSrc: "https://assets.coingecko.com/coins/images/18395/small/fuzz.PNG?1631764255"
+  },
+  JEWEL: {
+    Symbol: "JEWEL",
+    name: "DeFi Kingdoms",
+    oneAddress: "one1wt93p34l543ym5r77cyqyl3kd0tfqpy0eyd6n0",
+    oneZeroxAddress: "0x72Cb10C6bfA5624dD07Ef608027E366bd690048F",
+    decimals: 18,
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/12319.png"
+  },
+  IMMORTL: {
+    Symbol: "IMMORTL",
+    name: "One Immortl",
+    oneAddress: "one125xejgmf8xv2dl3qsqdtu0c60rsdw5yf664r9h",
+    oneZeroxAddress: "0x550D9923693998A6FE20801ABe3f1A78e0d75089",
+    decimals: 18,
+    imgSrc: "https://api.rubic.exchange/assets/harmony/0x550d9923693998a6fe20801abe3f1a78e0d75089/logo.png"
+  },
   LMA: {
     Symbol: "LMA",
     name: "LMA - Art - Gallery",
@@ -51,7 +83,7 @@ export const hmytokens = {
     Symbol: "VINCI",
     name: "DaVinci Token",
     oneAddress: "one1hrsyjuqcexg7scc3ke80m82hkp4wmwawwuv9ft",
-    oneZeroxAddress: "0xb8e0497018c991e86311b64efd9d57b06aedbbae",
+    oneZeroxAddress: "0xB8E0497018c991E86311b64EFd9D57b06aEDbBAE",
     decimals: 18,
     imgSrc:
       "https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/VINCI.png"
@@ -63,7 +95,10 @@ export const hmytokens = {
     oneZeroxAddress: "0x9b68BF4bF89c115c721105eaf6BD5164aFcc51E4",
     decimals: 18,
     imgSrc: "https://freyala.com/images/logo.png"
-  },/*
+  },
+
+
+  /*
   SEED: {
     Symbol: "SEED",
     name: "SEED Token",

@@ -49,7 +49,7 @@
       },
     data() {
       return {
-        amount0: '1.0',
+        amount0: '0.0',
         amount1: '0.0',
         clickedInput: null,
         pair: null,
@@ -88,6 +88,8 @@
         this.inputAmount1(String(this.balances.token1))
       },
       inputAmount0: async function(value) {
+         this.setBtnState({add: 'adding'})
+        this.setBtnState
         if (this.clickedInput == '1') {
           if (!this.createNewPair) {
             this.amount0 = value;
@@ -103,6 +105,7 @@
             this.setToken0Amount(value)
           }
         }
+         this.setBtnState({add: 'add'})
       },
       input0: async function() {
         let input = await Promise.resolve(this.getToken0Amount());
@@ -129,6 +132,7 @@
         }
       },
       inputAmount1: async function(value) {
+        this.setBtnState({add: 'adding'})
         if (this.clickedInput == '2') {
           if (!this.createNewPair) {
             this.amount1 = value;
@@ -144,6 +148,8 @@
             this.setToken1Amount(value);
           }
         }
+        this.setBtnState({add: 'add'})
+
       },
       input1: async function() {
         let input = await Promise.resolve(this.getToken1Amount());

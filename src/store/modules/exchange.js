@@ -171,9 +171,13 @@ export default {
         priceImpact: '0.0',
         priceRate: '0.0',
         path: null,
-        warnings: {}
+        warnings: {},
+        allPairs: []
       },
       getters: {
+        getAllPairs: (state) => {
+          return state.allPairs;
+        },
         getInputAmount: (state) => (token) => {
           return state.amount[token];
         },
@@ -201,6 +205,9 @@ export default {
 
       },
       actions: {
+        setAllPairs({commit}, value) {
+          commit('_setAllPairs', value);
+        },
         setLastSelected({commit}, value) {
           commit('_setLastSelected', value);
         },
@@ -233,6 +240,9 @@ export default {
         }
       },
       mutations: {
+        _setAllPairs: (state, value) => {
+          state.allPairs = value
+        },
         _setLastSelected: (state, value) => {
           state.lastSelected = value
         },

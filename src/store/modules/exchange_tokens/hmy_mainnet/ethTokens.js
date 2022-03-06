@@ -67,6 +67,17 @@ export const ethtokens = {
     oneImg: "",
     decimals: 18
   },
+  FRAX: {
+    Symbol: "FRAX",
+    name: "FRAX",
+    ethAddress: "0x853d955aCEf822Db058eb8505911ED77F175b99e",
+    ethImg: "",
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/6952.png",
+    oneAddress: "one1adkq3n95ggdkpz89s88qfl8ma52cjwkr7zn98p",
+    oneZeroxAddress: "0xeB6C08ccB4421b6088e581ce04fcFBed15893aC3",
+    oneImg: "",
+    decimals: 18
+  },
   LINK: {
     Symbol: "eLINK",
     name: "ChainLink Token",

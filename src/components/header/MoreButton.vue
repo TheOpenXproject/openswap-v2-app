@@ -104,21 +104,12 @@
           icon: 'la-coins',
           name: 'Launchpad',
           description: 'Launch of new secure tokens'
-        },
-        // Uncomment when you want utility page UP BTW
-        // {
-        //   url: 'utility',
-        //   icon: 'la-tools',
-        //   name: 'Utility',
-        //   description: 'Useful tools'
-        // },
-        // Once we have info about what this will be used for we can discomment it
-        // {
-        //   url: 'information',
-        //   icon: 'la-info-circle',
-        //   name: 'Information',
-        //   description: 'Information'
-        // }
+        },         {
+           url: 'utility',
+           icon: 'la-tools',
+           name: 'Misc.',
+           description: 'Miscellaneous'
+         }
       ]
     })
   }

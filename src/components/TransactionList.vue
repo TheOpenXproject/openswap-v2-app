@@ -2,7 +2,7 @@
   <div class="flex flex-col ">
     <div class="grid grid-cols-6 w-full gap-3 h-12">
       <div class="flex h-12 col-span-4">
-        <Divider title="Tokens" class="w-full text-lg text-oswapGreen " />
+        <Divider title="Tokens Available" class="w-full text-lg text-oswapGreen " />
       </div>
       <!-- search field 
       <div class="flex h-12 col-span-2 item">
@@ -62,9 +62,9 @@
     methods: {
       async intersected() { 
         let prevChunk = this.items.length;
-        let newChunk = this.txs.slice(prevChunk, prevChunk * 2)
+        let newChunk = this.tokens.slice(prevChunk, prevChunk * 2)
 
-        if (this.items.length < this.txs.length) {
+        if (this.items.length < this.tokens.length) {
           this.loadingChunk = true;
           await this.sleep(1000);
           this.loadingChunk = false;

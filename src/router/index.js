@@ -188,12 +188,12 @@ const routes = [
     path: '/validator/:address',
     name: 'Validator',
     component: () => import('../views/Validator.vue')
-  },
+  },/*
   {
     path: '/listings',
     name: 'Listings',
     component: () => import('../views/Listings.vue')
-  },
+  },*/
 ]
 
 const router = createRouter({

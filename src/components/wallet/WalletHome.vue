@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="flex w-full pt-8 mb-4">
+      <div class="hidden w-full pt-8 mb-4">
         <div class="grid grid-cols-8 mdd:grid-cols-8 ss:grid-cols-4 gap-4 w-full">
           <div class="flex items-center space-x-3 col-span-2">
             <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
@@ -36,7 +36,7 @@
           </div>
            <div class="flex items-center space-x-3 col-span-2">
             <div class="p-3 rounded-full bg-slightGray dark:bg-slightDark  ">
-                <i class="las la-layer-group text-oswapGreen text-2xl"></i>
+                <i class="las la-university text-oswapGreen text-2xl"></i>
             </div>
             <div class="flex flex-col">
               <p class="ss:text-md xs:text-lg font-extrabold">${{this.prettify(this.getTotalBalance)}}</p>
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <TransactionList :tokens="this.getTokensComp"/>
+      <TransactionList :tokens="this.getTokensComp" :key="this.getTokens()"/>
 
     </div>
   </transition>
@@ -87,12 +87,13 @@
 
     },
     methods: {
-      ...mapGetters("farm/farmData", ["getUserStake", "getFarms", "getTokens"]),
+      ...mapGetters("farm/farmData", ["getUserStake", "getFarms", "getTokens", 'getStateOnePrice', 'getOneBalance']),
       prettify: function(number){
         return ethers.utils.commify(number)
       },
       getAvailableBalance: function(){
         let tokens = this.getTokens()
+        console.log(tokens)
         let bal = 0;
         for(var i in tokens){
           bal += (tokens[i].balance * tokens[i].tokenPriceUsd )
@@ -103,7 +104,28 @@
     },
     computed: {
     getTokensComp: function(){
-       return this.getTokens()
+      var tokens = []
+      var i = 0;
+      let allTokens = this.getTokens()
+      for(var token in allTokens){
+        if(i==0){
+          let oneToken =   {
+            symbol: 'ONE',
+            address: '0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+            image: 'https://openfi.dev/tokens/default/ONE.png',
+            balance: parseFloat(this.getOneBalance()),
+            stakedBal: 0,
+            tokenPriceUsd: parseFloat(this.getStateOnePrice())
+          }
+          tokens.push(oneToken)
+
+        }
+                  
+        tokens.push(allTokens[i])
+        i++
+      }
+      
+       return tokens
     },
     getTotalBalance: function(){
       let ret = (parseFloat(this.getAvailableBalance())+parseFloat(this.getUserStake())).toFixed(2)
@@ -244,104 +266,7 @@
             from: '#34eb89',
             to: '#34eb89'
           },
-        ],
-        // DUMMY DATA - ERASE WHEN REAL DATA IS BEING FETCHED...
-        cardDataHarmony: {
-          style: {
-            from: "#edeff2",
-            to: "#edeff2",
-            size: 90,
-            stroke: 8
-          },
-          balance: {
-            networkName: 'Available Balance',
-            value: '9,145.39',
-            valuePercentage: 59,
-            assets: [
-              {
-                icon: "https://openfi.dev/tokens/default/ONE.png",
-              },
-              {
-                icon: "https://openfi.dev/tokens/default/oSWAP.png",
-              },
-              {
-                icon: "https://miro.medium.com/fit/c/56/56/1*6X4n2JzQweFbOjpneSWiOw.png",
-              },
-              {
-                icon: "https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/VINCI.png",
-              },
-              {
-                icon: "https://s3-us-west-1.amazonaws.com/tokens.mochiswap.io/images/hMOCHI-token-logo.png",
-              },
-              {
-                icon: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/LMA.png",
-              },
-              {
-                icon: "https://freyala.com/images/logo.png",
-              },
-              {
-                icon: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/1SEED.png",
-              },
-              {
-                icon: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/ARANK.png",
-              },
-              {
-                icon: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/EUSK.png",
-              },
-              {
-                icon: "https://swoop-exchange.s3-us-west-1.amazonaws.com/tokens/SEE.png",
-              }
-            ]
-          }
-        },
-        cardDataEthereum: {
-          style: {
-            from: "#edeff2",
-            to: "#edeff2",
-            size: 90,
-            stroke: 8
-          },
-          balance: {
-            networkName: 'Staked Balance',
-            value: '1,145.39',
-            valuePercentage: 11,
-            assets: [
-              {
-                icon: "https://openfi.dev/tokens/default/WBTC.png",
-              },
-              {
-                icon: "https://openfi.dev/tokens/default/USDC.png",
-              },
-            ]
-          }
-        },
-        cardDataBinance: {
-          style: {
-            from: "#edeff2",
-            to: "#edeff2",
-            size: 90,
-            stroke: 8
-          },
-          balance: {
-            networkName: 'Total Balance',
-            value: '4,145.39',
-            valuePercentage: 30,
-            assets: [
-              {
-                icon: "https://s2.coinmarketcap.com/static/img/coins/128x128/1839.png",
-              },
-              {
-                icon: "https://openfi.dev/tokens/default/MATIC.png",
-              },
-              {
-                icon: "https://s2.coinmarketcap.com/static/img/coins/128x128/2010.png",
-              },
-              {
-                icon: "https://s2.coinmarketcap.com/static/img/coins/128x128/7186.png",
-              },
-            ]
-          }
-        }
+        ]
       }
     }
   }

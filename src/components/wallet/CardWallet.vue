@@ -6,15 +6,12 @@
         <slot></slot>
         <p class="text-sm font-bold">{{balanceData.balanceName}}</p>
       </div>
-      <div class="flex space-x-3 items-center">
-        <ProgressCircle v-if="balanceData.type == 'Available'" :amount="this.getAvailablePercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
-        <ProgressCircle v-if="balanceData.type == 'Staked'" :amount="this.getStakedPercent" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="0" />
-        <ProgressCircle v-if="balanceData.type == 'Total'" :amount="100" :from="styleData.from" :to="styleData.to" :size="styleData.size" :stroke="styleData.stroke" :startAt="100" />
-        <div class="flex flex-col">
+      <div class="flex space-x-3 space-y-2 items-center">
+        <div class="flex flex-col pt-4">
           <p class="text-base">Balance</p>
-          <p v-if="balanceData.type == 'Available'" class="text-2xl font-bold">$ {{prettify(this.getAvailableBalance().toFixed(2))}}</p>
-          <p v-if="balanceData.type == 'Staked'" class="text-2xl font-bold">$ {{prettify(this.getUserStake().toFixed(2))}}</p>
-          <p v-if="balanceData.type == 'Total'" class="text-2xl font-bold">$ {{this.getTotalBalance}}  </p>
+          <p v-if="balanceData.type == 'Available'" class="text-4xl font-bold">$ {{prettify(this.getAvailableBalance().toFixed(2))}}</p>
+          <p v-if="balanceData.type == 'Staked'" class="text-4xl font-bold">$ {{prettify(this.getUserStake().toFixed(2))}}</p>
+          <p v-if="balanceData.type == 'Total'" class="text-4xl font-bold">$ {{this.getTotalBalance}}  </p>
         </div>
       </div>
       <!--
@@ -68,7 +65,7 @@
       }
     },
     methods: {
-      ...mapGetters("farm/farmData", ["getUserStake"]),
+      ...mapGetters("farm/farmData", ["getUserStake", "getOneBalance", "getStateOnePrice" ]),
 
       prettify: function(number){
         return ethers.utils.commify(number)
@@ -78,7 +75,8 @@
         for(var i in this.tokens){
           bal += (this.tokens[i].balance * this.tokens[i].tokenPriceUsd )
         }
-        return bal
+        bal += parseFloat(this.getOneBalance() * this.getStateOnePrice())
+        return bal 
       }
     }
   }
