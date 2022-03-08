@@ -95,7 +95,18 @@ export default {
       });
       return found
     },
-
+    findTokenByAddress: (state) => (token, chainId) => { 
+      let found
+      state.allTokens.forEach(network => {      
+        Object.entries(network.tokens[chainId]).forEach(([k, v]) => {
+          if (v.oneZeroxAddress === token) {
+            found = v
+            return; //
+          }
+        });
+      });
+      return found
+    },
     // It retrieves the current state of token selection
     getToken: (state) => {
       return state.swap
@@ -108,6 +119,20 @@ export default {
   },
   
   actions: {
+    loadTokens({ commit, getters }, {token1, token2} ) {
+      const chainId = this.getters["wallet/getChainID"]
+      if (token1 !== token2) {
+        const token1Object = getters.findTokenByAddress(token1, chainId)
+        const token2Object = getters.findTokenByAddress(token2, chainId)
+        if (token1Object) {
+          commit('_setToken', {tokenRef: 'token1', token: token1Object})
+        }
+        if (token2Object) {
+          commit('_setToken', {tokenRef: 'token2', token: token2Object})
+        }
+      }
+    },
+
     // Navigate through Swap feature
     goTo({ commit }, value) {
       commit('_goTo', value)
