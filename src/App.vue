@@ -50,11 +50,11 @@
         if (this.getUserSignedIn()) {
             timeout = 1;
         } else {
-            timeout = 1000;
+            timeout = 3000;
         }
         await setTimeout(
         async function () {
-      await this.UpdateState()
+      console.log(await this.UpdateState())
 }.bind(this),
             timeout
         );
@@ -68,7 +68,7 @@
     },
     
     methods: {
-      ...mapGetters('wallet', ['getUserSignedIn']),
+      ...mapGetters('wallet', ['getUserSignedIn', 'getChainID']),
       ...mapActions('exchange/swapper', ['setAllPairs']),
       ...mapActions('farm/farmData', ['setFarms']),
       ...mapActions("farm/farmData", ["setSoloDataState", "setCustomDataState", "setFarms", "setUserStakeTotal", "setTVL", "setPendingRewards", "setOnePrice", "setOpenXPrice", "setTotalAPR", "setStakedAPR", "setUserAPR", "setUserRewardsPerWeek","setValidatorData","setOpenXBurnt","setOpenXSupply","setSoloFarms", "setTokensState", "setOneBalance"]),

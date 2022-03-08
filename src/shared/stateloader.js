@@ -28,9 +28,10 @@ const { toBech32 } = require('@harmony-js/crypto');
 
  		UpdateState: async function() {
 
-         const CHAIN_ID = 1666600000
-      const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
-      console.log(pools)
+         const CHAIN_ID = this.getChainID()
+         console.log(CHAIN_ID)
+      const Multicall = this.hMULTICALL(CHAIN_ID)
+      
       var farmPairAddr = []
       for(var x in pools[CHAIN_ID].pools){
         farmPairAddr.push(pools[CHAIN_ID].pools[x].pairaddress)
@@ -58,7 +59,7 @@ const { toBech32 } = require('@harmony-js/crypto');
       var sdk  = new SDK(CHAIN_ID, Multicall)
       
       let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
-      
+      console.log(farms)
       let supply = await sdk.getOpenXSupply()
       let burnt = await sdk.getOpenXBurnt()
 
@@ -85,14 +86,17 @@ const { toBech32 } = require('@harmony-js/crypto');
   
 
           const user = this.getUserAddress()
+
+          if(this.getChainID() == 1666600000){
           let vals = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
           this.setValidatorData(vals)
-          await sdk.initBalances(user)
-     
+           await sdk.initBalances(user) 
           var tokens = await sdk.getTokens()
+          }
+          
           farms = await sdk.getFarms()
           soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
-
+          console.log(farms)
           const TVL = sdk.getTVL()
           const pending = sdk.getTotalPending()
           const userStake = sdk.getTotalStakedUser()
@@ -150,8 +154,8 @@ const { toBech32 } = require('@harmony-js/crypto');
         name: ""
       },
       1666600000: {
-        rpcURL: 'https://harmony-0-rpc.gateway.pokt.network',
-        provider: new ethers.providers.JsonRpcProvider('https://harmony-0-rpc.gateway.pokt.network', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
+        rpcURL: 'https://api.harmony.one',
+        provider: new ethers.providers.JsonRpcProvider('https://api.harmony.one', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
         name: "mainnet harmony"
       },
       1666700000: {
@@ -166,7 +170,7 @@ const { toBech32 } = require('@harmony-js/crypto');
       }
     }
 
-        const provider = networks[1666600000].provider
+        const provider = networks[this.getChainID()].provider
         return provider
       
     },

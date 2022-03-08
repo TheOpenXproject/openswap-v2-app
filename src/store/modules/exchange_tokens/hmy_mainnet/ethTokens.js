@@ -341,10 +341,10 @@ export const ethtokens = {
 
   MATIC: {
     Symbol: "eMATIC",
-    name: "Matic Token",
+    name: "Polygon Token",
     ethAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
     ethImg: "",
-    imgSrc: "https://openfi.dev/tokens/default/MATIC.png",
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
     oneAddress: "one1xqf9nuujk4gu4rze9j0kwm7d97dq4px9rfeyaw",
     oneZeroxAddress: "0x301259f392B551CA8c592C9f676FCD2f9A0A84C5",
     oneImg: "",

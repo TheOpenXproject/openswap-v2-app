@@ -4,11 +4,11 @@
     <div class="relative flex h-12 items-center">
       <!-- Icon token0 -->
       <div class="absolute items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-        <img :src="pool.imgtoken0" class="h-8 w-8">
+        <img :src="pool.imgtoken0" class="h-8 w-8 rounded-xl">
       </div>
       <!-- Icon token1 -->
       <div class="absolute left-8 items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-        <img :src="pool.imgtoken1" class="h-8 w-8">
+        <img :src="pool.imgtoken1" class="h-8 w-8 rounded-xl">
       </div>
       <!-- Pair Title -->
       <div class="absolute left-20 pl-2 items-center justify-center flex h-12 space-x-2">
@@ -26,19 +26,19 @@
               <div class="flex flex-1 flex-col space-y-2">
                 <p class="text-sm mt-1">Total Staked</p>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.pair}} Staked: {{this.getUserStake().toFixed(5)}}</p>
+                  <p>{{pool.pair}} Staked: {{prettify(getTTS())}}</p>
                 </div>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.name[0]}} Staked: {{pool.token0Amount.toFixed(5)}}</p>
+                  <p>{{pool.name[0]}} Staked: {{prettify(pool.token0Amount.toFixed(5))}}</p>
                 </div>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.name[1]}} Staked: {{pool.token1Amount.toFixed(5)}} </p>
+                  <p>{{pool.name[1]}} Staked: {{prettify(pool.token1Amount.toFixed(5))}} </p>
                 </div>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.name[0]}} Price: {{pool.token0PriceUsd.toFixed(5)}} </p>
+                  <p>{{pool.name[0]}} Price: {{prettify(pool.token0PriceUsd.toFixed(5))}} </p>
                 </div>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.name[1]}} Price: {{pool.token1PriceUsd.toFixed(5)}} </p>
+                  <p>{{pool.name[1]}} Price: {{prettify(pool.token1PriceUsd.toFixed(5))}} </p>
                 </div>
               </div>
             </div>
@@ -131,11 +131,17 @@ import { ethers } from "ethers";
     },
     methods: {
       ...mapGetters('farm/farmData', ['getUserStake']),
+      prettify: function(number){
+        return ethers.utils.commify(number)
+      },
       updatePoolState: function(pool){
       var farmData = this.getFarmData()
       var poolData = farmData[pool.i]
      return poolData;
      
+      },
+      getTTS: function(){
+          return parseFloat(ethers.utils.formatUnits(this.pool.totalStaked, 18)).toFixed(5)
       },
       getWindowSize() {
         return {

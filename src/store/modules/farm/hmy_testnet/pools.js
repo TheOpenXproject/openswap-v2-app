@@ -24,6 +24,19 @@ export const pools = {
     pid: "1",
     rewards: "3X",
     i: 1
+  },
+  oSWAPbBUSD: {
+    pair: "bBUSD/OPENSWAP",
+    pairaddress: "0xbEeD3EF280e41AE2a464dB401176BC4ae9b7d1ae",
+    token0address: "0xE6a72FeE7e34768661805DE2b621a8CDBe0DBc81",
+    token1address: "0x9580254b12A7289e4b86c30F6a254Be81fD5B8Df",
+    imgtoken0: "https://openfi.dev/tokens/default/BUSD.png",
+    imgtoken1: "https://openfi.dev/tokens/default/oSWAP.png",
+    name: ["bBUSD","OPENSWAP"],
+    decimals: [18, 18],
+    pid: "1",
+    rewards: "3X",
+    i: 2
   },/*
   bBUSDWONE: {
     pair: "bBUSD/ONE",
