@@ -60,14 +60,13 @@
         description: 'Openswap Decentralized Exchange on Harmony Blockchain. Harmony DEX',
         keywords: 'Dex, Decentralised Exchange, dex, blockchain, harmony, openswap, Uniswap Fork',
         robots: 'index, follow'
-         
-    
     },
     computed: {
       ...mapGetters('exchange', ['getStepState'])
     },
     methods: {
-      ...mapActions('exchange', ['goTo']),
+      ...mapActions('exchange', ['goTo','setToken', 'loadTokens']),
+      
       reload(value){
        this.forceR++
       },
@@ -78,6 +77,14 @@
         this.whichToken = token
         this.goTo('swapmodal')
       }
-    }
+    },
+    mounted: function () {
+      const token1 = this.$route.query.token1
+      const token2 = this.$route.query.token2
+      if (token1 || token2) {
+        this.loadTokens({token1, token2})
+      }
+      // 
+    },
   }
 </script>
