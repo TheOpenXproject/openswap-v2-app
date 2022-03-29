@@ -54,6 +54,8 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "@vueup/vue-quill": "^1.0.0-beta.8",
+    "dayjs": "^1.10.8",
     "eslint": "^8.9.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-vue": "^8.4.1",
@@ -64,6 +66,7 @@
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-browser-sync": "~1.0.0-rc5",
     "vue-cli-plugin-tailwind": "~2.0.6",
-    "vue-gtag-next": "^1.14.0"
+    "vue-gtag-next": "^1.14.0",
+    "vue-qrcode": "^0.3.6-beta.0"
   }
 }

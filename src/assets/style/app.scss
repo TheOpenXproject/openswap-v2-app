@@ -222,3 +222,13 @@ html {
   background-color: rgba(24, 213, 187, 1) !important;
   width: 6px !important;
 }
+.ql-toolbar{
+  @apply bg-oswapGreen-light;
+  @apply bg-opacity-10;
+}
+.ql-snow {
+  border: 1px solid rgba(24, 213, 187, 1) !important;
+}
+.ql-container{
+  height: 112px !important;
+}
