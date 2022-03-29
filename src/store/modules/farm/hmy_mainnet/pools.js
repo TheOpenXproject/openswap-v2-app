@@ -328,7 +328,7 @@ export const pools = {
     tUSTtLuna: {
     pair: "tUST/tLuna",
     pairaddress: "0x25e77f53Eef82F4305cC0A84F8225672a0EF5e70",
-    token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
+    token0address: "0x224e64ec1BDce3870a6a6c777eDd450454068FEC",
     token1address: "0x95CE547D730519A90dEF30d647F37D9E5359B6Ae",
     imgtoken0: "https://assets.terra.money/icon/60/UST.png",
     imgtoken1: "https://assets.terra.money/icon/60/Luna.png",
@@ -338,8 +338,7 @@ export const pools = {
     rewards: "2X",
     i: 24
   },
-     
-     OpenXBTC: {
+  OpenXBTC: {
     pair: "OpenX/BTC",
     pairaddress: "0x41afb33beb235ab45318870e4a31fb3979a0b307",
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
@@ -379,7 +378,7 @@ export const pools = {
     i: 25
   },
   OpenXpPoly: {
-    pair: "OpenX/pPoly",
+    pair: "OpenX/pMATIC",
     pairaddress: "0x72c6Ff60492163312083522bEE235b7Db957F509",
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token1address: " 0xFbdd194376de19a88118e84E279b977f165d01b8",

@@ -900,9 +900,8 @@ export default {
       this.getChainID(),
       token1.oneZeroxAddress
     );
-    const pair = await Fetcher.fetchPairData(Token0,Token1).catch(error => {
-      console.log(error); 
-      throw error 
+    const pair = await Fetcher.fetchPairData(Token0,Token1).catch(() => {
+      return
     });
     return pair;
     },
@@ -953,6 +952,7 @@ export default {
     },
     getReserves: function(pair, token1) {
       let reserves = [];
+      if(pair){
       if (
         pair["tokenAmounts"][0].currency.address != token1.oneZeroxAddress
       ) {
@@ -961,6 +961,7 @@ export default {
       } else {
         reserves[0] = ethers.utils.commify(pair.reserve0.toFixed(6));
         reserves[1] = ethers.utils.commify(pair.reserve1.toFixed(6));
+      }
       }
       return reserves;
     },
@@ -984,7 +985,8 @@ export default {
       if(is0Stable == true ){
         return [ethers.utils.commify(parseFloat(tt0s).toFixed(2) * 2), parseFloat(tt0s).toFixed(2) *2];
       }
-       let check = false
+      
+      let check = false
       if(is1Stable == true){
         check = true
         return [ethers.utils.commify(parseFloat(tt1s).toFixed(2) * 2), parseFloat(tt1s).toFixed(2) * 2];
@@ -1030,16 +1032,32 @@ export default {
                 token1.oneZeroxAddress,
                 token1.decimals
                 )
-
-            var pairs = []
+             //var pair0 = await this.getPair(token0, token1)
+             
             const farms = this.getAllPairs()
-            for(var w in farms){
-              pairs.push(farms[w])
+            var pairs = []
+             for(var n in farms){
+              if(farms[n].tokenAmounts[0].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[1].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+              if(farms[n].tokenAmounts[1].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[0].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
 
+             }
+
+
+             var bestRoute
+            if(token0.token0address == farms[n].tokenAmounts[1].token.address){
+               bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1, { maxNumResults : 5, maxHops : 2 })
+              console.log(bestRoute)
+            }else{
+           bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
             }
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1, new TokenAmount(Token0, parsedAmount), { maxNumResults : 6, maxHops : 3 })
-      console.log(bestRoute)
+
+  
+      
       return bestRoute[0]
     },
     getBestRouteIn: async function(parsedAmount, token0, token1) {
@@ -1054,17 +1072,44 @@ export default {
                 token1.decimals
                 )
 
-
-            var pairs = []
+             var pair0 = await this.getPair(token0, token1)
+             
+/*
+            
+           console.log*/
+             var pairs = [];
+             /*if (pair0 != null) {
+              pairs.push(pair0)
+             }
+            */
             const farms = this.getAllPairs()
+
+             for(var n in farms){
+              if( farms[n].tokenAmounts[0].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[1].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+              if(farms[n].tokenAmounts[1].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[0].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+             }
+            console.log(pairs)
             for(var w in farms){
               pairs.push(farms[w])
-  
+
+            }
+            var bestRoute
+            if(token0.token0address == farms[n].tokenAmounts[1].token.address){
+             bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
+                console.log(bestRoute)
+            }else{
+              
+
+                 bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1, { maxNumResults : 5, maxHops : 2 })
+              console.log(bestRoute)
             }
 
 
-      const bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1)
-      console.log(bestRoute)
+  
       return bestRoute[0]
     },
     getBestRoute: async function(parsedAmount, token0, token1) {
@@ -1089,7 +1134,7 @@ export default {
             }
 
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 6, maxHops : 3 })
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
       console.log(bestRoute)
       
       return bestRoute[0]
@@ -2410,6 +2455,173 @@ export default {
           gasLimit: 3000000
           };
         var tx1 = await contract.methods.setAutoFarmCompounding(active ,(id).toString()).send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
+    collectRewardsVal: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      ;
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.collect().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.collect().send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
+      compoundRewardsVal: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.compound().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.compound().send(options)
         if(tx1.transaction.txStatus == 'CONFIRMED'){
           this.setBtnState({add: 'added'})
           let transaction = tx1.transaction.id

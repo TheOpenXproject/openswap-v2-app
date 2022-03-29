@@ -62,6 +62,20 @@
               <button @click="setRewardTo()" :class="isFifteen()">
                 <p class="text-sm p-1 px-3">Set!</p>
               </button>
+
+            </div>
+              </div>
+              <div class="w-full pt-3">
+              <h5 class="w-full">Manage Rewards</h5>
+              <p class="text-sm text-oswapGreen-300">Manually compound or collect stuck rewards.</p>
+               <div class="flex justify-between items-center">
+
+              <button @click="this.collectRewardsVal(this.validator.index)" :class="isFifteen()">
+                <p class="text-sm p-1 px-3">Collect!</p>
+              </button>
+              <button @click="this.compoundRewardsVal(this.validator.index)" :class="isFifteen()">
+                <p class="text-sm p-1 px-3">Compound!</p>
+              </button>
             </div>
               </div>
             </div>
@@ -97,17 +111,14 @@ export default {
       amount: "",
       rewardTo: "",
       watWallet: "",
-      pids: [0,1,11,10,12],
+      pids: [0,1,11,10,12,27,30,31,32,33],
       compoundableFarms: [],
       compoundableFarms0: [],
       isActive: [],
-    
     };
   },
   mounted(){
     let farms = this.getFarms()
-    
-
     let compoundableFarms = []
     let compoundableFarms0 = []
     for(let i in farms){
@@ -117,9 +128,7 @@ export default {
           this.compoundableFarms.push(farms[i])
           farms[i].index = n
           this.compoundableFarms0.push(farms[i])
-
         }
-
         n++
       }
   
@@ -129,13 +138,26 @@ export default {
   methods: {
      ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
      ...mapGetters('farm/farmData', ['getFarms', 'getFarmPair']),
+     collectRewardss:async function(){
+      let n = await this.collectRewardsVal().catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
+    },
+    compoundRewardss:async function(){
+      let n = await this.compoundRewardsVal().catch(() => {
+        return 1
+      })
+      if(n != 1)
+      this.$emit("updateValData", null);
+    },
     delegateVal:async function(){
       let n = await this.delegateValidator(this.amount,this.validator.address, this.validator.index).catch(() => {
         return 1
       })
       if(n != 1)
       this.$emit("updateValData", null);
-    
     },
     unDelegateVal:async function(){
       let n = await this.unDelegateValidator(this.amount,this.validator.address , this.validator.index).catch(() => {

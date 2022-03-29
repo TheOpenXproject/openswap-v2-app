@@ -3,7 +3,15 @@ export const hmytokens = {
     Symbol: "ONE",
     name: "Harmony One",
     oneAddress: "one1eanyppa9hvpr0g966e6zs5hvdjxkngn6jtulua",
-    oneZeroxAddress: "0x7466d7d0c21fa05f32f5a0fa27e12bdc06348ce2",
+    oneZeroxAddress: "0x7466d7d0C21Fa05F32F5a0Fa27e12bdC06348Ce2",
+    imgSrc: "https://openfi.dev/tokens/default/ONE.png",
+    decimals: 18
+  },
+  ONEX: {
+    Symbol: "OneX",
+    name: "One X Pegg",
+    oneAddress: "one1eanyppa9hvpr0g966e6zs5hvdjxkngn6jtulua",
+    oneZeroxAddress: "0x4F766Aa32B5F6f9e59e2fe1a34B648A02Ff2fD75",
     imgSrc: "https://openfi.dev/tokens/default/ONE.png",
     decimals: 18
   },

@@ -28,10 +28,9 @@ const { toBech32 } = require('@harmony-js/crypto');
 
  		UpdateState: async function() {
 
-         const CHAIN_ID = this.getChainID()
-         console.log(CHAIN_ID)
+           const CHAIN_ID = this.getChainID()
       const Multicall = this.hMULTICALL(CHAIN_ID)
-      
+      console.log(pools)
       var farmPairAddr = []
       for(var x in pools[CHAIN_ID].pools){
         farmPairAddr.push(pools[CHAIN_ID].pools[x].pairaddress)
@@ -59,13 +58,13 @@ const { toBech32 } = require('@harmony-js/crypto');
       var sdk  = new SDK(CHAIN_ID, Multicall)
       
       let pairs = await sdk.initPairsWithAddresses(farmPairAddr) 
-      console.log(farms)
+      
       let supply = await sdk.getOpenXSupply()
       let burnt = await sdk.getOpenXBurnt()
 
-      var sdk2  = new SDK(CHAIN_ID, Multicall)
-      let allPairs = await sdk2.initPairs()
-      this.setAllPairs(allPairs)
+      //var sdk2  = new SDK(CHAIN_ID, Multicall)
+      //let allPairs = await sdk2.initPairs()
+      this.setAllPairs(pairs)
 
       this.setOpenXBurnt(burnt)
       this.setOpenXSupply(supply)
@@ -90,13 +89,13 @@ const { toBech32 } = require('@harmony-js/crypto');
           if(this.getChainID() == 1666600000){
           let vals = await sdk.initValidator(validatorAddresses, toBech32(user), valContracts)
           this.setValidatorData(vals)
-           await sdk.initBalances(user) 
-          var tokens = await sdk.getTokens()
           }
-          
+          await sdk.initBalances(user)
+     
+          var tokens = await sdk.getTokens()
           farms = await sdk.getFarms()
           soloFarms = await sdk.getSoloFarmData(soloFarmsArr ,user)
-          console.log(farms)
+
           const TVL = sdk.getTVL()
           const pending = sdk.getTotalPending()
           const userStake = sdk.getTotalStakedUser()
@@ -170,7 +169,7 @@ const { toBech32 } = require('@harmony-js/crypto');
       }
     }
 
-        const provider = networks[this.getChainID()].provider
+        const provider = networks[1666600000].provider
         return provider
       
     },

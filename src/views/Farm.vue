@@ -30,10 +30,10 @@
       </div>
       <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-1 gap-3 w-full">
         <template v-for="(solopool, index) in this.getSoloFarms()"  :key="index">
-            <SoloFarmPair v-if="(!enabled || (parseFloat(solopool.user.lpStakedBal).toFixed(5) > 0)) && (!solopool.archived || archived )" :pool="solopool" />
+            <SoloFarmPair v-if="(!enabled || (parseFloat(solopool.user.lpStakedBal).toFixed(5) > 0)) && (!solopool.allocPoint == 0 || archived )" :pool="solopool" />
         </template>
         <template  v-for="(pool, index) in this.getFarms()"  :key="index">
-            <FarmPair v-if="(!enabled || (parseFloat(pool.user.lpStakedBal).toFixed(5) > 0)) && (!pool.archived || archived ) " :pool="pool" />
+            <FarmPair v-if="(!enabled || (parseFloat(pool.user.lpStakedBal).toFixed(5) > 0)) && (!pool.allocPoint == 0 || archived ) " :pool="pool" />
         </template>
       </div>
     </div>

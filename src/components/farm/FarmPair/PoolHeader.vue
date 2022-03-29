@@ -4,11 +4,11 @@
     <div class="relative flex h-12 items-center">
       <!-- Icon token0 -->
       <div class="absolute items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-        <img :src="pool.imgtoken0" class="h-8 w-8 rounded-xl">
+        <img :src="pool.imgtoken0" class="h-8 w-8 rounded-full">
       </div>
       <!-- Icon token1 -->
       <div class="absolute left-8 items-center justify-center flex w-12 h-12 overflow-hidden rounded-full bg-gray-50 border-4 border-slightGray dark:border-slightDark">
-        <img :src="pool.imgtoken1" class="h-8 w-8 rounded-xl">
+        <img :src="pool.imgtoken1" class="h-8 w-8 rounded-full">
       </div>
       <!-- Pair Title -->
       <div class="absolute left-20 pl-2 items-center justify-center flex h-12 space-x-2">

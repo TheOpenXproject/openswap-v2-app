@@ -116,6 +116,15 @@
                   <p class="text-lg dark:text-gray-400">% {{ getApy()}}</p>
                 </div>
               </div>
+              <div class="flex space-x-1">
+                <div class="flex items-start h-full">
+                  <div class="flex items-start h-full"><i class="las la-coins text-xl text-oswapGreen"></i></div>
+                </div>
+                <div class="flex flex-col h-full justify-between pt-0.5">
+                  <p class="text-xs text-oswapBlue-light">Pending One Rewards</p>
+                  <p class="text-lg dark:text-gray-400">{{ this.validator.pendingRewardsOne.toFixed(8)}}</p>
+                </div>
+              </div>
             </div>
           </div>
           <!-- Open Details Button -->

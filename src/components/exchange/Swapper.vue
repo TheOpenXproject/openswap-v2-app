@@ -113,8 +113,19 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
       );
 
         this.setPriceImpact(bestRoute.priceImpact.toFixed(2))
+
+
+        if (trade.priceImpact.toFixed(2) > 3) { 
+          this.setWarning({
+            'impact': 'Price impact high. Check reserves. Swap at your own risk.'
+          })
+        } else {
+          this.deleteWarning('impact')
+        }
+        
         this.setThePath(this.getPath(bestRoute));
         let slippageTolerence = new Percent(String(parseFloat(this.getSlippageRate)*10), "1000");
+        
         let amountOut = trade
                       .minimumAmountOut(slippageTolerence)
         this.rate = parseFloat(trade.executionPrice.raw.toFixed(token0.decimals)).toFixed(6)
@@ -146,6 +157,14 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
         this.nextMidPrice = parseFloat(trade.nextMidPrice.raw.toFixed(token0.decimals)).toFixed(6)
         
         this.setPriceImpact(trade.priceImpact.toFixed(2))
+
+        if (trade.priceImpact.toFixed(2) > 3) { 
+          this.setWarning({
+            'impact': 'Price impact high. Check reserves. Swap at your own risk.'
+          })
+        } else {
+          this.deleteWarning('impact')
+        }
         this.setThePath(this.getPath(bestRoute));
 
 
@@ -164,7 +183,7 @@ const { Trade, TokenAmount, TradeType, Percent} = require("openswap-v2-sdk");
       },
       reload(value) {
         this.$emit('reload', true)
-      },
+      }
     }
   }
 </script>
