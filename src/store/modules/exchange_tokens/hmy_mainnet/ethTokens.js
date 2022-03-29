@@ -67,6 +67,17 @@ export const ethtokens = {
     oneImg: "",
     decimals: 18
   },
+  FRAX: {
+    Symbol: "FRAX",
+    name: "FRAX",
+    ethAddress: "0x853d955aCEf822Db058eb8505911ED77F175b99e",
+    ethImg: "",
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/6952.png",
+    oneAddress: "one1adkq3n95ggdkpz89s88qfl8ma52cjwkr7zn98p",
+    oneZeroxAddress: "0xeB6C08ccB4421b6088e581ce04fcFBed15893aC3",
+    oneImg: "",
+    decimals: 18
+  },
   LINK: {
     Symbol: "eLINK",
     name: "ChainLink Token",
@@ -330,10 +341,10 @@ export const ethtokens = {
 
   MATIC: {
     Symbol: "eMATIC",
-    name: "Matic Token",
+    name: "Polygon Token",
     ethAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
     ethImg: "",
-    imgSrc: "https://openfi.dev/tokens/default/MATIC.png",
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
     oneAddress: "one1xqf9nuujk4gu4rze9j0kwm7d97dq4px9rfeyaw",
     oneZeroxAddress: "0x301259f392B551CA8c592C9f676FCD2f9A0A84C5",
     oneImg: "",

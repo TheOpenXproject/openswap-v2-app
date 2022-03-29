@@ -7,6 +7,9 @@ import OpenSwapToken from "openswap-v2-core/build/contracts/OpenSwapToken.json";
 import StakingPrecompiles from "@/components/farm/Validators/StakingPrecompiles.json";
 import DelegatorContract from "@/components/farm/Validators/delegateContract.json";
 
+import stateloader from "@/shared/stateloader.js";
+
+
 import MultiTransfer from "@/components/farm/Validators/MultiTransfer.json";
 
 import { ethers } from "ethers";
@@ -34,12 +37,15 @@ import { toastMe } from '@/components/toaster/toaster.js';
 
 export default {
   created: function () {},
+  mixins: [stateloader],
   computed: {
     ...mapGetters('addressConstants', ['oSWAPMAKER', 'oSWAPCHEF','WONE' , 'UNIROUTERV2', 'OPENSWAPBRIDGE','oSWAPTOKEN', 'bBUSD', 'eBUSD', 'eUSDC', 'bUSDC', 'lockedAddress','getValContracts']),
-    ...mapGetters('wallet', ['getStateProvider'])
+
+      
   },
   methods: {
-    ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
+    ...mapGetters('exchange/swapper', ['getAllPairs']),
+    ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType']),
     ...mapGetters('farm/farmData', ['getStateOpenXPrice', 'getStateOnePrice']),
     ...mapActions('farm/farmData', ['setOpenXPrice', 'setOnePrice']),
     ...mapActions('exchange/swapper', ['setBtnState']),
@@ -59,7 +65,7 @@ export default {
       },
       1666600000: {
         rpcURL: 'https://harmony-0-rpc.gateway.pokt.network',
-        provider: new ethers.providers.JsonRpcProvider('https://harmony-0-rpc.gateway.pokt.network', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
+        provider: new ethers.providers.JsonRpcProvider('https://harmony-0-rpc.gateway.pokt.network/', {chainId: 1666600000, name: "Harmony Mainnet S0"}),
         name: "mainnet harmony"
       },
       1666700000: {
@@ -74,6 +80,7 @@ export default {
       }
     }
       let id = this.getChainID();
+      console.log(id)
       if(this.getUserSignedIn() == true && this.getWalletType() == 'metamask' && call == undefined){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         return provider
@@ -132,7 +139,7 @@ export default {
           this.error = 1;
           this.errormessage = "Pool Doesn't Exist";
         });
-        if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID)){
+        if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID())){
           return pair.token1Price.toSignificant(4);
         }else {
           return pair.token0Price.toSignificant(4);
@@ -160,7 +167,7 @@ export default {
           this.error = 1;
           this.errormessage = "Pool Doesn't Exist";
         });
-        if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID)){
+        if(pair.tokenAmounts[0].token.address == this.bBUSD(this.getChainID())){
           return pair.token0Price.toSignificant(4);
         }else {
           return pair.token1Price.toSignificant(4);
@@ -180,8 +187,8 @@ export default {
     },
     getOneBalance: async function(){
         const provider = this.getProvider()
-        const userAddress = this.getUserAddress();
-        const balance = await provider.getBalance(userAddress);
+        const userAddress = this.getUserAddress()
+                const balance = await provider.getBalance(userAddress);
         return balance
     },
     getETHTokenBalance: async function(token, address){
@@ -287,7 +294,7 @@ export default {
         }
       ];
       const provider = this.getProvider(true)
-      const userAddress = this.getUserAddress();
+      const userAddress = this.getUserAddress()
 
       if (token.oneZeroxAddress == this.WONE(this.getChainID())) {
         const balance = await provider.getBalance(userAddress);
@@ -328,7 +335,8 @@ export default {
         }
       ];
       const provider = this.getProvider()
-      const userAddress = this.getUserAddress();
+      const userAddress = this.getUserAddress()
+      ;
 
       if (token.oneZeroxAddress == this.WONE(this.getChainID())) {
         const balance = await provider.getBalance(userAddress);
@@ -351,7 +359,8 @@ export default {
     },
     getAllRewards: async function () {
       const provider = this.getProvider(true)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       if (address != "0x0000000000000000000000000000000000000011") {
         var i = 0, n;
         var totalUnclaimedRewards = ethers.BigNumber.from("0");
@@ -385,7 +394,8 @@ export default {
     getSingleRewards: async function(){
       var totalUnclaimedRewards = ethers.BigNumber.from("0");
       const provider = this.getProvider(true)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = MasterChef.abi;
       const masterChef = this.oSWAPCHEF(this.getChainID());
       const contract = new ethers.Contract(masterChef, abi, provider);
@@ -500,7 +510,9 @@ export default {
             }
             
           }
-          this.getAllRewards();
+         // this.getAllRewards();
+          await this.UpdateState()
+
 
           return tx;
     },
@@ -582,6 +594,7 @@ export default {
             
           
       }
+            await this.UpdateState()
 
     },
     unstakeLP: async function(pool, amount){
@@ -662,6 +675,7 @@ export default {
               })
             }
           }
+                await this.UpdateState()
 
     },
     changeSpending: async function(token1, contractAddr, amount){
@@ -683,7 +697,8 @@ export default {
         
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const address = this.getUserAddress();
+        const address = this.getUserAddress()
+        ;
         
 
         const contract = new ethers.Contract(token1.oneZeroxAddress, abi, signer);
@@ -744,7 +759,8 @@ export default {
     },
     checkAllowance: async function(token1, contractAddr){
       const provider = this.getProvider(true)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      
       const abi = IERC20.abi;
       const contract = new ethers.Contract(token1.oneZeroxAddress, abi, provider);
       let allowance = contract.allowance(address, contractAddr)
@@ -884,9 +900,8 @@ export default {
       this.getChainID(),
       token1.oneZeroxAddress
     );
-    const pair = await Fetcher.fetchPairData(Token0,Token1).catch(error => {
-      console.log(error); 
-      throw error 
+    const pair = await Fetcher.fetchPairData(Token0,Token1).catch(() => {
+      return
     });
     return pair;
     },
@@ -937,6 +952,7 @@ export default {
     },
     getReserves: function(pair, token1) {
       let reserves = [];
+      if(pair){
       if (
         pair["tokenAmounts"][0].currency.address != token1.oneZeroxAddress
       ) {
@@ -945,6 +961,7 @@ export default {
       } else {
         reserves[0] = ethers.utils.commify(pair.reserve0.toFixed(6));
         reserves[1] = ethers.utils.commify(pair.reserve1.toFixed(6));
+      }
       }
       return reserves;
     },
@@ -968,7 +985,8 @@ export default {
       if(is0Stable == true ){
         return [ethers.utils.commify(parseFloat(tt0s).toFixed(2) * 2), parseFloat(tt0s).toFixed(2) *2];
       }
-       let check = false
+      
+      let check = false
       if(is1Stable == true){
         check = true
         return [ethers.utils.commify(parseFloat(tt1s).toFixed(2) * 2), parseFloat(tt1s).toFixed(2) * 2];
@@ -992,9 +1010,6 @@ export default {
         return [ethers.utils.commify((parseFloat(tt1s).toFixed(2)* openxPrice * 2).toFixed(2)), parseFloat(tt1s).toFixed(2) * openxPrice * 2];
       }
 
-
-
-
       if(check == false){
         var Token0 = {oneZeroxAddress: pool.token0address} 
         let Token1 = {oneZeroxAddress: this.bBUSD(this.getChainID())}
@@ -1017,18 +1032,32 @@ export default {
                 token1.oneZeroxAddress,
                 token1.decimals
                 )
-
-
+             //var pair0 = await this.getPair(token0, token1)
+             
+            const farms = this.getAllPairs()
             var pairs = []
-            const farms = this.getFarms()
-            for(var w in farms){
-              pairs.push(farms[w].uniPair)
-              console.log(pairs)
+             for(var n in farms){
+              if(farms[n].tokenAmounts[0].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[1].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+              if(farms[n].tokenAmounts[1].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[0].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+
+             }
+
+
+             var bestRoute
+            if(token0.token0address == farms[n].tokenAmounts[1].token.address){
+               bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1, { maxNumResults : 5, maxHops : 2 })
+              console.log(bestRoute)
+            }else{
+           bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
             }
 
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1, new TokenAmount(Token0, parsedAmount), { maxNumResults : 6, maxHops : 3 })
-      console.log(bestRoute)
+  
+      
       return bestRoute[0]
     },
     getBestRouteIn: async function(parsedAmount, token0, token1) {
@@ -1043,17 +1072,44 @@ export default {
                 token1.decimals
                 )
 
+             var pair0 = await this.getPair(token0, token1)
+             
+/*
+            
+           console.log*/
+             var pairs = [];
+             /*if (pair0 != null) {
+              pairs.push(pair0)
+             }
+            */
+            const farms = this.getAllPairs()
 
-            var pairs = []
-            const farms = this.getFarms()
+             for(var n in farms){
+              if( farms[n].tokenAmounts[0].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[1].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+              if(farms[n].tokenAmounts[1].token.address == token0.oneZeroxAddress && farms[n].tokenAmounts[0].token.address == token1.oneZeroxAddress){
+                pairs.push(farms[n]);
+              }
+             }
+            console.log(pairs)
             for(var w in farms){
-              pairs.push(farms[w].uniPair)
-              console.log(pairs)
+              pairs.push(farms[w])
+
+            }
+            var bestRoute
+            if(token0.token0address == farms[n].tokenAmounts[1].token.address){
+             bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
+                console.log(bestRoute)
+            }else{
+              
+
+                 bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1, { maxNumResults : 5, maxHops : 2 })
+              console.log(bestRoute)
             }
 
 
-      const bestRoute = await Trade.bestTradeExactIn(pairs, new TokenAmount(Token0, parsedAmount), Token1)
-      console.log(bestRoute)
+  
       return bestRoute[0]
     },
     getBestRoute: async function(parsedAmount, token0, token1) {
@@ -1078,7 +1134,7 @@ export default {
             }
 
 
-      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 6, maxHops : 3 })
+      const bestRoute = await Trade.bestTradeExactOut(pairs,Token1,new TokenAmount(Token0, parsedAmount),{ maxNumResults : 4, maxHops : 2 })
       console.log(bestRoute)
       
       return bestRoute[0]
@@ -1380,7 +1436,8 @@ export default {
       const value = ethers.utils.parseEther(amountIn)
       const deadline = this.getDeadline()
       const amountOutParsed = this.getUnits(amountOutMin, token1)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
 
 
@@ -1451,6 +1508,7 @@ export default {
           })
         }
       }
+      await this.UpdateState()
 
     },
     swapTokensForExactETH: async function(amountIn, amountOutMin, path, token0){
@@ -1467,7 +1525,8 @@ export default {
       let deadline = this.getDeadline()
       let amoutInParsed = this.getUnits(amountIn, token0)
       let amountOutParsed = ethers.utils.parseEther(amountOutMin)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
 
       if(this.getWalletType() == 'metamask'){
@@ -1532,6 +1591,7 @@ export default {
           })
         }
       }
+          await this.UpdateState()
 
     },
     swapExactTokensForTokens: async function(amountIn, amountOutMin, path, token0, token1){
@@ -1548,7 +1608,8 @@ export default {
       let deadline = this.getDeadline()
       let amoutInParsed = this.getUnits(amountIn, token0)
       let amountOutParsed = this.getUnits(amountOutMin, token1)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
 
       if(this.getWalletType() == 'metamask'){
@@ -1616,6 +1677,8 @@ export default {
           })
         }
       }
+            await this.UpdateState()
+
     },
     stakeLP: async function(pool,amount){
       let isDefaultWallet = this.checkSignedIn()
@@ -1694,7 +1757,8 @@ export default {
           })
         }
       }
-      
+            await this.UpdateState()
+
     },
     //----------------------------------------Liquidity--------------------------------------
     removeLiquidityParse: async function(token0, token1, amount0, slippage){
@@ -1722,7 +1786,8 @@ export default {
       let tempToken = {decimals: 18};
       let deadline = this.getDeadline();
       amount = this.getUnits(amount, tempToken)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
 
       if(this.getWalletType() == 'metamask'){
@@ -1806,6 +1871,7 @@ export default {
           })
         }
       }
+      await this.UpdateState()
 
 
     },
@@ -1820,7 +1886,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
       let tempToken = {decimals: 18};
       amount = this.getUnits(amount, tempToken)
@@ -1908,6 +1975,8 @@ export default {
           })
         }
       }
+            await this.UpdateState()
+
     },
 
     addLiquidityParse: async function(token0, token1, amount0, amount1, slippage){
@@ -1936,7 +2005,8 @@ export default {
       }
       let amountA = this.getUnits(amount0, token0)
       let valueOveride = {value: amountA}
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
       let amountB = this.getUnits(amount1, token1)
       let amountAmin = await this.calculateSlippage(amountA, '90');
@@ -2027,6 +2097,8 @@ export default {
           })
         }
       }
+            await this.UpdateState()
+
     },
     addLiquidityToken: async function(token0, token1, amount0, amount1, slippage){
       let isDefaultWallet = this.checkSignedIn()
@@ -2039,7 +2111,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       const abi = IUniswapV2Router02.abi;
       let amountA = this.getUnits(amount0, token0)
       let amountB = this.getUnits(amount1, token1)
@@ -2130,7 +2203,8 @@ export default {
           })
         }
       }
-    
+          await this.UpdateState()
+
     },
     approveV1: async function(token){
       await this.approveSpending(token, this.OPENSWAPBRIDGE(this.getChainID()));
@@ -2148,7 +2222,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       if(this.getWalletType() == "metamask"){
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -2239,7 +2314,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       if(this.getWalletType() == "metamask"){
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -2323,7 +2399,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       if(this.getWalletType() == "metamask"){
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -2393,6 +2470,173 @@ export default {
       }
 
     },
+    collectRewardsVal: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      ;
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.collect().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.collect().send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
+      compoundRewardsVal: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = contracts[index].valv4;
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.compound().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.compound().send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
     setRatioValidator: async function(amount, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = DelegatorContract.abi;
@@ -2407,7 +2651,8 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       if(this.getWalletType() == "metamask"){
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -2481,6 +2726,7 @@ export default {
       if(this.getWalletType() == 'metamask'){
       const abi = StakingPrecompiles.abi;
       const user = this.getUserAddress()
+
       const contracts = this.getValContracts(this.getChainID())
       const delContractAddr = contracts[index].precompiles
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -2528,7 +2774,8 @@ export default {
         chainId: 1
       });
       const delegate = hmy.stakings.undelegate({
-        delegatorAddress: toBech32(this.getUserAddress()),
+        delegatorAddress: toBech32(this.getUserAddress()
+          ),
         validatorAddress: valAddr,
         amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
       });
@@ -2559,6 +2806,7 @@ export default {
     delegateValidator: async function(amountIn, valAddr, index){
       if(this.getWalletType() == 'metamask'){
       const user = this.getUserAddress()
+
       const abi = StakingPrecompiles.abi;
       const contracts = this.getValContracts(this.getChainID())
       const delContractAddr = contracts[index].precompiles
@@ -2610,7 +2858,8 @@ export default {
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({
-        delegatorAddress: toBech32(this.getUserAddress()),
+        delegatorAddress: toBech32(this.getUserAddress()
+          ),
         validatorAddress: valAddr,
         amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
       });
@@ -2645,7 +2894,8 @@ export default {
         chainId: 1
       });
       const delegate = hmy.stakings.delegate({
-        delegatorAddress: toBech32(this.getUserAddress()),
+        delegatorAddress: toBech32(this.getUserAddress()
+          ),
         validatorAddress: valAddr,
         amount: numberToHex(new hmy.utils.Unit(amountIn).asOne().toWei())
       });
@@ -2674,7 +2924,8 @@ export default {
       return deadline;
     },
     checkSignedIn: function(){
-      if(this.getUserAddress() == '0x0000000000000000000000000000000000000011'){
+      if(this.getUserAddress()
+       == '0x0000000000000000000000000000000000000011'){
         return true
       }else{
         return false;
@@ -2730,7 +2981,8 @@ export default {
 
       let parsedAmount = this.getUnits(amount, token1);
       const provider = this.getProvider(true)
-      const address = this.getUserAddress();
+      const address = this.getUserAddress()
+      ;
       let path = this.getPath(bestRoute)
       const abi = IUniswapV2Router02.abi;
       const contract = new ethers.Contract(this.UNIROUTERV2(this.getChainID()), abi, provider);

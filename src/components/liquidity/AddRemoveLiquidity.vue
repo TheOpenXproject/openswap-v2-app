@@ -109,10 +109,16 @@
       }
     },
     mounted: async function(){
+      this.balances.token0 = await this.getTokenBalance(this.getToken()['token1']);
+            this.balances.token1 = await this.getTokenBalance(this.getToken()['token2'])
+
       const CHAIN_ID = 1666600000
       const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
       var sdk  = new SDK(CHAIN_ID, Multicall)
-      const allPairs = await sdk.initPairs()
+      const allPairs = this.getAllPairs()
+
+      console.log('allPairs')
+      console.log(allPairs)
       var currentPair = null;
       for(var n in allPairs){
         if(this.getToken()['token1'].oneZeroxAddress == allPairs[n].tokenAmounts[0].token.address && this.getToken()['token2'].oneZeroxAddress == allPairs[n].tokenAmounts[1].token.address)
@@ -130,8 +136,8 @@
       this.pair = currentPair
       if(!this.createNewPair){
         var token = {}
-          token.oneZeroxAddress = this.pair["liquidityToken"].address
-          token.decimals = 18
+        token.oneZeroxAddress = this.pair["liquidityToken"].address
+        token.decimals = 18;
           
         this.pairAddress = this.pair["liquidityToken"].address;
         this.pairToken = token
@@ -150,6 +156,7 @@
     methods: {
       ...mapGetters('wallet', ['getChainID']),
       ...mapGetters('exchange', ['getToken']),
+      ...mapGetters('exchange/swapper', ['getAllPairs']),
       ...mapGetters('liquidity/amounts', ['getToken0Amount','getToken1Amount']),
       ...mapActions('exchange/swapper', [ 'setInputAmount']),
       ...mapActions('liquidity/buttons', ['setBtnState']),
@@ -169,6 +176,7 @@
         let token1 = this.getToken()['token2']
         let amount0 = this.getToken0Amount()
         let amount1 = this.getToken1Amount()
+        console.log
         await this.addLiquidityParse(token0, token1, amount0, amount1, this.slippageRate)
         await this.initMulticall()
         

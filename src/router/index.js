@@ -188,11 +188,12 @@ const routes = [
     path: '/validator/:address',
     name: 'Validator',
     component: () => import('../views/Validator.vue')
-  },
+  },/*
   {
     path: '/listings',
     name: 'Listings',
     component: () => import('../views/Listings.vue')
+
   },
   {
     path: '/contacts',
@@ -214,6 +215,9 @@ const routes = [
     name: 'Details of Proposal',
     component: () => import('../views/ProposalDetails.vue')
   },
+
+  },*/
+
 ]
 
 const router = createRouter({

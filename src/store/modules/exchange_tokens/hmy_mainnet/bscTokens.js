@@ -23,10 +23,10 @@ export const bsctokens = {
   },
   MATIC: {
     Symbol: "bMATIC",
-    name: "Binance Matic/Polygon",
+    name: "Binance Polygon",
     bscAddress: "0xCC42724C6683B7E57334c4E856f4c9965ED682bD",
     bscImg: "",
-    imgSrc: "https://openfi.dev/tokens/default/MATIC.png",
+    imgSrc: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
     oneAddress: "one1dea7twd5ex2ngdxdsw2s6c2q3uwvcwlwuf297s",
     oneZeroxAddress: "0x6E7bE5B9B4C9953434CD83950D61408f1cCc3bee",
     oneImg: "",

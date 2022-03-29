@@ -5,8 +5,8 @@
        
         <div class="flex flex-none justify-center items-center space-x-2">
             <div class="flex flex-row -space-x-2">
-              <img :src="pair.imgtoken0" class="dark:bg-slightGray bg-oswapDark-gray p-1 w-10 h-10 rounded-full" />
-              <img :src="pair.imgtoken1" class="dark:bg-slightGray bg-oswapDark-gray p-1 w-10 h-10 rounded-full"  />
+              <img :src="pair.imgtoken0" class="dark:bg-slightGray bg-slightGray-gray p-1 w-10 h-10 rounded-full" />
+              <img :src="pair.imgtoken1" class="dark:bg-slightGray bg-slightGray-gray p-1 w-10 h-10 rounded-full"  />
             </div>
             <span class="text-base text-oswapBlue-light dark:text-oswapGreen-light">{{pair.pair}}</span>
         </div>

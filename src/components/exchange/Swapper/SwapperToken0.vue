@@ -67,13 +67,17 @@
         'setPriceImpact', 
         'setThePath', 
         'setWarning', 
-        'deleteWarning'
+        'deleteWarning',
+                'setLastSelected'
+
       ]),
       input0: async function(amount0) {
         this.$emit('input0', amount0)
       },
        setMax: async function(){
           this.$emit('input0', await this.getTokenBalance(this.getToken()['token1']))
+                  this.setLastSelected(3) 
+
       }
     }
   }

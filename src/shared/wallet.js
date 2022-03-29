@@ -2,14 +2,17 @@ import { mapGetters, mapActions } from 'vuex';
 import { ethers } from "ethers";
 import { toastMe } from '@/components/toaster/toaster.js';
 import { fromBech32 } from '@harmony-js/crypto'
+  import stateloader from "@/shared/stateloader.js";
+
 //import WalletConnectProvider from "@walletconnect/web3-provider";
 export default {
     mounted: function () {
 
       
     },
+    mixins: [stateloader],
     computed: {
-        ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWalletType', 'getChainID']),
+       
     },
     methods: {
         ...mapActions('wallet', ['setSignedIn', 'setSignedOut', 'setUserAddress', 'setUserWallet','setWalletType','setChainID']),
@@ -21,12 +24,12 @@ export default {
             const onewallet = window.onewallet;
             const getAccount = await onewallet.getAccount();
             console.log(getAccount)
-            this.setdefaultWallet()
             this.setUserAddress(fromBech32(getAccount.address));
-              
+              await this.UpdateState()
               this.setSignedIn( true );
               localStorage.setItem("walletmode", '1');
               this.walletConnected = true;
+              
               return true;
           }else if(window.ethereum == undefined && window.onewallet == undefined){
                 

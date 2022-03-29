@@ -6,9 +6,10 @@
           <router-link :to="{path: '/utility', query: {utility:'networks'}}">
             <button 
               :class="selected ? 'dark:bg-slightDark bg-gray-300':''"
-              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Networks Setup</button>
+              class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Addresses</button>
           </router-link>
         </Tab>
+        <!--
         <Tab v-slot="{ selected }" as="template" class="p-1">
           <router-link :to="{path: '/utility', query: {utility:'revoker'}}">
             <button 
@@ -16,6 +17,7 @@
               class="p-3 dark:bg-oswapDark-gray bg-slightGray text-oswapGreen-dark dark:text-oswapGreen-light rounded-md hover:text-oswapBlue-light">Revoker</button>
           </router-link>
         </Tab>
+      -->
         <Tab v-slot="{ selected }" as="template" class="p-1">
           <router-link :to="{path: '/utility', query: {utility:'calculator'}}">
             <button 
@@ -35,13 +37,17 @@
         <TabPanel class="flex flex-1 flex-col space-y-6">
           <OneAddress :oneAddress="getOneAddress" :oxAddress="get0xAddress" />
           <div class="grid md:grid-cols-2 ss:grid-cols-1 ss:mb-6 w-full gap-6">
+           <!--
             <MainNetContainer />
             <TestNetContainer />
+          -->
           </div>
         </TabPanel>
+        <!--
         <TabPanel class="grid grid-cols-1 w-full gap-6">
           <RevokeAddress />
         </TabPanel>
+        -->
         <TabPanel class="flex flex-1 justify-center">
           <Calculator/>
         </TabPanel>

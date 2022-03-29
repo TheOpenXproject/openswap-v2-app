@@ -57,7 +57,7 @@
     computed: {
       ...mapGetters('exchange/swapper/buttons', ['getBtnState']),
       ...mapGetters('exchange/swapper', ['getInputAmount']),
-       ...mapGetters('addressConstants', ['UNIROUTERV2', 'WONE']),
+     ...mapGetters('addressConstants', ['UNIROUTERV2', 'WONE']),
     },
     mounted: async function() {
       this.token1 = this.getToken()['token1'];
@@ -85,7 +85,8 @@
     methods: {
       ...mapGetters('exchange', ['getToken']),
       ...mapGetters('addressConstants', ['UNIROUTERV2', 'WONE']),
-      
+            ...mapGetters('wallet', ['getChainID']),
+
       ...mapActions('exchange/swapper/buttons', ['setBtnState']),
 
       approve: async function(){

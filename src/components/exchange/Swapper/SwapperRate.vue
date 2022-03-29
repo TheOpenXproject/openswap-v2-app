@@ -45,26 +45,6 @@
           Number((rate == '' || parseFloat(rate) < 0.1 ) ? '0.1' : rate).toString()
         )
         //this.updateData();
-      },
-
-      updateData: async function() {
-        let token0 = this.getToken()['token1']
-        let token1 = this.getToken()['token2']
-
-        let units = this.getUnits(this.getInputAmount(0), token0)
-        let bestRoute = await this.getBestRoute(units, token0, token1)
-
-        this.setPriceImpact(bestRoute.priceImpact.toFixed(2));
-
-        this.setInputAmount({
-          0: await bestRoute.inputAmount.toFixed(6)
-        })
-
-        this.setInputAmount({
-          1: await this.getAmountOutWithSlippage(this.getInputAmount(0), bestRoute, this.getSlippageRate, token0, token1)
-        })
-        
-        this.setThePath(this.getPath(bestRoute));
       }
     }
   }

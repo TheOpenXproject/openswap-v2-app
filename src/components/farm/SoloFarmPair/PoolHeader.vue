@@ -23,7 +23,7 @@
               <div class="flex flex-1 flex-col space-y-2">
                 <p class="text-sm mt-1">Total Staked</p>
                 <div class="flex items-center text-xs">
-                  <p>{{pool.pair}} Staked: {{pool.totalStaked}}</p>
+                  <p>{{pool.pair}} Staked: {{prettify(pool.totalStaked.toFixed(5))}}</p>
                 </div>
         
            
@@ -101,6 +101,10 @@
     },
     methods: {
       ...mapGetters('farm/farmData', ['getSoloData']),
+            prettify: function(number){
+        return ethers.utils.commify(number)
+      },
+
       updatePoolState: function(pool) {
         var farmData = this.getSoloData()
         var poolData = farmData[pool.i]
