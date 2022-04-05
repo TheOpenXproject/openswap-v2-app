@@ -63,7 +63,8 @@ import { ethers } from "ethers";
       poolData: Object,
       farmPair: String,
       compActive: String,
-      index: Number
+      index: Number,
+      indice: Number
     },
     data() {
       return {
@@ -127,6 +128,8 @@ import { ethers } from "ethers";
     methods: {
       ...mapGetters('farm/farmData', ['getFarmData']),
       setCompounding: async function(){
+
+
         console.log(this.poolData.index)
         this.setValCompounding(this.poolData.index, true , this.index)
         this.isActive = true

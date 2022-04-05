@@ -66,7 +66,6 @@
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-browser-sync": "~1.0.0-rc5",
     "vue-cli-plugin-tailwind": "~2.0.6",
-    "vue-gtag-next": "^1.14.0",
-    "vue-qrcode": "^0.3.6-beta.0"
+    "vue-gtag-next": "^1.14.0"
   }
 }

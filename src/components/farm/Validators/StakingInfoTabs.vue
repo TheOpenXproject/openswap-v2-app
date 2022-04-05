@@ -2,7 +2,9 @@
   <div class="flex w-full flex-wrap lg:pl-8" v-if="validator ">
     <div class="w-full">
       <ul class="flex mb-0 list-none flex-wrap py-2 flex-row">
-
+        <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center cursor-pointer">
+          <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(0)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 0, 'text-white bg-oswapGreen': openTab === 0 }"> Info </a>
+        </li>
         <li class="-mb-px lg:mr-2 last:mr-0 ss:mb-2 flex-auto lg:w-max text-center cursor-pointer">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" v-on:click="toggleTabs(1)" v-bind:class="{ 'bg-gray-100 hover:bg-gray-200 dark:bg-oswapDark-gray dark:hover:bg-gray-900 ': openTab !== 1, 'text-white bg-oswapGreen': openTab === 1 }"> Staking </a>
         </li>
@@ -16,6 +18,11 @@
       <div class="relative flex flex-col min-w-0 break-words bg-gray-200 dark:bg-oswapDark-gray w-full rounded mb-2">
         <div class="p-3 flex-auto">
           <div class="tab-content tab-space">
+            <div v-bind:class="{ 'hidden h-full': openTab !== 0, 'h-full flex flex-wrap justify-between': openTab === 0 }">
+              <h5 class="w-full">Stake Amount:</h5>
+              <InfoTab v-if="this.sortedFarms != []" :validator="this.validator" :myAPY="this.myAPY" :highestAPY="this.highest" :lowestAPY="lowest"/>
+            </div>
+
             <div v-bind:class="{ 'hidden h-full': openTab !== 1, 'h-full flex flex-wrap justify-between': openTab === 1 }">
               <h5 class="w-full">Stake Amount:</h5>
               <input type="text" v-model="amount" class="ring-black mt-2 ring-opacity-10 focus:ring-oswapGreen ring-1 focus:outline-none rounded-xl flex ss:w-full lg:w-9/12 z-20 bg-gray-100 py-2 items-center pl-3 dark:bg-oswapDark-gray dark:placeholder-gray-600 placeholder-gray-300" placeholder="Amount to Stake" />
@@ -49,9 +56,9 @@
                 </button> 
               </div>
              
-               <div class="w-full"  v-for="(pool, index) in this.compoundableFarms">
+               <div class="w-full"  v-for="(pool, index) in this.compoundableFarms0">
               
-                <PoolHeader :pool="pool" :farmPair="this.validator.farmPair" :compActive="this.validator.isCompounding" :index="this.validator.index" :poolData="this.compoundableFarms0[index]" />
+                <PoolHeader :pool="pool" :farmPair="this.validator.farmPair" :compActive="this.validator.isCompounding" :index="this.validator.index" :indice='index' :poolData="this.compoundableFarms0[index]" />
 
               </div>
                <div class="w-full pt-3">
@@ -66,7 +73,7 @@
             </div>
               </div>
               <div class="w-full pt-3">
-              <h5 class="w-full">Manage Rewards</h5>
+              <h5 class="w-full">Manage Rewards V4 Alpha</h5>
               <p class="text-sm text-oswapGreen-300">Manually compound or collect stuck rewards.</p>
                <div class="flex justify-between items-center">
 
@@ -74,6 +81,19 @@
                 <p class="text-sm p-1 px-3">Collect!</p>
               </button>
               <button @click="this.compoundRewardsVal(this.validator.index)" :class="isFifteen()">
+                <p class="text-sm p-1 px-3">Compound!</p>
+              </button>
+            </div>
+              </div>
+              <div class="w-full pt-3">
+              <h5 class="w-full">Manage Rewards V4 Beta</h5>
+              <p class="text-sm text-oswapGreen-300">Manually compound or collect stuck rewards.</p>
+               <div class="flex justify-between items-center">
+
+              <button @click="this.collectRewardsValBeta(this.validator.index)" :class="isFifteen()">
+                <p class="text-sm p-1 px-3">Collect!</p>
+              </button>
+              <button @click="this.compoundRewardsValBeta(this.validator.index)" :class="isFifteen()">
                 <p class="text-sm p-1 px-3">Compound!</p>
               </button>
             </div>
@@ -91,15 +111,26 @@ import openswap from "@/shared/openswap.js";
 import { parseEther } from "@ethersproject/units";
 import { mapGetters } from 'vuex';
 import PoolHeader from "@/components/farm/Validators/PoolHeader";
+import InfoTab from "@/components/farm/Validators/InfoTab";
 
 
+  const OXONE = 0 //
+  const OXBUSD = 1 //
+    const OXBNB = 11//
+     const OXpMATIC = 30
+  const OXADA = 12 //
+  const OXIMMRTL = 31
+   const OXUST = 32
+  const OXLUNA = 33
+  const OXBTC = 27
 
 
 export default {
   name: "StakingInfoTabs",
   mixins:[openswap],
   components: {
-    PoolHeader
+    PoolHeader,
+    InfoTab
   },
   props: {
     validator: Object,
@@ -107,37 +138,73 @@ export default {
   data() {
     return {
       selFarm: "",
-      openTab: 1,
+      openTab: 0,
       amount: "",
       rewardTo: "",
       watWallet: "",
-      pids: [0,1,11,10,12,27,30,31,32,33],
+      pids: [0,1,11,30,12,31,32,33,27],
       compoundableFarms: [],
       compoundableFarms0: [],
       isActive: [],
+      myFarmApr: 0,
+      sortedFarms: [],
+      highest: 0,
+      lowest:0,
+      myAPY:0
     };
   },
   mounted(){
     let farms = this.getFarms()
+    console.log(this.validator)
     let compoundableFarms = []
-    let compoundableFarms0 = []
+    
+
+
     for(let i in farms){
       let n = 0;
       while(n < this.pids.length){
         if(farms[i].pid == this.pids[n]){
-          this.compoundableFarms.push(farms[i])
           farms[i].index = n
           this.compoundableFarms0.push(farms[i])
+          this.compoundableFarms.push(farms[i])
+          
+          
+              if(this.validator.farmPair == farms[i].pairaddress){
+
+              this.myFarmApr = farms[i].apr
+              console.log(this.myFarmApr)
+            }
         }
         n++
       }
   
     }
+    let totalAPR = parseFloat(this.getApr())
+     this.sortedFarms = this.compoundableFarms.sort((firstItem, secondItem) => firstItem.apr - secondItem.apr);
+        this.highest = (totalAPR * ((1+this.sortedFarms[this.sortedFarms.length-1].apr/100/365)**365-1) + totalAPR).toFixed(2)
+        if(this.validator.userDelegations >= 100)
+        this.myAPY = (totalAPR * ((1+this.myFarmApr/100/365)**365-1) + totalAPR).toFixed(2)
+
+        this.lowest =  (totalAPR * ((1+this.sortedFarms[0].apr/100/365)**365-1) + totalAPR).toFixed(2)
+   
+    console.log("lllll")
+    console.log()
+    console.log(this.sortedFarms)
+    console.log(this.compoundableFarms0)
+    console.log(this.compoundableFarms)
 
   },
   methods: {
      ...mapGetters('wallet', ['getUserSignedIn', 'getUserSignedOut', 'getUserAddress', 'getWallet', 'getWalletType',  'getChainID']),
      ...mapGetters('farm/farmData', ['getFarms', 'getFarmPair']),
+      getApr : function(){
+        return (parseFloat(this.validator.apr) + this.validator.addedAPR).toFixed(2)
+      },
+     getApy : function(){
+        let totalAPR = parseFloat(this.getApr)
+        return (totalAPR * ((1+this.myFarmApr/100/365)**365-1) + totalAPR).toFixed(2)
+      },
+
      collectRewardss:async function(){
       let n = await this.collectRewardsVal().catch(() => {
         return 1
@@ -152,6 +219,7 @@ export default {
       if(n != 1)
       this.$emit("updateValData", null);
     },
+
     delegateVal:async function(){
       let n = await this.delegateValidator(this.amount,this.validator.address, this.validator.index).catch(() => {
         return 1

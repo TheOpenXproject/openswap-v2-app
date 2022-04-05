@@ -27,6 +27,14 @@
                     </div>
                       
                   </Tab>
+                  <Tab v-slot="{ selected }" as="template">
+                    <div 
+                      :class="selected? 'border-l-2 select-none' : 'cursor-pointer'"
+                      class="flex flex-col py-3 px-10 st5 st5-all group bg-gradient-to-l dark:from-slightDark from-slightGray to-transparent dark:hover:bg-slightDark hover:bg-slightGray  border-oswapGreen rounded-3xl">
+                        MultiChef
+                    </div>
+                      
+                  </Tab>
                 </TabList>
                 <TabPanels class="flex flex-1 ">
                     <TabPanel class="flex flex-1 w-full">

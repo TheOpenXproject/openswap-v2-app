@@ -98,10 +98,10 @@ export default {
       1666600000: {
           0: {
             validator: "one1j35d0vd4uzwffeawjjfukn8t9wjt8csungj0z0",
-            valv4: "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57",
+            valv4: "0x535E8e910F78BD12BD0140aBe740FD1b2069A90c",
             farmToken: "0x214B3a82B6fE2910c17597F86f4cD2eaBc39E0f2",
             delegateContract: "0xe6Dd98403eC2661A4BB1FB73b64e7Df9bd9B1045",
-            registery: "0x41d6eC6451e3e195A6C5AE740C79f3871167D5F8",
+            registery: "0x2E5FA7E6BE68168414d7aAdbb5a43740F7F3f03E",
             precompiles: "0x00000000000000000000000000000000000000FC",
           }
       },

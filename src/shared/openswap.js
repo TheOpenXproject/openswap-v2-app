@@ -2637,6 +2637,173 @@ export default {
       }
 
     },
+    compoundRewardsValBeta: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.compound().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.compound().send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
+    collectRewardsValBeta: async function(index){
+      let isDefaultWallet = this.checkSignedIn();
+      const abi = MultiTransfer.abi;
+      const contracts = this.getValContracts(this.getChainID())
+      const delContractAddr = "0x28c1d1565C1526a0c6C261D5297bEb3EE6dBed57"
+      if (isDefaultWallet){
+        toastMe('error', {
+          title: 'ERROR',
+          msg: `Not Signed In`,
+          link: false,
+          href: ''
+          })
+        return 1
+      }
+      const address = this.getUserAddress()
+      ;
+      if(this.getWalletType() == "metamask"){
+      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+ 
+      const contract = new ethers.Contract(delContractAddr, abi, signer);
+      const tx = await contract.collect().catch(err => {
+          var message;
+          if(!err.data?.message){
+            message = err.message
+          }else{
+            message = err.data.message
+          }
+          toastMe('error', {
+            title: 'Error :',
+            msg: message,
+            link: false
+          })
+          this.setBtnState({add: 'add'})
+          return
+        })
+      if(tx !== undefined){
+      let explorer = 'https://explorer.harmony.one/#/tx/'
+      let transaction = tx.hash
+
+      toastMe('info', {
+        title: 'Transaction Sent',
+        msg: "Ratio change request sent to network. Waiting for confirmation",
+        link: false,
+        href: `${explorer}${transaction}`
+      })
+      await tx.wait(1)
+      toastMe('success', {
+        title: 'Tx Successful',
+        msg: "Explore : " + transaction,
+        link: true,
+        href: `${explorer}${transaction}`
+      })
+      }
+      
+      }
+      if(this.getWalletType() == 'oneWallet'){
+        let options = { gasPrice: "0x3B9ACA00" };
+        const unattachedContract = hmy.contracts.createContract(abi, delContractAddr);
+        let wallet = new oneWallet()
+        await wallet.signin()
+        let contract = wallet.attachToContract(unattachedContract)
+
+        options = {
+          gasPrice: 30000000000,
+          gasLimit: 3000000
+          };
+        var tx1 = await contract.methods.collect().send(options)
+        if(tx1.transaction.txStatus == 'CONFIRMED'){
+          this.setBtnState({add: 'added'})
+          let transaction = tx1.transaction.id
+          this.setBtnState({remove: 'removed'})
+          let explorer = 'https://explorer.harmony.one/#/tx/'
+           toastMe('success', {
+            title: 'Tx Succesfull',
+            msg: "Explore : " + transaction,
+            link: true,
+            href: `${explorer}${transaction}`
+          })
+        }
+      }
+
+    },
     setRatioValidator: async function(amount, index){
       let isDefaultWallet = this.checkSignedIn();
       const abi = DelegatorContract.abi;
@@ -2651,8 +2818,7 @@ export default {
           })
         return 1
       }
-      const address = this.getUserAddress()
-      ;
+      const address = this.getUserAddress();
       if(this.getWalletType() == "metamask"){
       
       const provider = new ethers.providers.Web3Provider(window.ethereum);
