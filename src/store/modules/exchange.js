@@ -99,7 +99,7 @@ export default {
       let found
       state.allTokens.forEach(network => {      
         Object.entries(network.tokens[chainId]).forEach(([k, v]) => {
-          if (v.oneZeroxAddress === token) {
+          if (v.oneZeroxAddress?.toLowerCase() === token?.toLowerCase()) {
             found = v
             return; //
           }
