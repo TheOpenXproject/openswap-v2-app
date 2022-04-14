@@ -50,10 +50,19 @@
         whichToken: ''
       }
     },
+    mounted: function () {
+      const token1 = this.$route.query.token1
+      const token2 = this.$route.query.token2
+      if (token1 || token2) {
+        this.loadTokens({token1, token2})
+      }
+      // 
+    },
     computed: {
       ...mapGetters('liquidity/buttons', ['getStepState'])
     },
     methods: {
+      ...mapActions('exchange', ['loadTokens']),
       ...mapActions('liquidity/buttons', ['goTo']),
         ...mapGetters("farm/farmData", [ "getFarms"]),
 
