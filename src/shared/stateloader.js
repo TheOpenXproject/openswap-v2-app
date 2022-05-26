@@ -9,7 +9,7 @@ const { toBech32 } = require('@harmony-js/crypto');
 
  export default {
  	mounted: function () {
-
+    this.pools = pools
  	},
  	computed: {
     ...mapGetters('user', ['getIsScrolled', 'getColorTheme']),
@@ -17,6 +17,11 @@ const { toBech32 } = require('@harmony-js/crypto');
     
 
  	},
+  data(){
+    return{
+      pools: null
+    }
+  },
  	methods: {
  		...mapActions('exchange/swapper', ['setAllPairs']),
       ...mapActions('farm/farmData', ['setFarms']),
@@ -28,9 +33,10 @@ const { toBech32 } = require('@harmony-js/crypto');
 
  		UpdateState: async function() {
 
-           const CHAIN_ID = this.getChainID()
+      const CHAIN_ID = 1666600000
       const Multicall = this.hMULTICALL(CHAIN_ID)
-      console.log(pools)
+      console.log(CHAIN_ID)
+      console.log(pools[CHAIN_ID])
       var farmPairAddr = []
       for(var x in pools[CHAIN_ID].pools){
         farmPairAddr.push(pools[CHAIN_ID].pools[x].pairaddress)
@@ -44,7 +50,7 @@ const { toBech32 } = require('@harmony-js/crypto');
 
       var validatorAddresses = []
       var soloFarmsArr = []
-      var chainID = this.getChainID()
+      var chainID = 1666600000
       const valContracts = this.getValContracts(chainID)
       for(let r in valContracts){
         validatorAddresses.push(valContracts[r].validator)

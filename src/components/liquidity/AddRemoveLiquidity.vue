@@ -109,41 +109,24 @@
       }
     },
     mounted: async function(){
-      this.balances.token0 = await this.getTokenBalance(this.getToken()['token1']);
-            this.balances.token1 = await this.getTokenBalance(this.getToken()['token2'])
-
-      const CHAIN_ID = 1666600000
-      const Multicall = "0x34b415f4d3b332515e66f70595ace1dcf36254c5"
-      var sdk  = new SDK(CHAIN_ID, Multicall)
-      const allPairs = this.getAllPairs()
-
-      console.log('allPairs')
-      console.log(allPairs)
-      var currentPair = null;
-      for(var n in allPairs){
-        if(this.getToken()['token1'].oneZeroxAddress == allPairs[n].tokenAmounts[0].token.address && this.getToken()['token2'].oneZeroxAddress == allPairs[n].tokenAmounts[1].token.address)
-          currentPair = allPairs[n]
-        if(this.getToken()['token2'].oneZeroxAddress == allPairs[n].tokenAmounts[0].token.address && this.getToken()['token1'].oneZeroxAddress == allPairs[n].tokenAmounts[1].token.address)
-          currentPair = allPairs[n]
-        
-      }
-      if(currentPair == null){
+   
+     
+      this.pair = await this.getPair(this.getToken()['token1'],this.getToken()['token2'])
+      .catch((err) => {
+        console.log(err, "NOPAIR")
+  
+      })
+      console.log(this.pair)
+      if(this.pair != undefined){
+        this.pairAddress = this.pair["liquidityToken"].address;
+        this.pairToken = await this.getPairAsToken(this.getToken()['token1'],this.getToken()['token2'])
+        await this.initMulticall()
+      }else{
         this.createNewPair = true
       }
+
       this.setInputAmount( {0: 0})
       this.setInputAmount({1: 0})
-     
-      this.pair = currentPair
-      if(!this.createNewPair){
-        var token = {}
-        token.oneZeroxAddress = this.pair["liquidityToken"].address
-        token.decimals = 18;
-          
-        this.pairAddress = this.pair["liquidityToken"].address;
-        this.pairToken = token
-        await this.initMulticall()
-
-      }
       this.loaded = true;
       
       

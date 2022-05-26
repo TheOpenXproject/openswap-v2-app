@@ -71,6 +71,14 @@ export const hmytokens = {
     decimals: 18,
     imgSrc: "https://api.rubic.exchange/assets/harmony/0x550d9923693998a6fe20801abe3f1a78e0d75089/logo.png"
   },
+   USELESS: {
+    Symbol: "USE", //token symbol
+    name: "Useless Crypto", //token name
+    oneAddress: "one1cpuaqwz5j2kz6r5fegrecxrd6u00fxc7atp9xp", //bech32 address
+    oneZeroxAddress: "0xC079d0385492Ac2D0e89ca079c186Dd71ef49B1e", //hex address (0x)
+    imgSrc: "https://raw.githubusercontent.com/UselessCrypto/Useless/master/useless_logo_256x256_trans.png", //imageURL
+    decimals: 18 //token decimals
+  },
   LMA: {
     Symbol: "LMA",
     name: "LMA - Art - Gallery",
