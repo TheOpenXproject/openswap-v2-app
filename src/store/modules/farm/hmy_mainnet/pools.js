@@ -377,14 +377,14 @@ export const pools = {
     rewards: "2X",
     i: 25
   },
-  OpenXpPoly: {
+  OpenXpMATIC: {
     pair: "OpenX/pMATIC",
     pairaddress: "0x72c6Ff60492163312083522bEE235b7Db957F509",
     token0address: "0x01A4b054110d57069c1658AFBC46730529A3E326",
     token1address: " 0xFbdd194376de19a88118e84E279b977f165d01b8",
     imgtoken0: "https://openfi.dev/tokens/default/oSWAP.png",
     imgtoken1: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
-    name: ["OpenX", "pPOLY"],
+    name: ["OpenX", "pMATIC"],
     decimals: [18, 18],
     pid: "30",
     rewards: "2X",

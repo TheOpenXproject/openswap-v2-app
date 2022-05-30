@@ -142,7 +142,7 @@ export default {
       amount: "",
       rewardTo: "",
       watWallet: "",
-      pids: [0,1,11,30,12,31,32,33,27],
+      pids: [0,1,11,30,12,27],
       compoundableFarms: [],
       compoundableFarms0: [],
       isActive: [],
